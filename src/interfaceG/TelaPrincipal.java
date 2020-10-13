@@ -73,16 +73,6 @@ public class TelaPrincipal extends JFrame {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Windows".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
-            System.err.println(ex);
-        }
 		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -165,7 +155,7 @@ public class TelaPrincipal extends JFrame {
 		panel_1.setLayout(null);
 		
 		JLabel lblNewLabel_3 = new JLabel("Cadastrar novo docente");
-		lblNewLabel_3.setBounds(70, 11, 261, 14);
+		lblNewLabel_3.setBounds(183, 11, 261, 14);
 		panel_1.add(lblNewLabel_3);
 		
 		JLabel lblNewLabel_4 = new JLabel("Nome");
@@ -173,7 +163,7 @@ public class TelaPrincipal extends JFrame {
 		panel_1.add(lblNewLabel_4);
 		
 		txt_docente_nome = new JTextField();
-		txt_docente_nome.setBounds(90, 36, 241, 20);
+		txt_docente_nome.setBounds(106, 36, 241, 20);
 		panel_1.add(txt_docente_nome);
 		txt_docente_nome.setColumns(10);
 		
@@ -182,7 +172,7 @@ public class TelaPrincipal extends JFrame {
 		panel_1.add(lblNewLabel_25);
 		
 		txt_docente_login = new JTextField();
-		txt_docente_login.setBounds(90, 63, 241, 20);
+		txt_docente_login.setBounds(106, 63, 241, 20);
 		panel_1.add(txt_docente_login);
 		txt_docente_login.setColumns(10);
 		
@@ -193,7 +183,7 @@ public class TelaPrincipal extends JFrame {
 		txt_docente_pag = new JTextField();
 		txt_docente_pag.setText("(nao obrigatorio)");
 		txt_docente_pag.setToolTipText("");
-		txt_docente_pag.setBounds(111, 88, 221, 20);
+		txt_docente_pag.setBounds(127, 88, 221, 20);
 		panel_1.add(txt_docente_pag);
 		txt_docente_pag.setColumns(10);
 		
@@ -210,7 +200,7 @@ public class TelaPrincipal extends JFrame {
 				txt_docente_pag.setText("(nao obrigatorio)");
 			}
 		});
-		btnNewButton_8.setBounds(373, 62, 107, 23);
+		btnNewButton_8.setBounds(389, 62, 107, 23);
 		panel_1.add(btnNewButton_8);
 		
 		JButton btnNewButton_9 = new JButton("Exibe Docentes");
@@ -227,7 +217,7 @@ public class TelaPrincipal extends JFrame {
 				System.out.println();
 			}
 		});
-		btnNewButton_9.setBounds(341, 304, 127, 23);
+		btnNewButton_9.setBounds(340, 286, 156, 23);
 		panel_1.add(btnNewButton_9);
 		
 		JPanel panel_2 = new JPanel();
@@ -235,11 +225,11 @@ public class TelaPrincipal extends JFrame {
 		panel_2.setLayout(null);
 		
 		JFormattedTextField txt_diciplinas_periodo = new JFormattedTextField(new MaskFormatter("####/#"));
-		txt_diciplinas_periodo.setBounds(90, 119, 227, 20);
+		txt_diciplinas_periodo.setBounds(139, 119, 227, 20);
 		panel_2.add(txt_diciplinas_periodo);
 		
 		JLabel lblNewLabel_5 = new JLabel("Cadastrar nova disciplina");
-		lblNewLabel_5.setBounds(66, 11, 300, 14);
+		lblNewLabel_5.setBounds(176, 11, 300, 14);
 		panel_2.add(lblNewLabel_5);
 		
 		JLabel lblNewLabel_6 = new JLabel("Nome");
@@ -247,7 +237,7 @@ public class TelaPrincipal extends JFrame {
 		panel_2.add(lblNewLabel_6);
 		
 		txt_diciplina_nome_cad = new JTextField();
-		txt_diciplina_nome_cad.setBounds(90, 36, 227, 20);
+		txt_diciplina_nome_cad.setBounds(139, 36, 227, 20);
 		panel_2.add(txt_diciplina_nome_cad);
 		txt_diciplina_nome_cad.setColumns(10);
 		
@@ -256,12 +246,12 @@ public class TelaPrincipal extends JFrame {
 		panel_2.add(lblNewLabel_7);
 		
 		txt_diciplina_codigo_cad = new JTextField();
-		txt_diciplina_codigo_cad.setBounds(90, 64, 227, 20);
+		txt_diciplina_codigo_cad.setBounds(139, 64, 227, 20);
 		panel_2.add(txt_diciplina_codigo_cad);
 		txt_diciplina_codigo_cad.setColumns(10);
 		
 		JLabel lblNewLabel_7_1 = new JLabel("Login docente responsavel");
-		lblNewLabel_7_1.setBounds(10, 94, 156, 14);
+		lblNewLabel_7_1.setBounds(10, 94, 205, 14);
 		panel_2.add(lblNewLabel_7_1);
 		
 		JLabel lblNewLabel_7_2 = new JLabel("Periodo");
@@ -269,7 +259,7 @@ public class TelaPrincipal extends JFrame {
 		panel_2.add(lblNewLabel_7_2);
 		
 		txt_diciplina_login_cad = new JTextField();
-		txt_diciplina_login_cad.setBounds(176, 91, 141, 20);
+		txt_diciplina_login_cad.setBounds(225, 91, 141, 20);
 		panel_2.add(txt_diciplina_login_cad);
 		txt_diciplina_login_cad.setColumns(10);
 		
@@ -292,32 +282,32 @@ public class TelaPrincipal extends JFrame {
 				txt_diciplina_login_cad.setText("");
 			}
 		});
-		btnNewButton_1.setBounds(357, 63, 107, 50);
+		btnNewButton_1.setBounds(406, 63, 107, 50);
 		panel_2.add(btnNewButton_1);
 		
 		JLabel lblNewLabel_8 = new JLabel("Ano / Semestre");
-		lblNewLabel_8.setBounds(114, 139, 207, 14);
+		lblNewLabel_8.setBounds(163, 139, 207, 14);
 		panel_2.add(lblNewLabel_8);
 		
 		JLabel lblNewLabel_5_1 = new JLabel("Cadastrar estudante");
-		lblNewLabel_5_1.setBounds(66, 176, 300, 14);
+		lblNewLabel_5_1.setBounds(176, 176, 300, 14);
 		panel_2.add(lblNewLabel_5_1);
 		
 		JLabel lblNewLabel_6_1 = new JLabel("Codigo Diciplina");
-		lblNewLabel_6_1.setBounds(10, 202, 107, 14);
+		lblNewLabel_6_1.setBounds(10, 202, 157, 14);
 		panel_2.add(lblNewLabel_6_1);
 		
 		JLabel lblNewLabel_10 = new JLabel("Matricula Estudante");
-		lblNewLabel_10.setBounds(10, 227, 134, 14);
+		lblNewLabel_10.setBounds(10, 227, 157, 14);
 		panel_2.add(lblNewLabel_10);
 		
 		txt_diciplina_codigo_mat = new JTextField();
-		txt_diciplina_codigo_mat.setBounds(127, 201, 145, 20);
+		txt_diciplina_codigo_mat.setBounds(176, 201, 145, 20);
 		panel_2.add(txt_diciplina_codigo_mat);
 		txt_diciplina_codigo_mat.setColumns(10);
 		
 		txt_diciplina_matricula_mat = new JTextField();
-		txt_diciplina_matricula_mat.setBounds(127, 224, 145, 20);
+		txt_diciplina_matricula_mat.setBounds(176, 224, 145, 20);
 		panel_2.add(txt_diciplina_matricula_mat);
 		txt_diciplina_matricula_mat.setColumns(10);
 		
@@ -333,7 +323,7 @@ public class TelaPrincipal extends JFrame {
 				txt_diciplina_matricula_mat.setText("");
 			}
 		});
-		btnNewButton_3.setBounds(300, 223, 107, 23);
+		btnNewButton_3.setBounds(349, 223, 107, 23);
 		panel_2.add(btnNewButton_3);
 		
 		JButton btnNewButton_10 = new JButton("Exibe Diciplinas");
@@ -346,11 +336,11 @@ public class TelaPrincipal extends JFrame {
 				System.out.println();
 			}
 		});
-		btnNewButton_10.setBounds(346, 135, 134, 23);
+		btnNewButton_10.setBounds(376, 135, 164, 23);
 		panel_2.add(btnNewButton_10);
 		
 		JLabel lblNewLabel_5_2 = new JLabel("Verificar Estudantes Matriculados");
-		lblNewLabel_5_2.setBounds(66, 266, 300, 14);
+		lblNewLabel_5_2.setBounds(176, 269, 300, 14);
 		panel_2.add(lblNewLabel_5_2);
 		
 		JLabel lblNewLabel_11 = new JLabel("Codigo da Diciplina");
@@ -358,7 +348,7 @@ public class TelaPrincipal extends JFrame {
 		panel_2.add(lblNewLabel_11);
 		
 		txt_diciplinas_exibir = new JTextField();
-		txt_diciplinas_exibir.setBounds(127, 294, 145, 20);
+		txt_diciplinas_exibir.setBounds(176, 294, 145, 20);
 		panel_2.add(txt_diciplinas_exibir);
 		txt_diciplinas_exibir.setColumns(10);
 		
@@ -375,7 +365,7 @@ public class TelaPrincipal extends JFrame {
 				txt_diciplinas_exibir.setText("");
 			}
 		});
-		btnNewButton_12.setBounds(300, 293, 100, 23);
+		btnNewButton_12.setBounds(349, 293, 100, 23);
 		panel_2.add(btnNewButton_12);
 		
 		JPanel panel = new JPanel();
@@ -446,11 +436,11 @@ public class TelaPrincipal extends JFrame {
 		Atividades.add(rb_estudo);
 		
 		JRadioButton rb_trabalho = new JRadioButton("Trabalho");
-		rb_trabalho.setBounds(10, 173, 109, 23);
+		rb_trabalho.setBounds(10, 184, 109, 23);
 		Atividades.add(rb_trabalho);
 		
 		JRadioButton rb_prova = new JRadioButton("Prova");
-		rb_prova.setBounds(10, 210, 109, 23);
+		rb_prova.setBounds(10, 221, 109, 23);
 		Atividades.add(rb_prova);
 		
 		ButtonGroup bg = new ButtonGroup();
@@ -460,7 +450,7 @@ public class TelaPrincipal extends JFrame {
 		bg.add(rb_prova);
 		
 		JLabel lblNewLabel_13 = new JLabel("Cadastrar nova atividade");
-		lblNewLabel_13.setBounds(121, 11, 202, 14);
+		lblNewLabel_13.setBounds(206, 11, 202, 14);
 		Atividades.add(lblNewLabel_13);
 		
 		JLabel lblNewLabel_14 = new JLabel("Nome");
@@ -507,48 +497,48 @@ public class TelaPrincipal extends JFrame {
 		txt_atividades_estudo_url.setColumns(10);
 		
 		JLabel lblNewLabel_29 = new JLabel("Url da pagina da atividade");
-		lblNewLabel_29.setBounds(413, 140, 145, 14);
+		lblNewLabel_29.setBounds(158, 160, 225, 14);
 		Atividades.add(lblNewLabel_29);
 		
 		JFormattedTextField txt_atividades_trabalho_prazo = new JFormattedTextField(new MaskFormatter("##/##/####"));
-		txt_atividades_trabalho_prazo.setBounds(119, 174, 77, 20);
+		txt_atividades_trabalho_prazo.setBounds(119, 185, 77, 20);
 		Atividades.add(txt_atividades_trabalho_prazo);
 		
 		JLabel lblNewLabel_30 = new JLabel("Prazo");
-		lblNewLabel_30.setBounds(140, 191, 46, 14);
+		lblNewLabel_30.setBounds(140, 202, 46, 14);
 		Atividades.add(lblNewLabel_30);
 		
 		txt_atividades_trabalho_numero = new JTextField();
-		txt_atividades_trabalho_numero.setBounds(293, 173, 51, 20);
+		txt_atividades_trabalho_numero.setBounds(305, 184, 51, 20);
 		Atividades.add(txt_atividades_trabalho_numero);
 		txt_atividades_trabalho_numero.setColumns(10);
 		
 		JLabel lblNewLabel_31 = new JLabel("N. de pessoas/grupo");
-		lblNewLabel_31.setBounds(354, 176, 161, 14);
+		lblNewLabel_31.setBounds(366, 187, 161, 14);
 		Atividades.add(lblNewLabel_31);
 		
 		JFormattedTextField txt_atividades_trabalho_ch = new JFormattedTextField();
-		txt_atividades_trabalho_ch.setBounds(206, 174, 77, 20);
+		txt_atividades_trabalho_ch.setBounds(206, 185, 89, 20);
 		Atividades.add(txt_atividades_trabalho_ch);
 		
 		JLabel lblNewLabel_32 = new JLabel("Carga Horaria");
-		lblNewLabel_32.setBounds(206, 191, 89, 14);
+		lblNewLabel_32.setBounds(206, 202, 130, 14);
 		Atividades.add(lblNewLabel_32);
 		
 		JFormattedTextField txt_atividades_provas_data = new JFormattedTextField(new MaskFormatter("##/##/####"));
-		txt_atividades_provas_data.setBounds(119, 210, 77, 20);
+		txt_atividades_provas_data.setBounds(119, 221, 77, 20);
 		Atividades.add(txt_atividades_provas_data);
 		
 		JLabel lblNewLabel_9_1 = new JLabel("Data");
-		lblNewLabel_9_1.setBounds(140, 229, 46, 14);
+		lblNewLabel_9_1.setBounds(140, 240, 46, 14);
 		Atividades.add(lblNewLabel_9_1);
 		
 		JFormattedTextField txt_atividades_provas_hora = new JFormattedTextField(new MaskFormatter("##:##"));
-		txt_atividades_provas_hora.setBounds(218, 210, 77, 20);
+		txt_atividades_provas_hora.setBounds(218, 221, 77, 20);
 		Atividades.add(txt_atividades_provas_hora);
 		
 		JLabel lblNewLabel_23_1 = new JLabel("Hora");
-		lblNewLabel_23_1.setBounds(238, 229, 46, 14);
+		lblNewLabel_23_1.setBounds(238, 240, 46, 14);
 		Atividades.add(lblNewLabel_23_1);
 		
 		aulas = new HashMap<>();
@@ -600,16 +590,16 @@ public class TelaPrincipal extends JFrame {
 			}
 		});
 		
-		btnNewButton_5.setBounds(438, 210, 120, 23);
+		btnNewButton_5.setBounds(438, 221, 120, 23);
 		Atividades.add(btnNewButton_5);
 		
 		txt_atividades_prova_conteudo = new JTextField();
-		txt_atividades_prova_conteudo.setBounds(303, 211, 86, 20);
+		txt_atividades_prova_conteudo.setBounds(303, 222, 86, 20);
 		Atividades.add(txt_atividades_prova_conteudo);
 		txt_atividades_prova_conteudo.setColumns(10);
 		
 		JLabel lblNewLabel_33 = new JLabel("Conteudo");
-		lblNewLabel_33.setBounds(313, 229, 90, 14);
+		lblNewLabel_33.setBounds(313, 240, 90, 14);
 		Atividades.add(lblNewLabel_33);
 		
 		JPanel panel_4 = new JPanel();
@@ -617,29 +607,29 @@ public class TelaPrincipal extends JFrame {
 		panel_4.setLayout(null);
 		
 		JLabel lblNewLabel_17 = new JLabel("Submeter avaliacao do aluno");
-		lblNewLabel_17.setBounds(141, 11, 324, 14);
+		lblNewLabel_17.setBounds(178, 11, 324, 14);
 		panel_4.add(lblNewLabel_17);
 		
 		JLabel lblNewLabel_18 = new JLabel("Matricula do aluno");
-		lblNewLabel_18.setBounds(10, 33, 104, 14);
+		lblNewLabel_18.setBounds(10, 33, 194, 14);
 		panel_4.add(lblNewLabel_18);
 		
 		txt_avaliacao_matricula = new JTextField();
-		txt_avaliacao_matricula.setBounds(214, 30, 86, 20);
+		txt_avaliacao_matricula.setBounds(213, 30, 86, 20);
 		panel_4.add(txt_avaliacao_matricula);
 		txt_avaliacao_matricula.setColumns(10);
 		
 		JLabel lblNewLabel_20 = new JLabel("Numero sequencial da atividade");
-		lblNewLabel_20.setBounds(10, 58, 183, 14);
+		lblNewLabel_20.setBounds(10, 58, 194, 14);
 		panel_4.add(lblNewLabel_20);
 		
 		txt_avaliacao_sequencial = new JTextField();
-		txt_avaliacao_sequencial.setBounds(214, 55, 86, 20);
+		txt_avaliacao_sequencial.setBounds(213, 55, 86, 20);
 		panel_4.add(txt_avaliacao_sequencial);
 		txt_avaliacao_sequencial.setColumns(10);
 		
 		txt_avaliacao_codigo = new JTextField();
-		txt_avaliacao_codigo.setBounds(214, 80, 86, 20);
+		txt_avaliacao_codigo.setBounds(213, 80, 86, 20);
 		panel_4.add(txt_avaliacao_codigo);
 		txt_avaliacao_codigo.setColumns(10);
 		
@@ -669,12 +659,12 @@ public class TelaPrincipal extends JFrame {
 		panel_4.add(btnNewButton_7);
 		
 		txt_avaliacao_nota = new JTextField();
-		txt_avaliacao_nota.setBounds(214, 105, 86, 20);
+		txt_avaliacao_nota.setBounds(213, 105, 86, 20);
 		panel_4.add(txt_avaliacao_nota);
 		txt_avaliacao_nota.setColumns(10);
 		
 		JLabel lblNewLabel_16 = new JLabel("Codigo da Diciplina");
-		lblNewLabel_16.setBounds(10, 83, 120, 14);
+		lblNewLabel_16.setBounds(10, 83, 183, 14);
 		panel_4.add(lblNewLabel_16);
 		
 		JButton btnNewButton_6 = new JButton("Submeter");
@@ -703,7 +693,7 @@ public class TelaPrincipal extends JFrame {
 				
 			}
 		});
-		btnNewButton_6.setBounds(345, 50, 120, 50);
+		btnNewButton_6.setBounds(344, 50, 120, 50);
 		panel_4.add(btnNewButton_6);
 		
 		JLabel lblNewLabel_16_1 = new JLabel("Codigo da Diciplina");
@@ -791,11 +781,11 @@ public class TelaPrincipal extends JFrame {
 		panel_6.add(btnNewButton_16);
 		
 		JLabel lblNewLabel_27_1_1_1 = new JLabel("Estatistica das Disciplinas");
-		lblNewLabel_27_1_1_1.setBounds(10, 236, 162, 14);
+		lblNewLabel_27_1_1_1.setBounds(10, 236, 181, 14);
 		panel_6.add(lblNewLabel_27_1_1_1);
 		
 		txt_relatorio_login = new JTextField();
-		txt_relatorio_login.setBounds(202, 231, 162, 20);
+		txt_relatorio_login.setBounds(202, 231, 209, 20);
 		panel_6.add(txt_relatorio_login);
 		txt_relatorio_login.setColumns(10);
 		
@@ -824,11 +814,11 @@ public class TelaPrincipal extends JFrame {
 				}
 			}
 		});
-		btnNewButton_17.setBounds(406, 230, 106, 23);
+		btnNewButton_17.setBounds(421, 231, 106, 23);
 		panel_6.add(btnNewButton_17);
 		
 		JLabel lblNewLabel_27_1_1_1_1 = new JLabel("Login do docente responsavel");
-		lblNewLabel_27_1_1_1_1.setBounds(202, 255, 184, 14);
+		lblNewLabel_27_1_1_1_1.setBounds(202, 255, 277, 14);
 		panel_6.add(lblNewLabel_27_1_1_1_1);
 		
 		JPanel panel_3 = new JPanel();
@@ -859,7 +849,7 @@ public class TelaPrincipal extends JFrame {
 				txt_salvar_carregar.setText(".dat");
 			}
 		});
-		btnNewButton_18.setBounds(324, 26, 102, 23);
+		btnNewButton_18.setBounds(348, 27, 102, 23);
 		panel_3.add(btnNewButton_18);
 		
 		JButton btnNewButton_19 = new JButton("Carregar");
@@ -885,12 +875,12 @@ public class TelaPrincipal extends JFrame {
 				txt_salvar_carregar.setText(".dat");
 			}
 		});
-		btnNewButton_19.setBounds(324, 60, 102, 23);
+		btnNewButton_19.setBounds(348, 61, 102, 23);
 		panel_3.add(btnNewButton_19);
 		
 		txt_salvar_carregar = new JTextField();
 		txt_salvar_carregar.setText(".dat");
-		txt_salvar_carregar.setBounds(116, 27, 198, 20);
+		txt_salvar_carregar.setBounds(140, 28, 198, 20);
 		panel_3.add(txt_salvar_carregar);
 		txt_salvar_carregar.setColumns(10);
 	}
