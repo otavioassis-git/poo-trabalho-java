@@ -115,7 +115,6 @@ public class TelaPrincipal extends JFrame {
 		lblNewLabel_24.setBounds(156, 11, 278, 14);
 		panel_5.add(lblNewLabel_24);
 		
-		
 		//IMPLEMENTACAO DO BOTAO CADASTRAR PERIODO --------------------------------------------------------------------------------------------------------------
 		periodos = new HashMap<>();
 		
@@ -127,12 +126,12 @@ public class TelaPrincipal extends JFrame {
 				
 				try {
 					if(c[5] != 'E' & c[5] != '1' & c[5] != '2') {
-						JOptionPane.showMessageDialog(rootPane, "Valor inválido de semestre inserido!\nLeia o terminal para mais info", "Erro", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(rootPane, "Valor invï¿½lido de semestre inserido!\nLeia o terminal para mais info", "Erro", JOptionPane.ERROR_MESSAGE);
 						throw new IllegalArgumentException("Para semestres eh aceito apenas 1, 2 ou E");
 					}
 					else {
 						if(periodos.containsKey(conteudo)) {
-							JOptionPane.showMessageDialog(rootPane, "Periodo já cadastrado!\nLeia o terminal para mais info", "Erro", JOptionPane.ERROR_MESSAGE);
+							JOptionPane.showMessageDialog(rootPane, "Periodo jï¿½ cadastrado!\nLeia o terminal para mais info", "Erro", JOptionPane.ERROR_MESSAGE);
 							throw new IllegalArgumentException("Periodo ja cadastrado!");
 						}
 						else {
@@ -220,7 +219,7 @@ public class TelaPrincipal extends JFrame {
 				
 				try {
 					if(docentes.containsKey(login)) {
-						JOptionPane.showMessageDialog(rootPane, "Docente já cadastrado!\nLeia o terminal para mais info", "Erro", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(rootPane, "Docente jï¿½ cadastrado!\nLeia o terminal para mais info", "Erro", JOptionPane.ERROR_MESSAGE);
 						throw new IllegalArgumentException("Docente ja cadastrado!");
 					}
 					else {
@@ -229,7 +228,7 @@ public class TelaPrincipal extends JFrame {
 					}
 				}
 				catch(IllegalArgumentException e) {
-					System.out.println("Erro: Docente já cadastrado (clique em exibir docentes para visualizar os cadastrados)\n");
+					System.out.println("Erro: Docente jï¿½ cadastrado (clique em exibir docentes para visualizar os cadastrados)\n");
 				}
 				finally {
 					txt_docente_nome.setText("");
@@ -319,7 +318,7 @@ public class TelaPrincipal extends JFrame {
 				
 				try {
 					if(diciplinas.containsKey(codigo)) {
-						JOptionPane.showMessageDialog(rootPane, "Disciplina já cadastrada!\nLeia o terminal para mais info", "Erro", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(rootPane, "Disciplina jï¿½ cadastrada!\nLeia o terminal para mais info", "Erro", JOptionPane.ERROR_MESSAGE);
 						throw new IllegalArgumentException("Disciplina ja cadastrada!");
 					}
 					else if(!docentes.containsKey(login)) {
@@ -339,7 +338,7 @@ public class TelaPrincipal extends JFrame {
 					}
 				}
 				catch(IllegalArgumentException e) {
-					System.out.println("Erro: Disciplina já cadastrada (clique em exibir disciplinas para visualizar as cadastradas) ou Docente não cadastrado ou Periodo não cadastrado\n");
+					System.out.println("Erro: Disciplina jï¿½ cadastrada (clique em exibir disciplinas para visualizar as cadastradas) ou Docente nï¿½o cadastrado ou Periodo nï¿½o cadastrado\n");
 				}
 				finally {
 					txt_diciplina_nome_cad.setText("");
@@ -395,8 +394,8 @@ public class TelaPrincipal extends JFrame {
 						throw new IllegalArgumentException("Disciplina inexistente!");
 					}
 					else if(diciplinas.get(codigo).est.containsKey(matricula) || estudantes.get(matricula).dic.containsKey(codigo)) {
-						JOptionPane.showMessageDialog(rootPane, "Estudante já matriculado na disciplina!\nLeia o terminal para mais info", "Erro", JOptionPane.ERROR_MESSAGE);
-						throw new IllegalArgumentException("Estudante já matriculado!");
+						JOptionPane.showMessageDialog(rootPane, "Estudante jï¿½ matriculado na disciplina!\nLeia o terminal para mais info", "Erro", JOptionPane.ERROR_MESSAGE);
+						throw new IllegalArgumentException("Estudante jï¿½ matriculado!");
 					}
 					else {
 						diciplinas.get(codigo).est.put(matricula, estudantes.get(matricula));
@@ -405,7 +404,7 @@ public class TelaPrincipal extends JFrame {
 					}
 				}
 				catch(IllegalArgumentException e) {
-					System.out.println("Erro: Estudante já matriculado na disciplina (para verificar estudantes ja cadastrados use sessão verificar estudantes matriculados) ou"
+					System.out.println("Erro: Estudante jï¿½ matriculado na disciplina (para verificar estudantes ja cadastrados use sessï¿½o verificar estudantes matriculados) ou"
 							+ "Estudante inexistente ou Disciplina inexistente");
 				}
 				finally {
@@ -510,8 +509,8 @@ public class TelaPrincipal extends JFrame {
 				
 				try {
 					if(estudantes.containsKey(matricula)) {
-						JOptionPane.showMessageDialog(rootPane, "Estudante já cadastrado!\nLeia o terminal para mais info", "Erro", JOptionPane.ERROR_MESSAGE);
-						throw new IllegalArgumentException("Estudante já cadastrado!");
+						JOptionPane.showMessageDialog(rootPane, "Estudante jï¿½ cadastrado!\nLeia o terminal para mais info", "Erro", JOptionPane.ERROR_MESSAGE);
+						throw new IllegalArgumentException("Estudante jï¿½ cadastrado!");
 					}
 					else {
 						estudantes.put(matricula, new Estudante(matricula,txt_estudante_nome.getText()));
@@ -519,7 +518,7 @@ public class TelaPrincipal extends JFrame {
 					}
 				}
 				catch(IllegalArgumentException e) {
-					System.out.println("Erro: Estudante já cadastrado (clique em exibir estudantes para visualizar estudantes cadastrados)");
+					System.out.println("Erro: Estudante jï¿½ cadastrado (clique em exibir estudantes para visualizar estudantes cadastrados)");
 				}
 				finally {
 					txt_estudante_nome.setText("");
@@ -794,8 +793,8 @@ public class TelaPrincipal extends JFrame {
 						throw new IllegalArgumentException("Estudante inexistente!");
 					}
 					else if(!diciplinas.get(cod).atv.containsKey(seq)) {
-						JOptionPane.showMessageDialog(rootPane, "Disciplina não contém atividade com sequencial digitado!", "Erro", JOptionPane.ERROR_MESSAGE);
-						throw new IllegalArgumentException("Disciplina não contém atividade com sequencial digitado!");
+						JOptionPane.showMessageDialog(rootPane, "Disciplina nï¿½o contï¿½m atividade com sequencial digitado!", "Erro", JOptionPane.ERROR_MESSAGE);
+						throw new IllegalArgumentException("Disciplina nï¿½o contï¿½m atividade com sequencial digitado!");
 					}
 					else {
 						diciplinas.get(cod).atv.get(seq).avaliacao.put(mat, Integer.parseInt(txt_avaliacao_nota.getText()));
