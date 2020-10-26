@@ -116,7 +116,7 @@ public class TelaPrincipal extends JFrame {
 		panel_5.add(lblNewLabel_24);
 		
 		
-		//IMPLEMENTAÇÃO DO BOTÃO CADASTRAR PERIODO --------------------------------------------------------------------------------------------------------------
+		//IMPLEMENTACAO DO BOTAO CADASTRAR PERIODO --------------------------------------------------------------------------------------------------------------
 		periodos = new HashMap<>();
 		
 		JButton btnNewButton = new JButton("Cadastrar");
@@ -155,7 +155,7 @@ public class TelaPrincipal extends JFrame {
 		panel_5.add(btnNewButton);
 		//--------------------------------------------------------------------------------------------------------------------------------------------------------
 		
-		//IMPLEMENTAÇÃO DO BOTÃO EXIBIR PERIODOS -----------------------------------------------------------------------------------------------------------------
+		//IMPLEMENTACAO DO BOTAO EXIBIR PERIODOS -----------------------------------------------------------------------------------------------------------------
 		JButton btnNewButton_4 = new JButton("Exibe Periodos");
 		btnNewButton_4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -210,7 +210,7 @@ public class TelaPrincipal extends JFrame {
 		panel_1.add(txt_docente_pag);
 		txt_docente_pag.setColumns(10);
 		
-		//BOTÃO PARA CADASTRAR DOCENTES ------------------------------------------------------------------------------------------------------------------------
+		//BOTAO PARA CADASTRAR DOCENTES ------------------------------------------------------------------------------------------------------------------------
 		docentes = new HashMap<>();
 		
 		JButton btnNewButton_8 = new JButton("Cadastrar");
@@ -244,7 +244,7 @@ public class TelaPrincipal extends JFrame {
 		panel_1.add(btnNewButton_8);
 		//-------------------------------------------------------------------------------------------------------------------------------------------------------
 		
-		//BOTÃO PARA EXIBIR DOCENTES ----------------------------------------------------------------------------------------------------------------------------
+		//BOTAO PARA EXIBIR DOCENTES ----------------------------------------------------------------------------------------------------------------------------
 		JButton btnNewButton_9 = new JButton("Exibe Docentes");
 		btnNewButton_9.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -307,7 +307,7 @@ public class TelaPrincipal extends JFrame {
 		panel_2.add(txt_diciplina_login_cad);
 		txt_diciplina_login_cad.setColumns(10);
 		
-		//BOTÃO PARA CADASTRAR DISCIPLINAS -----------------------------------------------------------------------------------------------------------------------
+		//BOTAO PARA CADASTRAR DISCIPLINAS -----------------------------------------------------------------------------------------------------------------------
 		diciplinas = new HashMap<>();
 		
 		JButton btnNewButton_1 = new JButton("Cadastrar");
@@ -378,7 +378,7 @@ public class TelaPrincipal extends JFrame {
 		panel_2.add(txt_diciplina_matricula_mat);
 		txt_diciplina_matricula_mat.setColumns(10);
 		
-		//BOTÃO PARA MATRICULAR ALUNO NA DISCIPLINA --------------------------------------------------------------------------------------------------------------
+		//BOTAO PARA MATRICULAR ALUNO NA DISCIPLINA --------------------------------------------------------------------------------------------------------------
 		JButton btnNewButton_3 = new JButton("Matricular");
 		btnNewButton_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) throws IllegalArgumentException{
@@ -417,7 +417,7 @@ public class TelaPrincipal extends JFrame {
 		panel_2.add(btnNewButton_3);
 		//--------------------------------------------------------------------------------------------------------------------------------------------------------
 		
-		//BOTÃO PARA EXIBIR DISCIPLINAS---------------------------------------------------------------------------------------------------------------------------
+		//BOTAO PARA EXIBIR DISCIPLINAS---------------------------------------------------------------------------------------------------------------------------
 		JButton btnNewButton_10 = new JButton("Exibe Diciplinas");
 		btnNewButton_10.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -445,7 +445,7 @@ public class TelaPrincipal extends JFrame {
 		panel_2.add(txt_diciplinas_exibir);
 		txt_diciplinas_exibir.setColumns(10);
 		
-		//BOTÃO PARA EXIBIR ALUNOS MATRICULADOS NA DISCIPLINA ----------------------------------------------------------------------------------------------------
+		//BOTAO PARA EXIBIR ALUNOS MATRICULADOS NA DISCIPLINA ----------------------------------------------------------------------------------------------------
 		JButton btnNewButton_12 = new JButton("Exibe");
 		btnNewButton_12.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0)  throws IllegalArgumentException{
@@ -500,7 +500,7 @@ public class TelaPrincipal extends JFrame {
 		panel.add(txt_estudante_nome);
 		txt_estudante_nome.setColumns(10);
 		
-		//BOTÃO PARA CADASTRAR ESTUDANTE -------------------------------------------------------------------------------------------------------------------------
+		//BOTAO PARA CADASTRAR ESTUDANTE -------------------------------------------------------------------------------------------------------------------------
 		estudantes = new HashMap<>();
 		
 		JButton btnNewButton_2 = new JButton("Cadastrar");
@@ -531,7 +531,7 @@ public class TelaPrincipal extends JFrame {
 		panel.add(btnNewButton_2);
 		//--------------------------------------------------------------------------------------------------------------------------------------------------------
 		
-		//BOTÃO PARA EXIBIR ESTUDANTES ---------------------------------------------------------------------------------------------------------------------------
+		//BOTAO PARA EXIBIR ESTUDANTES ---------------------------------------------------------------------------------------------------------------------------
 		JButton btnNewButton_11 = new JButton("Exibe Estudantes");
 		btnNewButton_11.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -666,7 +666,7 @@ public class TelaPrincipal extends JFrame {
 		lblNewLabel_23_1.setBounds(238, 240, 46, 14);
 		Atividades.add(lblNewLabel_23_1);
 		
-		//BOTÃO PARA CADASTRAR ATIVIDADES ------------------------------------------------------------------------------------------------------------------------
+		//BOTAO PARA CADASTRAR ATIVIDADES ------------------------------------------------------------------------------------------------------------------------
 		atividades = new HashMap<>();
 		
 		JButton btnNewButton_5 = new JButton("Cadastrar");
@@ -731,7 +731,7 @@ public class TelaPrincipal extends JFrame {
 		lblNewLabel_33.setBounds(313, 240, 90, 14);
 		Atividades.add(lblNewLabel_33);
 		
-		//INICIO DA ABA DE AVALIAÇÃO ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+		//INICIO DA ABA DE AVALIACAO ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 		JPanel panel_4 = new JPanel();
 		tabbedPane.addTab("Avaliacao", null, panel_4, null);
 		panel_4.setLayout(null);
@@ -776,7 +776,7 @@ public class TelaPrincipal extends JFrame {
 		lblNewLabel_16.setBounds(10, 83, 183, 14);
 		panel_4.add(lblNewLabel_16);
 		
-		//BOTÃO PARA SUBMETER AVALIAÇÃO --------------------------------------------------------------------------------------------------------------------------
+		//BOTAO PARA SUBMETER AVALIACAO --------------------------------------------------------------------------------------------------------------------------
 		JButton btnNewButton_6 = new JButton("Submeter");
 		btnNewButton_6.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) throws IllegalArgumentException {
@@ -812,7 +812,7 @@ public class TelaPrincipal extends JFrame {
 		panel_4.add(btnNewButton_6);
 		//--------------------------------------------------------------------------------------------------------------------------------------------------------
 		
-		//INICIO DA ABA DE RELATÓRIOS -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+		//INICIO DA ABA DE RELATORIOS -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 		JPanel panel_6 = new JPanel();
 		tabbedPane.addTab("Relatorios", null, panel_6, null);
 		panel_6.setLayout(null);
@@ -829,7 +829,7 @@ public class TelaPrincipal extends JFrame {
 		lblNewLabel_28.setBounds(189, 29, 139, 14);
 		panel_6.add(lblNewLabel_28);
 		
-		//BOTÃO PARA EXIBIR O RELATÓRIO DE UM PERIODO ------------------------------------------------------------------------------------------------------------
+		//BOTAO PARA EXIBIR O RELATORIO DE UM PERIODO ------------------------------------------------------------------------------------------------------------
 		JButton btnNewButton_14 = new JButton("Exibir");
 		btnNewButton_14.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) throws IllegalArgumentException{
@@ -866,7 +866,7 @@ public class TelaPrincipal extends JFrame {
 		lblNewLabel_27_1.setBounds(10, 78, 147, 14);
 		panel_6.add(lblNewLabel_27_1);
 		
-		//BOTÃO PARA EXIBIR AS ESTATISTICAS DOS DOCENTES ---------------------------------------------------------------------------------------------------------
+		//BOTAO PARA EXIBIR AS ESTATISTICAS DOS DOCENTES ---------------------------------------------------------------------------------------------------------
 		JButton btnNewButton_15 = new JButton("Exibir");
 		btnNewButton_15.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -887,7 +887,7 @@ public class TelaPrincipal extends JFrame {
 		lblNewLabel_27_1_1.setBounds(10, 156, 162, 14);
 		panel_6.add(lblNewLabel_27_1_1);
 		
-		//BOTÃO PARA EXIBIR AS ESTATISTICAS DOS ESTUDANTES -------------------------------------------------------------------------------------------------------
+		//BOTAO PARA EXIBIR AS ESTATISTICAS DOS ESTUDANTES -------------------------------------------------------------------------------------------------------
 		JButton btnNewButton_16 = new JButton("Exibir");
 		btnNewButton_16.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -912,7 +912,7 @@ public class TelaPrincipal extends JFrame {
 		panel_6.add(txt_relatorio_login);
 		txt_relatorio_login.setColumns(10);
 		
-		//BOTÃO PARA EXIBIR AS ESTATISTICAS DAS DISCIPLINAS DE UM DOCENTE ----------------------------------------------------------------------------------------
+		//BOTAO PARA EXIBIR AS ESTATISTICAS DAS DISCIPLINAS DE UM DOCENTE ----------------------------------------------------------------------------------------
 		JButton btnNewButton_17 = new JButton("Exibir");
 		btnNewButton_17.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) throws IllegalArgumentException{
@@ -958,7 +958,7 @@ public class TelaPrincipal extends JFrame {
 		lblNewLabel_34.setBounds(10, 30, 162, 14);
 		panel_3.add(lblNewLabel_34);
 		
-		//BOTÃO PARA SALVAR DADOS --------------------------------------------------------------------------------------------------------------------------------
+		//BOTAO PARA SALVAR DADOS --------------------------------------------------------------------------------------------------------------------------------
 		JButton btnNewButton_18 = new JButton("Salvar");
 		btnNewButton_18.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -981,7 +981,7 @@ public class TelaPrincipal extends JFrame {
 		panel_3.add(btnNewButton_18);
 		//--------------------------------------------------------------------------------------------------------------------------------------------------------
 		
-		//BOTÃO PARA CARREGAR DADOS ------------------------------------------------------------------------------------------------------------------------------
+		//BOTAO PARA CARREGAR DADOS ------------------------------------------------------------------------------------------------------------------------------
 		JButton btnNewButton_19 = new JButton("Carregar");
 		btnNewButton_19.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
