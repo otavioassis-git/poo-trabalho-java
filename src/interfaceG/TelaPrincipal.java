@@ -1,6 +1,7 @@
 package interfaceG;
 
-import java.awt.BorderLayout;
+import classesDasEntidades.*;
+
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -14,9 +15,9 @@ import javax.swing.JTextField;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.text.ParseException;
@@ -35,17 +36,13 @@ import javax.swing.JFormattedTextField;
 
 public class TelaPrincipal extends JFrame {
 	Map<String, Periodo> periodos;
-	Map<Integer, Estudante> estudantes;
+	Map<Double, Estudante> estudantes;
 	Map<String, Docente> docentes;
 	Map<String, Diciplina> diciplinas;
-	Map<Integer, Aula> aulas;
-	Map<Integer, Estudo> estudos;
-	Map<Integer, Trabalho> trabalhos;
-	Map<Integer, Prova> provas;
+	Map<Integer, Atividade> atividades;
 	
 	private JPanel contentPane;
 	private JTextField txt_estudante_nome;
-	private JTextField txt_estudante_matricula;
 	private JTextField txt_docente_nome;
 	private JTextField txt_diciplina_nome_cad;
 	private JTextField txt_diciplina_codigo_cad;
@@ -54,7 +51,6 @@ public class TelaPrincipal extends JFrame {
 	private JTextField txt_avaliacao_matricula;
 	private JTextField txt_avaliacao_sequencial;
 	private JTextField txt_avaliacao_codigo;
-	private JTextField txt_avaliacao_cons_sequencial;
 	private JTextField txt_docente_login;
 	private JTextField txt_docente_pag;
 	private JTextField txt_diciplina_login_cad;
@@ -62,7 +58,6 @@ public class TelaPrincipal extends JFrame {
 	private JTextField txt_diciplina_matricula_mat;
 	private JTextField txt_diciplinas_exibir;
 	private JTextField txt_avaliacao_nota;
-	private JTextField txt_avaliacao_cons_codigo;
 	private JTextField txt_relatorio_login;
 	private JTextField txt_atividades_estudo_url;
 	private JTextField txt_atividades_trabalho_numero;
@@ -102,11 +97,12 @@ public class TelaPrincipal extends JFrame {
 		tabbedPane.setBounds(0, 0, 573, 366);
 		contentPane.add(tabbedPane);
 		
+		//INICIO DA ABA DE PERIODOS--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 		JPanel panel_5 = new JPanel();
 		tabbedPane.addTab("Periodo", null, panel_5, null);
 		panel_5.setLayout(null);
 		
-		JFormattedTextField txt_periodo_cadastro = new JFormattedTextField(new MaskFormatter("####/#"));
+		JFormattedTextField txt_periodo_cadastro = new JFormattedTextField(new MaskFormatter("####/A"));
 		txt_periodo_cadastro.setToolTipText("");
 		txt_periodo_cadastro.setBounds(119, 36, 206, 20);
 		panel_5.add(txt_periodo_cadastro);
@@ -119,24 +115,47 @@ public class TelaPrincipal extends JFrame {
 		lblNewLabel_24.setBounds(156, 11, 278, 14);
 		panel_5.add(lblNewLabel_24);
 		
+		
+		//IMPLEMENTAÇÃO DO BOTÃO CADASTRAR PERIODO --------------------------------------------------------------------------------------------------------------
 		periodos = new HashMap<>();
 		
 		JButton btnNewButton = new JButton("Cadastrar");
 		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+			public void actionPerformed(ActionEvent arg0) throws IllegalArgumentException{
 				String conteudo = txt_periodo_cadastro.getText();
+				char[]  c = conteudo.toCharArray();
 				
-				periodos.put(conteudo, new Periodo(conteudo));
-				
-				JOptionPane.showMessageDialog(rootPane, "Periodo cadastrado");
-				txt_periodo_cadastro.setText("");
+				try {
+					if(c[5] != 'E' & c[5] != '1' & c[5] != '2') {
+						JOptionPane.showMessageDialog(rootPane, "Valor inválido de semestre inserido!\nLeia o terminal para mais info", "Erro", JOptionPane.ERROR_MESSAGE);
+						throw new IllegalArgumentException("Para semestres eh aceito apenas 1, 2 ou E");
+					}
+					else {
+						if(periodos.containsKey(conteudo)) {
+							JOptionPane.showMessageDialog(rootPane, "Periodo já cadastrado!\nLeia o terminal para mais info", "Erro", JOptionPane.ERROR_MESSAGE);
+							throw new IllegalArgumentException("Periodo ja cadastrado!");
+						}
+						else {
+							periodos.put(conteudo, new Periodo(conteudo));
+							JOptionPane.showMessageDialog(rootPane, "Periodo cadastrado");
+						}
+					}
+				}
+				catch(IllegalArgumentException e) {
+					System.out.println("ERRO: Periodo ja cadastrado (clicar em exibir periodos para visualizar os cadastrados) ou com semestre invalido (validos: 1, 2 ou E)\n");
+				}
+				finally {
+					txt_periodo_cadastro.setText("");
+				}
 				
 			}
 			
 		});
 		btnNewButton.setBounds(160, 67, 123, 23);
 		panel_5.add(btnNewButton);
+		//--------------------------------------------------------------------------------------------------------------------------------------------------------
 		
+		//IMPLEMENTAÇÃO DO BOTÃO EXIBIR PERIODOS -----------------------------------------------------------------------------------------------------------------
 		JButton btnNewButton_4 = new JButton("Exibe Periodos");
 		btnNewButton_4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -149,7 +168,9 @@ public class TelaPrincipal extends JFrame {
 		});
 		btnNewButton_4.setBounds(331, 289, 148, 23);
 		panel_5.add(btnNewButton_4);
+		//--------------------------------------------------------------------------------------------------------------------------------------------------------
 		
+		//INICIO DA ABA DE DOCENTES -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 		JPanel panel_1 = new JPanel();
 		tabbedPane.addTab("Docente", null, panel_1, null);
 		panel_1.setLayout(null);
@@ -161,6 +182,8 @@ public class TelaPrincipal extends JFrame {
 		JLabel lblNewLabel_4 = new JLabel("Nome");
 		lblNewLabel_4.setBounds(10, 36, 63, 14);
 		panel_1.add(lblNewLabel_4);
+		
+		//txt.put("txt_docente_nome", new MontaTextField(panel_1, 10, 106, 36, 241, 20));
 		
 		txt_docente_nome = new JTextField();
 		txt_docente_nome.setBounds(106, 36, 241, 20);
@@ -187,30 +210,49 @@ public class TelaPrincipal extends JFrame {
 		panel_1.add(txt_docente_pag);
 		txt_docente_pag.setColumns(10);
 		
+		//BOTÃO PARA CADASTRAR DOCENTES ------------------------------------------------------------------------------------------------------------------------
 		docentes = new HashMap<>();
 		
 		JButton btnNewButton_8 = new JButton("Cadastrar");
 		btnNewButton_8.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				docentes.put(txt_docente_login.getText(), new Docente(txt_docente_login.getText(), txt_docente_nome.getText(),  txt_docente_pag.getText()));
+			public void actionPerformed(ActionEvent arg0) throws IllegalArgumentException {
+				String login = txt_docente_login.getText();
 				
-				JOptionPane.showMessageDialog(rootPane, "Docente cadastrado");
-				txt_docente_nome.setText("");
-				txt_docente_login.setText("");
-				txt_docente_pag.setText("(nao obrigatorio)");
+				try {
+					if(docentes.containsKey(login)) {
+						JOptionPane.showMessageDialog(rootPane, "Docente já cadastrado!\nLeia o terminal para mais info", "Erro", JOptionPane.ERROR_MESSAGE);
+						throw new IllegalArgumentException("Docente ja cadastrado!");
+					}
+					else {
+						docentes.put(login, new Docente(login, txt_docente_nome.getText(),  txt_docente_pag.getText()));
+						JOptionPane.showMessageDialog(rootPane, "Docente cadastrado");
+					}
+				}
+				catch(IllegalArgumentException e) {
+					System.out.println("Erro: Docente já cadastrado (clique em exibir docentes para visualizar os cadastrados)\n");
+				}
+				finally {
+					txt_docente_nome.setText("");
+					txt_docente_login.setText("");
+					txt_docente_pag.setText("(nao obrigatorio)");
+				}
+				
+				
 			}
 		});
 		btnNewButton_8.setBounds(389, 62, 107, 23);
 		panel_1.add(btnNewButton_8);
+		//-------------------------------------------------------------------------------------------------------------------------------------------------------
 		
+		//BOTÃO PARA EXIBIR DOCENTES ----------------------------------------------------------------------------------------------------------------------------
 		JButton btnNewButton_9 = new JButton("Exibe Docentes");
 		btnNewButton_9.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				System.out.println("Docentes: ");
 				for(String s : docentes.keySet()) {
-					System.out.print(docentes.get(s).nome+" | "+s);
-					if(!docentes.get(s).pagweb.equals("(nao obrigatorio)")) {
-						System.out.print(" | "+docentes.get(s).pagweb);
+					System.out.print(docentes.get(s).getNome()+" | "+s);
+					if(!docentes.get(s).getPagweb().equals("(nao obrigatorio)")) {
+						System.out.print(" | "+docentes.get(s).getPagweb());
 					}
 					System.out.println();
 				}
@@ -219,12 +261,14 @@ public class TelaPrincipal extends JFrame {
 		});
 		btnNewButton_9.setBounds(340, 286, 156, 23);
 		panel_1.add(btnNewButton_9);
+		//--------------------------------------------------------------------------------------------------------------------------------------------------------
 		
+		//INICIO DA ABA DE DICIPLINAS -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 		JPanel panel_2 = new JPanel();
 		tabbedPane.addTab("Disciplinas", null, panel_2, null);
 		panel_2.setLayout(null);
 		
-		JFormattedTextField txt_diciplinas_periodo = new JFormattedTextField(new MaskFormatter("####/#"));
+		JFormattedTextField txt_diciplinas_periodo = new JFormattedTextField(new MaskFormatter("####/A"));
 		txt_diciplinas_periodo.setBounds(139, 119, 227, 20);
 		panel_2.add(txt_diciplinas_periodo);
 		
@@ -263,27 +307,50 @@ public class TelaPrincipal extends JFrame {
 		panel_2.add(txt_diciplina_login_cad);
 		txt_diciplina_login_cad.setColumns(10);
 		
+		//BOTÃO PARA CADASTRAR DISCIPLINAS -----------------------------------------------------------------------------------------------------------------------
 		diciplinas = new HashMap<>();
 		
 		JButton btnNewButton_1 = new JButton("Cadastrar");
 		btnNewButton_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				String per = txt_diciplinas_periodo.getText();
+			public void actionPerformed(ActionEvent arg0) throws  IllegalArgumentException {
+				String periodo = txt_diciplinas_periodo.getText();
+				String codigo = txt_diciplina_codigo_cad.getText();
+				String login = txt_diciplina_login_cad.getText();
 				
-				Diciplina aux = new Diciplina(txt_diciplina_nome_cad.getText(), docentes.get(txt_diciplina_login_cad.getText()), periodos.get(per));
-				diciplinas.put(txt_diciplina_codigo_cad.getText(), aux);
-				docentes.get(txt_diciplina_login_cad.getText()).dic.put(txt_diciplina_codigo_cad.getText(), diciplinas.get(txt_diciplina_codigo_cad.getText()));
-			
-				periodos.get(per).dic.put(txt_diciplina_codigo_cad.getText(), diciplinas.get(txt_diciplina_codigo_cad.getText()));
-				
-				JOptionPane.showMessageDialog(rootPane, "Diciplina cadastrada");
-				txt_diciplina_nome_cad.setText("");
-				txt_diciplina_codigo_cad.setText("");
-				txt_diciplina_login_cad.setText("");
+				try {
+					if(diciplinas.containsKey(codigo)) {
+						JOptionPane.showMessageDialog(rootPane, "Disciplina já cadastrada!\nLeia o terminal para mais info", "Erro", JOptionPane.ERROR_MESSAGE);
+						throw new IllegalArgumentException("Disciplina ja cadastrada!");
+					}
+					else if(!docentes.containsKey(login)) {
+						JOptionPane.showMessageDialog(rootPane, "Docente inexistente!\nLeia o terminal para mais info", "Erro", JOptionPane.ERROR_MESSAGE);
+						throw new IllegalArgumentException("Docente inexistente!");
+					}
+					else if(!periodos.containsKey(periodo)) {
+						JOptionPane.showMessageDialog(rootPane, "Periodo inexistente!\nLeia o terminal para mais info", "Erro", JOptionPane.ERROR_MESSAGE);
+						throw new IllegalArgumentException("Periodo inexistente!");
+					}
+					else {
+						diciplinas.put(codigo, new Diciplina(txt_diciplina_nome_cad.getText(), docentes.get(login), periodos.get(periodo)));
+						docentes.get(login).dic.put(codigo, diciplinas.get(codigo));
+						periodos.get(periodo).dic.put(codigo, diciplinas.get(codigo));
+						
+						JOptionPane.showMessageDialog(rootPane, "Diciplina cadastrada");
+					}
+				}
+				catch(IllegalArgumentException e) {
+					System.out.println("Erro: Disciplina já cadastrada (clique em exibir disciplinas para visualizar as cadastradas) ou Docente não cadastrado ou Periodo não cadastrado\n");
+				}
+				finally {
+					txt_diciplina_nome_cad.setText("");
+					txt_diciplina_codigo_cad.setText("");
+					txt_diciplina_login_cad.setText("");
+				}
 			}
 		});
 		btnNewButton_1.setBounds(406, 63, 107, 50);
 		panel_2.add(btnNewButton_1);
+		//--------------------------------------------------------------------------------------------------------------------------------------------------------
 		
 		JLabel lblNewLabel_8 = new JLabel("Ano / Semestre");
 		lblNewLabel_8.setBounds(163, 139, 207, 14);
@@ -311,33 +378,59 @@ public class TelaPrincipal extends JFrame {
 		panel_2.add(txt_diciplina_matricula_mat);
 		txt_diciplina_matricula_mat.setColumns(10);
 		
+		//BOTÃO PARA MATRICULAR ALUNO NA DISCIPLINA --------------------------------------------------------------------------------------------------------------
 		JButton btnNewButton_3 = new JButton("Matricular");
 		btnNewButton_3.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				int mat = Integer.parseInt(txt_diciplina_matricula_mat.getText());
-				diciplinas.get(txt_diciplina_codigo_mat.getText()).est.put(mat, estudantes.get(mat));
-				String cod = txt_diciplina_codigo_mat.getText();
-				estudantes.get(mat).dic.put(cod, diciplinas.get(cod));
+			public void actionPerformed(ActionEvent arg0) throws IllegalArgumentException{
+				double matricula = Double.parseDouble(txt_diciplina_matricula_mat.getText());
+				String codigo = txt_diciplina_codigo_mat.getText();
 				
-				JOptionPane.showMessageDialog(rootPane, "Estudante Matriculado");
-				txt_diciplina_matricula_mat.setText("");
+				try {
+					if(!estudantes.containsKey(matricula)) {
+						JOptionPane.showMessageDialog(rootPane, "Estudante inexistente!\nLeia o terminal para mais info", "Erro", JOptionPane.ERROR_MESSAGE);
+						throw new IllegalArgumentException("Estudante inexistente!");
+					}
+					else if(!diciplinas.containsKey(codigo)) {
+						JOptionPane.showMessageDialog(rootPane, "Disciplina inexistente!\nLeia o terminal para mais info", "Erro", JOptionPane.ERROR_MESSAGE);
+						throw new IllegalArgumentException("Disciplina inexistente!");
+					}
+					else if(diciplinas.get(codigo).est.containsKey(matricula) || estudantes.get(matricula).dic.containsKey(codigo)) {
+						JOptionPane.showMessageDialog(rootPane, "Estudante já matriculado na disciplina!\nLeia o terminal para mais info", "Erro", JOptionPane.ERROR_MESSAGE);
+						throw new IllegalArgumentException("Estudante já matriculado!");
+					}
+					else {
+						diciplinas.get(codigo).est.put(matricula, estudantes.get(matricula));
+						estudantes.get(matricula).dic.put(codigo, diciplinas.get(codigo));
+						JOptionPane.showMessageDialog(rootPane, "Estudante Matriculado");
+					}
+				}
+				catch(IllegalArgumentException e) {
+					System.out.println("Erro: Estudante já matriculado na disciplina (para verificar estudantes ja cadastrados use sessão verificar estudantes matriculados) ou"
+							+ "Estudante inexistente ou Disciplina inexistente");
+				}
+				finally {
+					txt_diciplina_matricula_mat.setText("");
+				}
 			}
 		});
 		btnNewButton_3.setBounds(349, 223, 107, 23);
 		panel_2.add(btnNewButton_3);
+		//--------------------------------------------------------------------------------------------------------------------------------------------------------
 		
+		//BOTÃO PARA EXIBIR DISCIPLINAS---------------------------------------------------------------------------------------------------------------------------
 		JButton btnNewButton_10 = new JButton("Exibe Diciplinas");
 		btnNewButton_10.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				System.out.println("Diciplinas: ");
 				for(String s : diciplinas.keySet()) {
-					System.out.println(s+" "+diciplinas.get(s).nome+" - "+diciplinas.get(s).per.anoSemestre+" | Responsavel: "+diciplinas.get(s).doc.nome);
+					System.out.println(s+" "+diciplinas.get(s).getNome()+" - "+diciplinas.get(s).getPer().getAnoSemestre()+" | Responsavel: "+diciplinas.get(s).getDoc().getNome());
 				}
 				System.out.println();
 			}
 		});
 		btnNewButton_10.setBounds(376, 135, 164, 23);
 		panel_2.add(btnNewButton_10);
+		//--------------------------------------------------------------------------------------------------------------------------------------------------------
 		
 		JLabel lblNewLabel_5_2 = new JLabel("Verificar Estudantes Matriculados");
 		lblNewLabel_5_2.setBounds(176, 269, 300, 14);
@@ -352,25 +445,43 @@ public class TelaPrincipal extends JFrame {
 		panel_2.add(txt_diciplinas_exibir);
 		txt_diciplinas_exibir.setColumns(10);
 		
+		//BOTÃO PARA EXIBIR ALUNOS MATRICULADOS NA DISCIPLINA ----------------------------------------------------------------------------------------------------
 		JButton btnNewButton_12 = new JButton("Exibe");
-		btnNewButton_12.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				String cod = txt_diciplinas_exibir.getText();
-				System.out.println("Estudantes matriculados em "+cod+" "+diciplinas.get(cod).nome);
-				for (Integer i : diciplinas.get(cod).est.keySet()) {
-					System.out.println(i+" "+diciplinas.get(cod).est.get(i).nome);
-				}
-				System.out.println();
+		btnNewButton_12.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent arg0)  throws IllegalArgumentException{
+				String codigo = txt_diciplinas_exibir.getText();
 				
-				txt_diciplinas_exibir.setText("");
+				try {
+					if(!diciplinas.containsKey(codigo)) {
+						JOptionPane.showMessageDialog(rootPane, "Disciplina inexistente!", "Erro", JOptionPane.ERROR_MESSAGE);
+						throw new IllegalArgumentException("Disciplina inexistente!");
+					}
+					else {
+						System.out.println("Estudantes matriculados em "+codigo+" "+diciplinas.get(codigo).getNome());
+						for (Double i : diciplinas.get(codigo).est.keySet()) {
+							System.out.println(i+" "+diciplinas.get(codigo).est.get(i).getNome());
+						}
+						System.out.println();
+					}
+				}
+				finally {
+					txt_diciplinas_exibir.setText("");
+				}
 			}
 		});
 		btnNewButton_12.setBounds(349, 293, 100, 23);
 		panel_2.add(btnNewButton_12);
+		//--------------------------------------------------------------------------------------------------------------------------------------------------------
 		
+		
+		//INICIO DA ABA DE ESTUDANTES -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 		JPanel panel = new JPanel();
 		tabbedPane.addTab("Estudantes", null, panel, null);
 		panel.setLayout(null);
+		
+		JFormattedTextField txt_estudante_matricula = new JFormattedTextField(new MaskFormatter("##########"));
+		txt_estudante_matricula.setBounds(80, 84, 204, 20);
+		panel.add(txt_estudante_matricula);
 		
 		JLabel lblNewLabel = new JLabel("Cadastrar novo estudante");
 		lblNewLabel.setBounds(50, 24, 204, 14);
@@ -389,39 +500,53 @@ public class TelaPrincipal extends JFrame {
 		panel.add(txt_estudante_nome);
 		txt_estudante_nome.setColumns(10);
 		
-		txt_estudante_matricula = new JTextField();
-		txt_estudante_matricula.setBounds(80, 84, 204, 20);
-		panel.add(txt_estudante_matricula);
-		txt_estudante_matricula.setColumns(10);
-		
+		//BOTÃO PARA CADASTRAR ESTUDANTE -------------------------------------------------------------------------------------------------------------------------
 		estudantes = new HashMap<>();
 		
 		JButton btnNewButton_2 = new JButton("Cadastrar");
 		btnNewButton_2.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				estudantes.put(Integer.parseInt(txt_estudante_matricula.getText()), new Estudante(Integer.parseInt(txt_estudante_matricula.getText()),txt_estudante_nome.getText()));
+			public void actionPerformed(ActionEvent arg0) throws IllegalArgumentException{
+				double matricula = Double.parseDouble(txt_estudante_matricula.getText());
 				
-				JOptionPane.showMessageDialog(rootPane, "Estudante Cadastrado");
-				txt_estudante_nome.setText("");
-				txt_estudante_matricula.setText("");
+				try {
+					if(estudantes.containsKey(matricula)) {
+						JOptionPane.showMessageDialog(rootPane, "Estudante já cadastrado!\nLeia o terminal para mais info", "Erro", JOptionPane.ERROR_MESSAGE);
+						throw new IllegalArgumentException("Estudante já cadastrado!");
+					}
+					else {
+						estudantes.put(matricula, new Estudante(matricula,txt_estudante_nome.getText()));
+						JOptionPane.showMessageDialog(rootPane, "Estudante Cadastrado");
+					}
+				}
+				catch(IllegalArgumentException e) {
+					System.out.println("Erro: Estudante já cadastrado (clique em exibir estudantes para visualizar estudantes cadastrados)");
+				}
+				finally {
+					txt_estudante_nome.setText("");
+					txt_estudante_matricula.setText("");
+				}
 			}
 		});
 		btnNewButton_2.setBounds(324, 63, 106, 23);
 		panel.add(btnNewButton_2);
+		//--------------------------------------------------------------------------------------------------------------------------------------------------------
 		
+		//BOTÃO PARA EXIBIR ESTUDANTES ---------------------------------------------------------------------------------------------------------------------------
 		JButton btnNewButton_11 = new JButton("Exibe Estudantes");
 		btnNewButton_11.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				System.out.println("Estudantes: ");
-				for(Integer i : estudantes.keySet()) {
-					System.out.println(i+" "+estudantes.get(i).nome);
+				for(Double i : estudantes.keySet()) {
+					System.out.println(i+" "+estudantes.get(i).getNome());
 				}
 				System.out.println();
 			}
 		});
-		btnNewButton_11.setBounds(348, 304, 132, 23);
+		btnNewButton_11.setBounds(347, 280, 132, 23);
 		panel.add(btnNewButton_11);
+		//--------------------------------------------------------------------------------------------------------------------------------------------------------
 		
+		//INICIO DA ABA DE ATIVIDADES -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 		JPanel Atividades = new JPanel();
 		tabbedPane.addTab("Atividades", null, Atividades, null);
 		Atividades.setLayout(null);
@@ -492,7 +617,7 @@ public class TelaPrincipal extends JFrame {
 		Atividades.add(lblNewLabel_23);
 		
 		txt_atividades_estudo_url = new JTextField();
-		txt_atividades_estudo_url.setBounds(121, 137, 282, 20);
+		txt_atividades_estudo_url.setBounds(121, 137, 252, 20);
 		Atividades.add(txt_atividades_estudo_url);
 		txt_atividades_estudo_url.setColumns(10);
 		
@@ -509,12 +634,12 @@ public class TelaPrincipal extends JFrame {
 		Atividades.add(lblNewLabel_30);
 		
 		txt_atividades_trabalho_numero = new JTextField();
-		txt_atividades_trabalho_numero.setBounds(305, 184, 51, 20);
+		txt_atividades_trabalho_numero.setBounds(304, 184, 51, 20);
 		Atividades.add(txt_atividades_trabalho_numero);
 		txt_atividades_trabalho_numero.setColumns(10);
 		
 		JLabel lblNewLabel_31 = new JLabel("N. de pessoas/grupo");
-		lblNewLabel_31.setBounds(366, 187, 161, 14);
+		lblNewLabel_31.setBounds(365, 187, 161, 14);
 		Atividades.add(lblNewLabel_31);
 		
 		JFormattedTextField txt_atividades_trabalho_ch = new JFormattedTextField();
@@ -541,57 +666,61 @@ public class TelaPrincipal extends JFrame {
 		lblNewLabel_23_1.setBounds(238, 240, 46, 14);
 		Atividades.add(lblNewLabel_23_1);
 		
-		aulas = new HashMap<>();
-		estudos = new HashMap<>();
-		trabalhos = new HashMap<>();
-		provas = new HashMap<>();
+		//BOTÃO PARA CADASTRAR ATIVIDADES ------------------------------------------------------------------------------------------------------------------------
+		atividades = new HashMap<>();
 		
 		JButton btnNewButton_5 = new JButton("Cadastrar");
 		btnNewButton_5.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				int seq=1;
 				String cod = txt_atividades_codigo.getText();
-				seq+=aulas.size();
-				seq+=estudos.size();
-				seq+=trabalhos.size();
-				seq+=provas.size();
+				seq+=atividades.size();
 				
-				if(rb_aula.isSelected()) {
-					aulas.put(seq, new Aula(txt_atividades_nome.getText(), true, txt_atividades_aula_data.getText(), txt_atividades_aula_hora.getText()));
-					diciplinas.get(cod).aul.put(seq, aulas.get(seq));
-					diciplinas.get(cod).doc.aul.put(seq, aulas.get(seq));
-				}else if(rb_estudo.isSelected()) {
-					estudos.put(seq, new Estudo(txt_atividades_nome.getText(), false, txt_atividades_estudo_url.getText()));
-					diciplinas.get(cod).estud.put(seq, estudos.get(seq));
-					diciplinas.get(cod).doc.estud.put(seq, estudos.get(seq));
-				}else if(rb_trabalho.isSelected()) {
-					trabalhos.put(seq, new Trabalho(txt_atividades_nome.getText(), false, txt_atividades_trabalho_prazo.getText(), Integer.parseInt(txt_atividades_trabalho_numero.getText()), 
-							Double.parseDouble(txt_atividades_trabalho_ch.getText())));
-					diciplinas.get(cod).trab.put(seq, trabalhos.get(seq));
-					diciplinas.get(cod).doc.trab.put(seq, trabalhos.get(seq));
-				}else if(rb_prova.isSelected()) {
-					provas.put(seq, new Prova(txt_atividades_nome.getText(), true, txt_atividades_provas_data.getText(), txt_atividades_provas_hora.getText(), txt_atividades_prova_conteudo.getText()));
-					diciplinas.get(cod).prov.put(seq, provas.get(seq));
-					diciplinas.get(cod).doc.prov.put(seq, provas.get(seq));
+				try {
+					if(!diciplinas.containsKey(cod)) {
+						JOptionPane.showMessageDialog(rootPane, "Disciplina inexistente!", "Erro", JOptionPane.ERROR_MESSAGE);
+						throw new IllegalArgumentException("Disciplina inexistente!");
+					}
+					else if(rb_aula.isSelected()) {
+						atividades.put(seq, new Aula(txt_atividades_nome.getText(), true, txt_atividades_aula_data.getText(), txt_atividades_aula_hora.getText()));
+						diciplinas.get(cod).atv.put(seq, atividades.get(seq));
+						diciplinas.get(cod).getDoc().atv.put(seq, atividades.get(seq));
+						JOptionPane.showMessageDialog(rootPane, "Atividade Cadastrada");
+					}else if(rb_estudo.isSelected()) {
+						atividades.put(seq, new Estudo(txt_atividades_nome.getText(), false, txt_atividades_estudo_url.getText()));
+						diciplinas.get(cod).atv.put(seq, atividades.get(seq));
+						diciplinas.get(cod).getDoc().atv.put(seq, atividades.get(seq));
+						JOptionPane.showMessageDialog(rootPane, "Atividade Cadastrada");
+					}else if(rb_trabalho.isSelected()) {
+						atividades.put(seq, new Trabalho(txt_atividades_nome.getText(), false, txt_atividades_trabalho_prazo.getText(), Integer.parseInt(txt_atividades_trabalho_numero.getText()), 
+								Double.parseDouble(txt_atividades_trabalho_ch.getText())));
+						diciplinas.get(cod).atv.put(seq, atividades.get(seq));
+						diciplinas.get(cod).getDoc().atv.put(seq, atividades.get(seq));
+						JOptionPane.showMessageDialog(rootPane, "Atividade Cadastrada");
+					}else if(rb_prova.isSelected()) {
+						atividades.put(seq, new Prova(txt_atividades_nome.getText(), true, txt_atividades_provas_data.getText(), txt_atividades_provas_hora.getText(), txt_atividades_prova_conteudo.getText()));
+						diciplinas.get(cod).atv.put(seq, atividades.get(seq));
+						diciplinas.get(cod).getDoc().atv.put(seq, atividades.get(seq));
+						JOptionPane.showMessageDialog(rootPane, "Atividade Cadastrada");
+					}
 				}
-				
-				txt_atividades_nome.setText("");
-				txt_atividades_aula_data.setText("");
-				txt_atividades_aula_hora.setText("");
-				txt_atividades_estudo_url.setText("");
-				txt_atividades_trabalho_prazo.setText("");
-				txt_atividades_trabalho_numero.setText("");
-				txt_atividades_trabalho_ch.setText("");
-				txt_atividades_provas_data.setText("");
-				txt_atividades_provas_hora.setText("");
-				txt_atividades_prova_conteudo.setText("");
-				JOptionPane.showMessageDialog(rootPane, "Atividade Cadastrada");
-				
+				finally {
+					txt_atividades_nome.setText("");
+					txt_atividades_aula_data.setText("");
+					txt_atividades_aula_hora.setText("");
+					txt_atividades_estudo_url.setText("");
+					txt_atividades_trabalho_prazo.setText("");
+					txt_atividades_trabalho_numero.setText("");
+					txt_atividades_trabalho_ch.setText("");
+					txt_atividades_provas_data.setText("");
+					txt_atividades_provas_hora.setText("");
+					txt_atividades_prova_conteudo.setText("");
+				}				
 			}
 		});
-		
 		btnNewButton_5.setBounds(438, 221, 120, 23);
 		Atividades.add(btnNewButton_5);
+		//--------------------------------------------------------------------------------------------------------------------------------------------------------
 		
 		txt_atividades_prova_conteudo = new JTextField();
 		txt_atividades_prova_conteudo.setBounds(303, 222, 86, 20);
@@ -602,6 +731,7 @@ public class TelaPrincipal extends JFrame {
 		lblNewLabel_33.setBounds(313, 240, 90, 14);
 		Atividades.add(lblNewLabel_33);
 		
+		//INICIO DA ABA DE AVALIAÇÃO ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 		JPanel panel_4 = new JPanel();
 		tabbedPane.addTab("Avaliacao", null, panel_4, null);
 		panel_4.setLayout(null);
@@ -637,27 +767,6 @@ public class TelaPrincipal extends JFrame {
 		lblNewLabel_21.setBounds(10, 108, 46, 14);
 		panel_4.add(lblNewLabel_21);
 		
-		JLabel lblNewLabel_20_1 = new JLabel("Sequencial da atividade");
-		lblNewLabel_20_1.setBounds(10, 226, 183, 14);
-		panel_4.add(lblNewLabel_20_1);
-		
-		txt_avaliacao_cons_sequencial = new JTextField();
-		txt_avaliacao_cons_sequencial.setBounds(214, 223, 86, 20);
-		panel_4.add(txt_avaliacao_cons_sequencial);
-		txt_avaliacao_cons_sequencial.setColumns(10);
-		
-		JLabel lblNewLabel_19 = new JLabel("Consultar avaliacoes");
-		lblNewLabel_19.setBounds(156, 163, 176, 14);
-		panel_4.add(lblNewLabel_19);
-		
-		JButton btnNewButton_7 = new JButton("Consultar");
-		btnNewButton_7.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-			}
-		});
-		btnNewButton_7.setBounds(345, 190, 135, 50);
-		panel_4.add(btnNewButton_7);
-		
 		txt_avaliacao_nota = new JTextField();
 		txt_avaliacao_nota.setBounds(213, 105, 86, 20);
 		panel_4.add(txt_avaliacao_nota);
@@ -667,49 +776,48 @@ public class TelaPrincipal extends JFrame {
 		lblNewLabel_16.setBounds(10, 83, 183, 14);
 		panel_4.add(lblNewLabel_16);
 		
+		//BOTÃO PARA SUBMETER AVALIAÇÃO --------------------------------------------------------------------------------------------------------------------------
 		JButton btnNewButton_6 = new JButton("Submeter");
 		btnNewButton_6.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				int mat = Integer.parseInt(txt_avaliacao_matricula.getText());
+			public void actionPerformed(ActionEvent arg0) throws IllegalArgumentException {
+				Double mat = Double.parseDouble(txt_avaliacao_matricula.getText());
 				int seq = Integer.parseInt(txt_avaliacao_sequencial.getText());
 				String cod = txt_avaliacao_codigo.getText();
 				
-				if(diciplinas.get(cod).aul.keySet().contains(seq)) {
-					diciplinas.get(cod).aul.get(seq).avaliacao.put(mat, Integer.parseInt(txt_avaliacao_nota.getText()));
+				try {
+					if(!diciplinas.containsKey(cod)) {
+						JOptionPane.showMessageDialog(rootPane, "Disciplina inexistente!", "Erro", JOptionPane.ERROR_MESSAGE);
+						throw new IllegalArgumentException("Disciplina inexistente!");
+					}
+					else if(!estudantes.containsKey(mat)) {
+						JOptionPane.showMessageDialog(rootPane, "Estudante inexistente!", "Erro", JOptionPane.ERROR_MESSAGE);
+						throw new IllegalArgumentException("Estudante inexistente!");
+					}
+					else if(!diciplinas.get(cod).atv.containsKey(seq)) {
+						JOptionPane.showMessageDialog(rootPane, "Disciplina não contém atividade com sequencial digitado!", "Erro", JOptionPane.ERROR_MESSAGE);
+						throw new IllegalArgumentException("Disciplina não contém atividade com sequencial digitado!");
+					}
+					else {
+						diciplinas.get(cod).atv.get(seq).avaliacao.put(mat, Integer.parseInt(txt_avaliacao_nota.getText()));
+						JOptionPane.showMessageDialog(rootPane, "Avaliacao submetida");
+					}
 				}
-				else if(diciplinas.get(cod).estud.keySet().contains(seq)) {
-					diciplinas.get(cod).estud.get(seq).avaliacao.put(mat, Integer.parseInt(txt_avaliacao_nota.getText()));
+				finally {
+					txt_avaliacao_matricula.setText("");
+					txt_avaliacao_nota.setText("");
 				}
-				else if(diciplinas.get(cod).trab.keySet().contains(seq)) {
-					diciplinas.get(cod).trab.get(seq).avaliacao.put(mat, Integer.parseInt(txt_avaliacao_nota.getText()));
-				}
-				else if(diciplinas.get(cod).prov.keySet().contains(seq)) {
-					diciplinas.get(cod).prov.get(seq).avaliacao.put(mat, Integer.parseInt(txt_avaliacao_nota.getText()));
-				}
-				
-				JOptionPane.showMessageDialog(rootPane, "Avaliacao submetida");
-				txt_avaliacao_matricula.setText("");
-				txt_avaliacao_nota.setText("");
-				
 			}
 		});
 		btnNewButton_6.setBounds(344, 50, 120, 50);
 		panel_4.add(btnNewButton_6);
+		//--------------------------------------------------------------------------------------------------------------------------------------------------------
 		
-		JLabel lblNewLabel_16_1 = new JLabel("Codigo da Diciplina");
-		lblNewLabel_16_1.setBounds(10, 193, 120, 14);
-		panel_4.add(lblNewLabel_16_1);
-		
-		txt_avaliacao_cons_codigo = new JTextField();
-		txt_avaliacao_cons_codigo.setBounds(214, 188, 86, 20);
-		panel_4.add(txt_avaliacao_cons_codigo);
-		txt_avaliacao_cons_codigo.setColumns(10);
-		
+		//INICIO DA ABA DE RELATÓRIOS -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 		JPanel panel_6 = new JPanel();
 		tabbedPane.addTab("Relatorios", null, panel_6, null);
 		panel_6.setLayout(null);
 		
-		JFormattedTextField txt_relatorio_periodo = new JFormattedTextField(new MaskFormatter("####/#"));
+		JFormattedTextField txt_relatorio_periodo = new JFormattedTextField(new MaskFormatter("####/A"));
 		txt_relatorio_periodo.setBounds(167, 8, 147, 20);
 		panel_6.add(txt_relatorio_periodo);
 		
@@ -721,38 +829,50 @@ public class TelaPrincipal extends JFrame {
 		lblNewLabel_28.setBounds(189, 29, 139, 14);
 		panel_6.add(lblNewLabel_28);
 		
+		//BOTÃO PARA EXIBIR O RELATÓRIO DE UM PERIODO ------------------------------------------------------------------------------------------------------------
 		JButton btnNewButton_14 = new JButton("Exibir");
 		btnNewButton_14.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+			public void actionPerformed(ActionEvent arg0) throws IllegalArgumentException{
 				String as = txt_relatorio_periodo.getText();
 				int numAtv=0;
-				System.out.println("Relatorio Periodo Academico "+as);
-				for(String s : periodos.get(as).dic.keySet()) {
-					numAtv+=periodos.get(as).dic.get(s).aul.size();
-					numAtv+=periodos.get(as).dic.get(s).estud.size();
-					numAtv+=periodos.get(as).dic.get(s).trab.size();
-					numAtv+=periodos.get(as).dic.get(s).prov.size();
-					System.out.println(s+" "+periodos.get(as).dic.get(s).nome+" | Docente responsavel: "+periodos.get(as).dic.get(s).doc.nome+" - "+periodos.get(as).dic.get(s).doc.login+
-							" | Nm de Estudantes Matriculados: "+periodos.get(as).dic.get(s).est.size()+" | Nm de Atividades: "+numAtv);
-					numAtv=0;
-				}
 				
-				System.out.println();
+				try {
+					if(!periodos.containsKey(as)) {
+						JOptionPane.showMessageDialog(rootPane, "Periodo inexistente!", "Erro", JOptionPane.ERROR_MESSAGE);
+						throw new IllegalArgumentException("Periodo inexistente!");
+					}
+					else {
+						System.out.println("Relatorio Periodo Academico "+as);
+						for(String s : periodos.get(as).dic.keySet()) {
+							numAtv+=periodos.get(as).dic.get(s).atv.size();
+							
+							System.out.println(s+" "+periodos.get(as).dic.get(s).getNome()+" | Docente responsavel: "+periodos.get(as).dic.get(s).getDoc().getNome()+" - "+periodos.get(as).dic.get(s).getDoc().getLogin()+
+									" | Nm de Estudantes Matriculados: "+periodos.get(as).dic.get(s).est.size()+" | Nm de Atividades: "+numAtv);
+							numAtv=0;
+						}
+						System.out.println();
+					}
+				}
+				finally {
+					txt_relatorio_periodo.setText("");
+				}
 			}
 		});
 		btnNewButton_14.setBounds(373, 7, 106, 23);
 		panel_6.add(btnNewButton_14);
+		//--------------------------------------------------------------------------------------------------------------------------------------------------------
 		
 		JLabel lblNewLabel_27_1 = new JLabel("Estatistica dos Docentes");
 		lblNewLabel_27_1.setBounds(10, 78, 147, 14);
 		panel_6.add(lblNewLabel_27_1);
 		
+		//BOTÃO PARA EXIBIR AS ESTATISTICAS DOS DOCENTES ---------------------------------------------------------------------------------------------------------
 		JButton btnNewButton_15 = new JButton("Exibir");
 		btnNewButton_15.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				System.out.println("Estatisticas dos Docentes: ");
 				for(String s : docentes.keySet()) {
-					System.out.println(docentes.get(s).login+" - "+docentes.get(s).nome+" | Nm de Diciplinas: "+docentes.get(s).contaDiciplinas()+" | Nm de Periodos: "+docentes.get(s).contaPeriodos()+
+					System.out.println(docentes.get(s).getLogin()+" - "+docentes.get(s).getNome()+" | Nm de Diciplinas: "+docentes.get(s).contaDiciplinas()+" | Nm de Periodos: "+docentes.get(s).contaPeriodos()+
 							" | Media de Atividades/Diciplina: "+docentes.get(s).mediaAtividadesPorDiciplina()+" | Percentual de Atividades Sincronas: "+docentes.get(s).percentualAtividadesSincronas()+
 							"% | Media de notas recebidas: "+docentes.get(s).mediaNotasRecebidas());
 				}
@@ -761,17 +881,19 @@ public class TelaPrincipal extends JFrame {
 		});
 		btnNewButton_15.setBounds(202, 72, 106, 23);
 		panel_6.add(btnNewButton_15);
+		//--------------------------------------------------------------------------------------------------------------------------------------------------------
 		
 		JLabel lblNewLabel_27_1_1 = new JLabel("Estatistica dos Estudantes");
 		lblNewLabel_27_1_1.setBounds(10, 156, 162, 14);
 		panel_6.add(lblNewLabel_27_1_1);
 		
+		//BOTÃO PARA EXIBIR AS ESTATISTICAS DOS ESTUDANTES -------------------------------------------------------------------------------------------------------
 		JButton btnNewButton_16 = new JButton("Exibir");
 		btnNewButton_16.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				System.out.println("Estatisticas dos Estudantes: ");
-				for(Integer i : estudantes.keySet()) {
-					System.out.println(i+" "+estudantes.get(i).nome+" | Media de Diciplinas/Periodo Matriculadas: "+estudantes.get(i).mediaDiciplinasPorPeriodo()+" | Media de Avaliacoes/Diciplina: "+
+				for(Double i : estudantes.keySet()) {
+					System.out.println(i+" "+estudantes.get(i).getNome()+" | Media de Diciplinas/Periodo Matriculadas: "+estudantes.get(i).mediaDiciplinasPorPeriodo()+" | Media de Avaliacoes/Diciplina: "+
 							estudantes.get(i).mediaAvaliacoes()+" | Media de Notas: "+estudantes.get(i).mediaNotas());
 				}
 				System.out.println();
@@ -779,6 +901,7 @@ public class TelaPrincipal extends JFrame {
 		});
 		btnNewButton_16.setBounds(202, 150, 106, 23);
 		panel_6.add(btnNewButton_16);
+		//--------------------------------------------------------------------------------------------------------------------------------------------------------
 		
 		JLabel lblNewLabel_27_1_1_1 = new JLabel("Estatistica das Disciplinas");
 		lblNewLabel_27_1_1_1.setBounds(10, 236, 181, 14);
@@ -789,38 +912,44 @@ public class TelaPrincipal extends JFrame {
 		panel_6.add(txt_relatorio_login);
 		txt_relatorio_login.setColumns(10);
 		
+		//BOTÃO PARA EXIBIR AS ESTATISTICAS DAS DISCIPLINAS DE UM DOCENTE ----------------------------------------------------------------------------------------
 		JButton btnNewButton_17 = new JButton("Exibir");
 		btnNewButton_17.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+			public void actionPerformed(ActionEvent arg0) throws IllegalArgumentException{
 				String log = txt_relatorio_login.getText();
 				int numAtv=0;
 				
-				System.out.println("Estatisticas das Diciplinas do Docente "+docentes.get(log).login+" - "+docentes.get(log).nome+": ");
-				for(String s : docentes.get(log).dic.keySet()) {
-					numAtv+=docentes.get(log).dic.get(s).aul.size();
-					numAtv+=docentes.get(log).dic.get(s).estud.size();
-					numAtv+=docentes.get(log).dic.get(s).trab.size();
-					numAtv+=docentes.get(log).dic.get(s).prov.size();
-					System.out.println(docentes.get(log).dic.get(s).per.anoSemestre+" - "+s+" "+docentes.get(log).dic.get(s).nome+" | Nm de Atividades: "+
-							numAtv+" | Percentual de Atividades Sincronas: "+docentes.get(log).dic.get(s).percentualAtividadeSincrona()+"%");
-					System.out.println("	Atividades Avaliativas da Disciplina:");
-					for(Integer i : docentes.get(log).dic.get(s).aul.keySet()) {
-						System.out.println("		"+docentes.get(log).dic.get(s).aul.get(i).nome);
+				if(!docentes.containsKey(log)) {
+					JOptionPane.showMessageDialog(rootPane, "Docente inexistente!", "Erro", JOptionPane.ERROR_MESSAGE);
+					throw new IllegalArgumentException("Docente inexistente!");
+				}
+				else {
+					System.out.println("Estatisticas das Diciplinas do Docente "+docentes.get(log).getLogin()+" - "+docentes.get(log).getNome()+": ");
+					for(String s : docentes.get(log).dic.keySet()) {
+						numAtv+=docentes.get(log).dic.get(s).atv.size();
+						
+						System.out.println(docentes.get(log).dic.get(s).getPer().getAnoSemestre()+" - "+s+" "+docentes.get(log).dic.get(s).getNome()+" | Nm de Atividades: "+
+								numAtv+" | Percentual de Atividades Sincronas: "+docentes.get(log).dic.get(s).percentualAtividadeSincrona()+"% | Carga Horaria: "+docentes.get(log).dic.get(s).calculaCargaHoraria());
+						System.out.println("	Atividades Avaliativas da Disciplina:");
+						for(Integer i : docentes.get(log).dic.get(s).atv.keySet()) {
+							if (docentes.get(log).dic.get(s).atv.get(i).getClass() == Trabalho.class || docentes.get(log).dic.get(s).atv.get(i).getClass() == Prova.class)
+								System.out.println("		"+docentes.get(log).dic.get(s).atv.get(i).getNome());
+						}
+						
+						numAtv=0;
 					}
-					for(Integer i : docentes.get(log).dic.get(s).prov.keySet()) {
-						System.out.println("		"+docentes.get(log).dic.get(s).prov.get(i).nome);
-					}
-					numAtv=0;
 				}
 			}
 		});
 		btnNewButton_17.setBounds(421, 231, 106, 23);
 		panel_6.add(btnNewButton_17);
+		//--------------------------------------------------------------------------------------------------------------------------------------------------------
 		
 		JLabel lblNewLabel_27_1_1_1_1 = new JLabel("Login do docente responsavel");
 		lblNewLabel_27_1_1_1_1.setBounds(202, 255, 277, 14);
 		panel_6.add(lblNewLabel_27_1_1_1_1);
 		
+		//INICIO DA ABA DE SALVAR E CARREGAR DADOS ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 		JPanel panel_3 = new JPanel();
 		tabbedPane.addTab("Salvar e Carregar Dados", null, panel_3, null);
 		panel_3.setLayout(null);
@@ -829,6 +958,7 @@ public class TelaPrincipal extends JFrame {
 		lblNewLabel_34.setBounds(10, 30, 162, 14);
 		panel_3.add(lblNewLabel_34);
 		
+		//BOTÃO PARA SALVAR DADOS --------------------------------------------------------------------------------------------------------------------------------
 		JButton btnNewButton_18 = new JButton("Salvar");
 		btnNewButton_18.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -838,45 +968,43 @@ public class TelaPrincipal extends JFrame {
 					out.writeObject(estudantes);
 					out.writeObject(diciplinas);
 					out.writeObject(docentes);
-					out.writeObject(aulas);
-					out.writeObject(estudos);
-					out.writeObject(trabalhos);
-					out.writeObject(provas);
+					out.writeObject(atividades);
 				} catch (IOException e) {
-					JOptionPane.showMessageDialog(rootPane, "Erro");
-					e.printStackTrace();
+					JOptionPane.showMessageDialog(rootPane, "Erro ao salvar o arquivo!", "Erro", JOptionPane.ERROR_MESSAGE);
 				}
-				txt_salvar_carregar.setText(".dat");
+				finally {
+					txt_salvar_carregar.setText(".dat");
+				}
 			}
 		});
 		btnNewButton_18.setBounds(348, 27, 102, 23);
 		panel_3.add(btnNewButton_18);
+		//--------------------------------------------------------------------------------------------------------------------------------------------------------
 		
+		//BOTÃO PARA CARREGAR DADOS ------------------------------------------------------------------------------------------------------------------------------
 		JButton btnNewButton_19 = new JButton("Carregar");
 		btnNewButton_19.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
 					ObjectInputStream in = new ObjectInputStream(new FileInputStream(txt_salvar_carregar.getText()));
 					periodos = (Map<String, Periodo>)in.readObject();
-					estudantes = (Map<Integer, Estudante>)in.readObject();
+					estudantes = (Map<Double, Estudante>)in.readObject();
 					diciplinas = (Map<String, Diciplina>)in.readObject();
 					docentes = (Map<String, Docente>)in.readObject();
-					aulas = (Map<Integer, Aula>)in.readObject();
-					estudos = (Map<Integer, Estudo>)in.readObject();
-					trabalhos = (Map<Integer, Trabalho>)in.readObject();
-					provas = (Map<Integer, Prova>)in.readObject();
+					atividades = (Map<Integer, Atividade>)in.readObject();
 				} catch (IOException e) {
-					JOptionPane.showMessageDialog(rootPane, "Erro de Leitura do Arquivo");
-					e.printStackTrace();
+					JOptionPane.showMessageDialog(rootPane, "Erro na leitura arquivo!", "Erro", JOptionPane.ERROR_MESSAGE);
 				} catch (ClassNotFoundException e) {
-					JOptionPane.showMessageDialog(rootPane, "Erro de Leitura das Classes");
-					e.printStackTrace();
+					JOptionPane.showMessageDialog(rootPane, "Erro de Leitura das Classes!", "Erro", JOptionPane.ERROR_MESSAGE);
 				}
-				txt_salvar_carregar.setText(".dat");
+				finally {
+					txt_salvar_carregar.setText(".dat");
+				}
 			}
 		});
 		btnNewButton_19.setBounds(348, 61, 102, 23);
 		panel_3.add(btnNewButton_19);
+		//--------------------------------------------------------------------------------------------------------------------------------------------------------
 		
 		txt_salvar_carregar = new JTextField();
 		txt_salvar_carregar.setText(".dat");
