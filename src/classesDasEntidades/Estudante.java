@@ -4,11 +4,11 @@ import java.io.Serializable;
 import java.util.*;
 
 public class Estudante implements Serializable{
-    private double matricula;
+    private long matricula;
 	private String nome;
 	public Map<String, Diciplina> dic = new HashMap<>();
     
-    public Estudante(double m, String n){
+    public Estudante(long m, String n){
     	matricula = m;
     	nome = n;
     }
@@ -78,6 +78,44 @@ public class Estudante implements Serializable{
     	else
     		return (media/cont);
     }
+    
+    public int contaAvaliacoes() {
+    	int cont=0;
+    	for(String s : dic.keySet()) {
+    		for(Integer i : dic.get(s).atv.keySet()) {
+    			if(dic.get(s).atv.get(i).avaliacao.get(this.matricula)!=null) {
+    				cont++;
+    			}
+    		}
+    	}
+    	return cont;
+    }
+    
+    public static void sortNome(ArrayList<Estudante> d) {
+		Estudante aux;
+		for(int i=0;i<d.size();i++) {
+			for(int j=i;j<d.size();j++) {
+				if(d.get(i).nome.compareTo(d.get(j).nome) > 0) {
+					aux = d.get(i);
+					d.set(i, d.get(j));
+					d.set(j, aux);
+				}
+			}
+		}
+	}
+    
+    public static void sortNmAvaliacoes(ArrayList<Estudante> d) {
+		Estudante aux;
+		for(int i=0;i<d.size();i++) {
+			for(int j=i;j<d.size();j++) {
+				if(d.get(i).contaAvaliacoes() < d.get(j).contaAvaliacoes()) {
+					aux = d.get(i);
+					d.set(i, d.get(j));
+					d.set(j, aux);
+				}
+			}
+		}
+	}
 }
 
 

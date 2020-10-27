@@ -36,7 +36,7 @@ import javax.swing.JFormattedTextField;
 
 public class TelaPrincipal extends JFrame {
 	Map<String, Periodo> periodos;
-	Map<Double, Estudante> estudantes;
+	Map<Long, Estudante> estudantes;
 	Map<String, Docente> docentes;
 	Map<String, Diciplina> diciplinas;
 	Map<Integer, Atividade> atividades;
@@ -63,6 +63,7 @@ public class TelaPrincipal extends JFrame {
 	private JTextField txt_atividades_trabalho_numero;
 	private JTextField txt_atividades_prova_conteudo;
 	private JTextField txt_salvar_carregar;
+	private JTextField txt_estudante_matricula;
 
 	/**
 	 * Launch the application.
@@ -126,12 +127,12 @@ public class TelaPrincipal extends JFrame {
 				
 				try {
 					if(c[5] != 'E' & c[5] != '1' & c[5] != '2') {
-						JOptionPane.showMessageDialog(rootPane, "Valor inv�lido de semestre inserido!\nLeia o terminal para mais info", "Erro", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(rootPane, "Valor invalido de semestre inserido!\nLeia o terminal para mais info", "Erro", JOptionPane.ERROR_MESSAGE);
 						throw new IllegalArgumentException("Para semestres eh aceito apenas 1, 2 ou E");
 					}
 					else {
 						if(periodos.containsKey(conteudo)) {
-							JOptionPane.showMessageDialog(rootPane, "Periodo j� cadastrado!\nLeia o terminal para mais info", "Erro", JOptionPane.ERROR_MESSAGE);
+							JOptionPane.showMessageDialog(rootPane, "Periodo ja cadastrado!\nLeia o terminal para mais info", "Erro", JOptionPane.ERROR_MESSAGE);
 							throw new IllegalArgumentException("Periodo ja cadastrado!");
 						}
 						else {
@@ -219,7 +220,7 @@ public class TelaPrincipal extends JFrame {
 				
 				try {
 					if(docentes.containsKey(login)) {
-						JOptionPane.showMessageDialog(rootPane, "Docente j� cadastrado!\nLeia o terminal para mais info", "Erro", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(rootPane, "Docente ja cadastrado!\nLeia o terminal para mais info", "Erro", JOptionPane.ERROR_MESSAGE);
 						throw new IllegalArgumentException("Docente ja cadastrado!");
 					}
 					else {
@@ -228,7 +229,7 @@ public class TelaPrincipal extends JFrame {
 					}
 				}
 				catch(IllegalArgumentException e) {
-					System.out.println("Erro: Docente j� cadastrado (clique em exibir docentes para visualizar os cadastrados)\n");
+					System.out.println("Erro: Docente ja cadastrado (clique em exibir docentes para visualizar os cadastrados)\n");
 				}
 				finally {
 					txt_docente_nome.setText("");
@@ -318,7 +319,7 @@ public class TelaPrincipal extends JFrame {
 				
 				try {
 					if(diciplinas.containsKey(codigo)) {
-						JOptionPane.showMessageDialog(rootPane, "Disciplina j� cadastrada!\nLeia o terminal para mais info", "Erro", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(rootPane, "Disciplina ja cadastrada!\nLeia o terminal para mais info", "Erro", JOptionPane.ERROR_MESSAGE);
 						throw new IllegalArgumentException("Disciplina ja cadastrada!");
 					}
 					else if(!docentes.containsKey(login)) {
@@ -330,7 +331,7 @@ public class TelaPrincipal extends JFrame {
 						throw new IllegalArgumentException("Periodo inexistente!");
 					}
 					else {
-						diciplinas.put(codigo, new Diciplina(txt_diciplina_nome_cad.getText(), docentes.get(login), periodos.get(periodo)));
+						diciplinas.put(codigo, new Diciplina(txt_diciplina_nome_cad.getText(), codigo, docentes.get(login), periodos.get(periodo)));
 						docentes.get(login).dic.put(codigo, diciplinas.get(codigo));
 						periodos.get(periodo).dic.put(codigo, diciplinas.get(codigo));
 						
@@ -338,7 +339,7 @@ public class TelaPrincipal extends JFrame {
 					}
 				}
 				catch(IllegalArgumentException e) {
-					System.out.println("Erro: Disciplina j� cadastrada (clique em exibir disciplinas para visualizar as cadastradas) ou Docente n�o cadastrado ou Periodo n�o cadastrado\n");
+					System.out.println("Erro: Disciplina ja cadastrada (clique em exibir disciplinas para visualizar as cadastradas) ou Docente nao cadastrado ou Periodo nao cadastrado\n");
 				}
 				finally {
 					txt_diciplina_nome_cad.setText("");
@@ -381,7 +382,7 @@ public class TelaPrincipal extends JFrame {
 		JButton btnNewButton_3 = new JButton("Matricular");
 		btnNewButton_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) throws IllegalArgumentException{
-				double matricula = Double.parseDouble(txt_diciplina_matricula_mat.getText());
+				long matricula = Long.parseLong(txt_diciplina_matricula_mat.getText());
 				String codigo = txt_diciplina_codigo_mat.getText();
 				
 				try {
@@ -394,8 +395,8 @@ public class TelaPrincipal extends JFrame {
 						throw new IllegalArgumentException("Disciplina inexistente!");
 					}
 					else if(diciplinas.get(codigo).est.containsKey(matricula) || estudantes.get(matricula).dic.containsKey(codigo)) {
-						JOptionPane.showMessageDialog(rootPane, "Estudante j� matriculado na disciplina!\nLeia o terminal para mais info", "Erro", JOptionPane.ERROR_MESSAGE);
-						throw new IllegalArgumentException("Estudante j� matriculado!");
+						JOptionPane.showMessageDialog(rootPane, "Estudante ja matriculado na disciplina!\nLeia o terminal para mais info", "Erro", JOptionPane.ERROR_MESSAGE);
+						throw new IllegalArgumentException("Estudante ja matriculado!");
 					}
 					else {
 						diciplinas.get(codigo).est.put(matricula, estudantes.get(matricula));
@@ -404,7 +405,7 @@ public class TelaPrincipal extends JFrame {
 					}
 				}
 				catch(IllegalArgumentException e) {
-					System.out.println("Erro: Estudante j� matriculado na disciplina (para verificar estudantes ja cadastrados use sess�o verificar estudantes matriculados) ou"
+					System.out.println("Erro: Estudante ja matriculado na disciplina (para verificar estudantes ja cadastrados use sessao verificar estudantes matriculados) ou"
 							+ "Estudante inexistente ou Disciplina inexistente");
 				}
 				finally {
@@ -457,7 +458,7 @@ public class TelaPrincipal extends JFrame {
 					}
 					else {
 						System.out.println("Estudantes matriculados em "+codigo+" "+diciplinas.get(codigo).getNome());
-						for (Double i : diciplinas.get(codigo).est.keySet()) {
+						for (Long i : diciplinas.get(codigo).est.keySet()) {
 							System.out.println(i+" "+diciplinas.get(codigo).est.get(i).getNome());
 						}
 						System.out.println();
@@ -477,10 +478,6 @@ public class TelaPrincipal extends JFrame {
 		JPanel panel = new JPanel();
 		tabbedPane.addTab("Estudantes", null, panel, null);
 		panel.setLayout(null);
-		
-		JFormattedTextField txt_estudante_matricula = new JFormattedTextField(new MaskFormatter("##########"));
-		txt_estudante_matricula.setBounds(80, 84, 204, 20);
-		panel.add(txt_estudante_matricula);
 		
 		JLabel lblNewLabel = new JLabel("Cadastrar novo estudante");
 		lblNewLabel.setBounds(50, 24, 204, 14);
@@ -505,12 +502,11 @@ public class TelaPrincipal extends JFrame {
 		JButton btnNewButton_2 = new JButton("Cadastrar");
 		btnNewButton_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) throws IllegalArgumentException{
-				double matricula = Double.parseDouble(txt_estudante_matricula.getText());
-				
 				try {
+					long matricula = Long.parseLong(txt_estudante_matricula.getText());
 					if(estudantes.containsKey(matricula)) {
-						JOptionPane.showMessageDialog(rootPane, "Estudante j� cadastrado!\nLeia o terminal para mais info", "Erro", JOptionPane.ERROR_MESSAGE);
-						throw new IllegalArgumentException("Estudante j� cadastrado!");
+						JOptionPane.showMessageDialog(rootPane, "Estudante ja cadastrado!\nLeia o terminal para mais info", "Erro", JOptionPane.ERROR_MESSAGE);
+						throw new IllegalArgumentException("Estudante ja cadastrado!");
 					}
 					else {
 						estudantes.put(matricula, new Estudante(matricula,txt_estudante_nome.getText()));
@@ -518,7 +514,8 @@ public class TelaPrincipal extends JFrame {
 					}
 				}
 				catch(IllegalArgumentException e) {
-					System.out.println("Erro: Estudante j� cadastrado (clique em exibir estudantes para visualizar estudantes cadastrados)");
+					System.out.println("Erro: Estudante ja cadastrado (clique em exibir estudantes para visualizar estudantes cadastrados) ou Dados inseridos invalidos (para matricula"
+							+ " eh aceito apenas numeros!)");
 				}
 				finally {
 					txt_estudante_nome.setText("");
@@ -535,7 +532,7 @@ public class TelaPrincipal extends JFrame {
 		btnNewButton_11.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				System.out.println("Estudantes: ");
-				for(Double i : estudantes.keySet()) {
+				for(Long i : estudantes.keySet()) {
 					System.out.println(i+" "+estudantes.get(i).getNome());
 				}
 				System.out.println();
@@ -543,6 +540,11 @@ public class TelaPrincipal extends JFrame {
 		});
 		btnNewButton_11.setBounds(347, 280, 132, 23);
 		panel.add(btnNewButton_11);
+		
+		txt_estudante_matricula = new JTextField();
+		txt_estudante_matricula.setBounds(80, 84, 204, 20);
+		panel.add(txt_estudante_matricula);
+		txt_estudante_matricula.setColumns(10);
 		//--------------------------------------------------------------------------------------------------------------------------------------------------------
 		
 		//INICIO DA ABA DE ATIVIDADES -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -670,7 +672,7 @@ public class TelaPrincipal extends JFrame {
 		
 		JButton btnNewButton_5 = new JButton("Cadastrar");
 		btnNewButton_5.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+			public void actionPerformed(ActionEvent arg0) throws IllegalArgumentException{
 				int seq=1;
 				String cod = txt_atividades_codigo.getText();
 				seq+=atividades.size();
@@ -779,7 +781,7 @@ public class TelaPrincipal extends JFrame {
 		JButton btnNewButton_6 = new JButton("Submeter");
 		btnNewButton_6.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) throws IllegalArgumentException {
-				Double mat = Double.parseDouble(txt_avaliacao_matricula.getText());
+				long mat = Long.parseLong(txt_avaliacao_matricula.getText());
 				int seq = Integer.parseInt(txt_avaliacao_sequencial.getText());
 				String cod = txt_avaliacao_codigo.getText();
 				
@@ -793,8 +795,8 @@ public class TelaPrincipal extends JFrame {
 						throw new IllegalArgumentException("Estudante inexistente!");
 					}
 					else if(!diciplinas.get(cod).atv.containsKey(seq)) {
-						JOptionPane.showMessageDialog(rootPane, "Disciplina n�o cont�m atividade com sequencial digitado!", "Erro", JOptionPane.ERROR_MESSAGE);
-						throw new IllegalArgumentException("Disciplina n�o cont�m atividade com sequencial digitado!");
+						JOptionPane.showMessageDialog(rootPane, "Disciplina nao contem atividade com sequencial digitado!", "Erro", JOptionPane.ERROR_MESSAGE);
+						throw new IllegalArgumentException("Disciplina nao contem atividade com sequencial digitado!");
 					}
 					else {
 						diciplinas.get(cod).atv.get(seq).avaliacao.put(mat, Integer.parseInt(txt_avaliacao_nota.getText()));
@@ -833,7 +835,6 @@ public class TelaPrincipal extends JFrame {
 		btnNewButton_14.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) throws IllegalArgumentException{
 				String as = txt_relatorio_periodo.getText();
-				int numAtv=0;
 				
 				try {
 					if(!periodos.containsKey(as)) {
@@ -841,13 +842,20 @@ public class TelaPrincipal extends JFrame {
 						throw new IllegalArgumentException("Periodo inexistente!");
 					}
 					else {
+						int numAtv=0, i=0;
+						ArrayList <Diciplina> dicaux = new ArrayList<>();
+						for(String s : periodos.get(as).dic.keySet()) {
+							dicaux.add(periodos.get(as).dic.get(s));
+						}
+						Diciplina.sortNome(dicaux);
 						System.out.println("Relatorio Periodo Academico "+as);
 						for(String s : periodos.get(as).dic.keySet()) {
 							numAtv+=periodos.get(as).dic.get(s).atv.size();
 							
-							System.out.println(s+" "+periodos.get(as).dic.get(s).getNome()+" | Docente responsavel: "+periodos.get(as).dic.get(s).getDoc().getNome()+" - "+periodos.get(as).dic.get(s).getDoc().getLogin()+
-									" | Nm de Estudantes Matriculados: "+periodos.get(as).dic.get(s).est.size()+" | Nm de Atividades: "+numAtv);
+							System.out.println(dicaux.get(i).getCodigo()+" "+dicaux.get(i).getNome()+" | Docente responsavel: "+dicaux.get(i).getDoc().getNome()+" - "+dicaux.get(i).getDoc().getLogin()+
+									" | Nm de Estudantes Matriculados: "+dicaux.get(i).est.size()+" | Nm de Atividades: "+numAtv);
 							numAtv=0;
+							i++;
 						}
 						System.out.println();
 					}
@@ -869,11 +877,19 @@ public class TelaPrincipal extends JFrame {
 		JButton btnNewButton_15 = new JButton("Exibir");
 		btnNewButton_15.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				System.out.println("Estatisticas dos Docentes: ");
+				ArrayList<Docente> docaux = new ArrayList<>();
+				
 				for(String s : docentes.keySet()) {
-					System.out.println(docentes.get(s).getLogin()+" - "+docentes.get(s).getNome()+" | Nm de Diciplinas: "+docentes.get(s).contaDiciplinas()+" | Nm de Periodos: "+docentes.get(s).contaPeriodos()+
-							" | Media de Atividades/Diciplina: "+docentes.get(s).mediaAtividadesPorDiciplina()+" | Percentual de Atividades Sincronas: "+docentes.get(s).percentualAtividadesSincronas()+
-							"% | Media de notas recebidas: "+docentes.get(s).mediaNotasRecebidas());
+					docaux.add(docentes.get(s));
+				}
+				
+				Docente.sortNome(docaux);
+				
+				System.out.println("Estatisticas dos Docentes: ");
+				for(int i=0;i<docaux.size();i++) {
+					System.out.println(docaux.get(i).getLogin()+" - "+docaux.get(i).getNome()+" | Nm de Diciplinas: "+docaux.get(i).contaDiciplinas()+" | Nm de Periodos: "+docaux.get(i).contaPeriodos()+
+							" | Media de Atividades/Diciplina: "+docaux.get(i).mediaAtividadesPorDiciplina()+" | Percentual de Atividades Sincronas: "+docaux.get(i).percentualAtividadesSincronas()+
+							"% | Media de notas recebidas: "+docaux.get(i).mediaNotasRecebidas());
 				}
 				System.out.println();
 			}
@@ -890,12 +906,28 @@ public class TelaPrincipal extends JFrame {
 		JButton btnNewButton_16 = new JButton("Exibir");
 		btnNewButton_16.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				System.out.println("Estatisticas dos Estudantes: ");
-				for(Double i : estudantes.keySet()) {
-					System.out.println(i+" "+estudantes.get(i).getNome()+" | Media de Diciplinas/Periodo Matriculadas: "+estudantes.get(i).mediaDiciplinasPorPeriodo()+" | Media de Avaliacoes/Diciplina: "+
-							estudantes.get(i).mediaAvaliacoes()+" | Media de Notas: "+estudantes.get(i).mediaNotas());
+				ArrayList<Estudante> estaux = new ArrayList<>();
+				
+				for(Long i : estudantes.keySet()) {
+					estaux.add(estudantes.get(i));
 				}
-				System.out.println();
+				
+				Estudante.sortNome(estaux);
+				
+				System.out.println("Estatisticas dos Estudantes (por ordem alfabetica) : ");
+				for(int i=0;i<estaux.size();i++) {
+					System.out.println(estaux.get(i).getMatricula()+" "+estaux.get(i).getNome()+" | Media de Diciplinas/Periodo Matriculadas: "+estaux.get(i).mediaDiciplinasPorPeriodo()+" | Media de Avaliacoes/Diciplina: "+
+							estaux.get(i).mediaAvaliacoes()+" | Media de Notas: "+estaux.get(i).mediaNotas());
+				}
+				
+				Estudante.sortNmAvaliacoes(estaux);
+				
+				System.out.println("\nEstatisticas dos Estudantes (por ordem do numero de avaliacoes feitas) : ");
+				for(int i=0;i<estaux.size();i++) {
+					System.out.println(estaux.get(i).getMatricula()+" "+estaux.get(i).getNome()+" | Media de Diciplinas/Periodo Matriculadas: "+estaux.get(i).mediaDiciplinasPorPeriodo()+" | Media de Avaliacoes/Diciplina: "+
+							estaux.get(i).mediaAvaliacoes()+" | Media de Notas: "+estaux.get(i).mediaNotas());
+				}
+				System.out.println("\n");
 			}
 		});
 		btnNewButton_16.setBounds(202, 150, 106, 23);
@@ -914,29 +946,45 @@ public class TelaPrincipal extends JFrame {
 		//BOTAO PARA EXIBIR AS ESTATISTICAS DAS DISCIPLINAS DE UM DOCENTE ----------------------------------------------------------------------------------------
 		JButton btnNewButton_17 = new JButton("Exibir");
 		btnNewButton_17.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) throws IllegalArgumentException{
+			public void actionPerformed(ActionEvent arg0) throws IllegalArgumentException {
 				String log = txt_relatorio_login.getText();
-				int numAtv=0;
 				
 				if(!docentes.containsKey(log)) {
 					JOptionPane.showMessageDialog(rootPane, "Docente inexistente!", "Erro", JOptionPane.ERROR_MESSAGE);
 					throw new IllegalArgumentException("Docente inexistente!");
 				}
 				else {
-					System.out.println("Estatisticas das Diciplinas do Docente "+docentes.get(log).getLogin()+" - "+docentes.get(log).getNome()+": ");
+					ArrayList<Periodo> peraux = new ArrayList<>();
+					
 					for(String s : docentes.get(log).dic.keySet()) {
-						numAtv+=docentes.get(log).dic.get(s).atv.size();
-						
-						System.out.println(docentes.get(log).dic.get(s).getPer().getAnoSemestre()+" - "+s+" "+docentes.get(log).dic.get(s).getNome()+" | Nm de Atividades: "+
-								numAtv+" | Percentual de Atividades Sincronas: "+docentes.get(log).dic.get(s).percentualAtividadeSincrona()+"% | Carga Horaria: "+docentes.get(log).dic.get(s).calculaCargaHoraria());
-						System.out.println("	Atividades Avaliativas da Disciplina:");
-						for(Integer i : docentes.get(log).dic.get(s).atv.keySet()) {
-							if (docentes.get(log).dic.get(s).atv.get(i).getClass() == Trabalho.class || docentes.get(log).dic.get(s).atv.get(i).getClass() == Prova.class)
-								System.out.println("		"+docentes.get(log).dic.get(s).atv.get(i).getNome());
-						}
-						
-						numAtv=0;
+						peraux.add(docentes.get(log).dic.get(s).getPer());
 					}
+					
+					System.out.println("Estatisticas das Diciplinas do Docente "+docentes.get(log).getLogin()+" - "+docentes.get(log).getNome()+": ");
+					int j=0;
+					Periodo aux = null;
+					for(int i=0;i<peraux.size();i++) {
+						if(!peraux.get(i).equals(aux)) {
+							j=0;
+						}
+						ArrayList<Diciplina> dicaux = new ArrayList<>();
+						for(String s : peraux.get(i).dic.keySet()) {
+							dicaux.add(peraux.get(i).dic.get(s));
+						}
+						Diciplina.sortNome(dicaux);
+						
+						
+						System.out.println(peraux.get(i).getAnoSemestre()+" - "+dicaux.get(j).getCodigo()+" "+dicaux.get(j).getNome()+" | Nm de Atividades: "+
+								dicaux.get(j).atv.size()+" | Percentual de Ativiaddes Sincronas: "+dicaux.get(j).percentualAtividadeSincrona()+"% | Carga Horaria: "+dicaux.get(j).calculaCargaHoraria());
+						System.out.println("	Atividades Avaliativas da Disciplina:");
+						for(Integer k : dicaux.get(j).atv.keySet()) {
+							if (dicaux.get(j).atv.get(k).getClass() == Trabalho.class || dicaux.get(j).atv.get(k).getClass() == Prova.class)
+								System.out.println("		"+dicaux.get(j).atv.get(k).getNome());
+						}
+						j++;
+						aux=peraux.get(i);
+					}
+					System.out.println();
 				}
 			}
 		});
@@ -972,6 +1020,7 @@ public class TelaPrincipal extends JFrame {
 					JOptionPane.showMessageDialog(rootPane, "Erro ao salvar o arquivo!", "Erro", JOptionPane.ERROR_MESSAGE);
 				}
 				finally {
+					JOptionPane.showMessageDialog(rootPane, "Salvo no arquivo "+txt_salvar_carregar.getText());
 					txt_salvar_carregar.setText(".dat");
 				}
 			}
@@ -987,7 +1036,7 @@ public class TelaPrincipal extends JFrame {
 				try {
 					ObjectInputStream in = new ObjectInputStream(new FileInputStream(txt_salvar_carregar.getText()));
 					periodos = (Map<String, Periodo>)in.readObject();
-					estudantes = (Map<Double, Estudante>)in.readObject();
+					estudantes = (Map<Long, Estudante>)in.readObject();
 					diciplinas = (Map<String, Diciplina>)in.readObject();
 					docentes = (Map<String, Docente>)in.readObject();
 					atividades = (Map<Integer, Atividade>)in.readObject();
@@ -997,6 +1046,7 @@ public class TelaPrincipal extends JFrame {
 					JOptionPane.showMessageDialog(rootPane, "Erro de Leitura das Classes!", "Erro", JOptionPane.ERROR_MESSAGE);
 				}
 				finally {
+					JOptionPane.showMessageDialog(rootPane, "Arquivo "+txt_salvar_carregar.getText()+" carregado");
 					txt_salvar_carregar.setText(".dat");
 				}
 			}

@@ -5,13 +5,15 @@ import java.util.*;
 
 public class Diciplina implements Serializable{
     private String nome;
+    private String codigo;
     private Docente doc;
     private Periodo per;
-    public Map<Double, Estudante> est = new HashMap<>();
+    public Map<Long, Estudante> est = new HashMap<>();
     public Map<Integer, Atividade> atv = new HashMap<>();
     
-    public Diciplina(String n, Docente d, Periodo p){
+    public Diciplina(String n, String c, Docente d, Periodo p){
     	nome = n;
+    	codigo = c;
     	doc = d;
     	per = p;
     }
@@ -24,6 +26,9 @@ public class Diciplina implements Serializable{
 	}
 	public Periodo getPer() {
 		return per;
+	}
+	public String getCodigo() {
+		return codigo;
 	}
 	
 	public double percentualAtividadeSincrona() {
@@ -51,5 +56,18 @@ public class Diciplina implements Serializable{
 		}
 		
 		return cont;
+	}
+	
+	public static void sortNome(ArrayList<Diciplina> d) {
+		Diciplina aux;
+		for(int i=0;i<d.size();i++) {
+			for(int j=i;j<d.size();j++) {
+				if(d.get(i).nome.compareTo(d.get(j).nome) > 0) {
+					aux = d.get(i);
+					d.set(i, d.get(j));
+					d.set(j, aux);
+				}
+			}
+		}
 	}
 }

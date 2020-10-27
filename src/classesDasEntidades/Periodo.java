@@ -14,4 +14,17 @@ public class Periodo implements Serializable{
 	public String getAnoSemestre() {
 		return anoSemestre;
 	}
+	
+	public static void sortAnoSemestre(ArrayList<Periodo> d) {
+		Periodo aux;
+		for(int i=0;i<d.size();i++) {
+			for(int j=i;j<d.size();j++) {
+				if(d.get(i).anoSemestre.compareTo(d.get(j).anoSemestre) < 0) {
+					aux = d.get(i);
+					d.set(i, d.get(j));
+					d.set(j, aux);
+				}
+			}
+		}
+	}
 }

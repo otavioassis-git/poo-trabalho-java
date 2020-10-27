@@ -6,7 +6,7 @@ import java.util.*;
 public abstract class Atividade implements Serializable{
     protected String nome;
     protected boolean sinc;
-    public Map<Double, Integer> avaliacao = new HashMap<>(); //<matricula do estudante, avaliacao dele>
+    public Map<Long, Integer> avaliacao = new HashMap<>(); //<matricula do estudante, avaliacao dele>
  
     public String getNome() {
 		return nome;

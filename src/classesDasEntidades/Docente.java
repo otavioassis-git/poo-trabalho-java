@@ -1,6 +1,7 @@
 package classesDasEntidades;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -95,7 +96,7 @@ public class Docente implements Serializable{
     	
     	for(String s : dic.keySet()) {
     		for(Integer i : dic.get(s).atv.keySet()) {
-    			for(Double j : dic.get(s).atv.get(i).avaliacao.keySet()) {
+    			for(Long j : dic.get(s).atv.get(i).avaliacao.keySet()) {
     				cont++;
     				media+= dic.get(s).atv.get(i).avaliacao.get(j);
     			}
@@ -108,4 +109,17 @@ public class Docente implements Serializable{
     		return (media/cont);
     	
     }
+    
+    public static void sortNome(ArrayList<Docente> d) {
+		Docente aux;
+		for(int i=0;i<d.size();i++) {
+			for(int j=i;j<d.size();j++) {
+				if(d.get(i).nome.compareTo(d.get(j).nome) < 0) {
+					aux = d.get(i);
+					d.set(i, d.get(j));
+					d.set(j, aux);
+				}
+			}
+		}
+	}
 }
