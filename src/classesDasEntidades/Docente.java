@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import classesDasEntidades.atividades.Atividade;
+
 public class Docente implements Serializable{
     private String login;
 	private String nome;

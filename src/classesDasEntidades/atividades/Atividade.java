@@ -1,10 +1,13 @@
-package classesDasEntidades;
+package classesDasEntidades.atividades;
 
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public abstract class Atividade implements Serializable{
-    protected String nome;
+	protected DateFormat df = new SimpleDateFormat ("dd/MM/yyyy HH:mm");
+	protected String nome;
     protected boolean sinc;
     public Map<Long, Integer> avaliacao = new HashMap<>(); //<matricula do estudante, avaliacao dele>
  

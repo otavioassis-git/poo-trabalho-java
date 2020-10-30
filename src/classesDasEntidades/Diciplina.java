@@ -3,6 +3,8 @@ package classesDasEntidades;
 import java.io.Serializable;
 import java.util.*;
 
+import classesDasEntidades.atividades.Atividade;
+
 public class Diciplina implements Serializable{
     private String nome;
     private String codigo;

@@ -1,6 +1,7 @@
 package interfaceG;
 
 import classesDasEntidades.*;
+import classesDasEntidades.atividades.*;
 
 import java.awt.EventQueue;
 
@@ -672,7 +673,7 @@ public class TelaPrincipal extends JFrame {
 		
 		JButton btnNewButton_5 = new JButton("Cadastrar");
 		btnNewButton_5.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) throws IllegalArgumentException{
+			public void actionPerformed(ActionEvent arg0) throws IllegalArgumentException {
 				int seq=1;
 				String cod = txt_atividades_codigo.getText();
 				seq+=atividades.size();
@@ -704,6 +705,8 @@ public class TelaPrincipal extends JFrame {
 						diciplinas.get(cod).getDoc().atv.put(seq, atividades.get(seq));
 						JOptionPane.showMessageDialog(rootPane, "Atividade Cadastrada");
 					}
+				} catch (ParseException e) { //nunca acontecera devido a formatacao do campo de digitacao, coloquei so pra conseguir compilar sem erro!!!
+					e.printStackTrace(); 
 				}
 				finally {
 					txt_atividades_nome.setText("");
@@ -860,6 +863,9 @@ public class TelaPrincipal extends JFrame {
 						System.out.println();
 					}
 				}
+				catch(IllegalArgumentException e) {
+					System.out.println("Erro: Periodo Inexistente");
+				}
 				finally {
 					txt_relatorio_periodo.setText("");
 				}
@@ -949,42 +955,91 @@ public class TelaPrincipal extends JFrame {
 			public void actionPerformed(ActionEvent arg0) throws IllegalArgumentException {
 				String log = txt_relatorio_login.getText();
 				
-				if(!docentes.containsKey(log)) {
-					JOptionPane.showMessageDialog(rootPane, "Docente inexistente!", "Erro", JOptionPane.ERROR_MESSAGE);
-					throw new IllegalArgumentException("Docente inexistente!");
+				try {
+					if(!docentes.containsKey(log)) {
+						JOptionPane.showMessageDialog(rootPane, "Docente inexistente!", "Erro", JOptionPane.ERROR_MESSAGE);
+						throw new IllegalArgumentException("Docente inexistente!");
+					}
+					else {
+						ArrayList<Periodo> peraux = new ArrayList<>();
+						
+						for(String s : docentes.get(log).dic.keySet()) {
+							peraux.add(docentes.get(log).dic.get(s).getPer());
+						}
+						
+						System.out.println("Estatisticas das Diciplinas do Docente "+docentes.get(log).getLogin()+" - "+docentes.get(log).getNome()+": ");
+						int j=0;
+						Periodo aux = null;
+						for(int i=0;i<peraux.size();i++) {
+							if(!peraux.get(i).equals(aux)) {
+								j=0;
+							}
+							ArrayList<Diciplina> dicaux = new ArrayList<>();
+							for(String s : peraux.get(i).dic.keySet()) {
+								dicaux.add(peraux.get(i).dic.get(s));
+							}
+							Diciplina.sortNome(dicaux);
+							
+							
+							System.out.println(peraux.get(i).getAnoSemestre()+" - "+dicaux.get(j).getCodigo()+" "+dicaux.get(j).getNome()+" | Nm de Atividades: "+
+									dicaux.get(j).atv.size()+" | Percentual de Ativiaddes Sincronas: "+dicaux.get(j).percentualAtividadeSincrona()+"% | Carga Horaria: "+dicaux.get(j).calculaCargaHoraria());
+							System.out.println("	Atividades Avaliativas da Disciplina:");
+							ArrayList<Trabalho> trabaux = new ArrayList<>();
+							ArrayList<Prova> provaux = new ArrayList<>();
+							for(Integer k : dicaux.get(j).atv.keySet()) {
+								if (dicaux.get(j).atv.get(k).getClass() == Trabalho.class) {
+									trabaux.add((Trabalho) dicaux.get(j).atv.get(k));
+								}
+								else if(dicaux.get(j).atv.get(k).getClass() == Prova.class) {
+									provaux.add((Prova) dicaux.get(j).atv.get(k));
+								}
+							}
+							Trabalho.sortPrazo(trabaux);
+							Prova.sortData(provaux);
+							int l;
+							if(trabaux.size()<provaux.size()) {
+								l = trabaux.size();
+								int k;
+								for(k=0; k<l; k++) {
+									if(trabaux.get(k).getPrazo().compareTo(provaux.get(k).getData()) < 0) {
+										System.out.println("        "+trabaux.get(k).getNome()+" | "+trabaux.get(k).getPrazo());
+										System.out.println("        "+provaux.get(k).getNome()+" | "+provaux.get(k).getData());
+									}
+									else {
+										System.out.println("        "+provaux.get(k).getNome()+" | "+provaux.get(k).getData());
+										System.out.println("        "+trabaux.get(k).getNome()+" | "+trabaux.get(k).getPrazo());
+									}
+								}
+								for(;k<provaux.size();k++) {
+									System.out.println("        "+provaux.get(k).getNome()+" | "+provaux.get(k).getData());
+								}
+							}
+								
+							else{
+								l = provaux.size();
+								int k;
+								for(k=0; k<l; k++) {
+									if(trabaux.get(k).getPrazo().compareTo(provaux.get(k).getData()) < 0) {
+										System.out.println("        "+trabaux.get(k).getNome()+" | "+trabaux.get(k).getPrazo());
+										System.out.println("        "+provaux.get(k).getNome()+" | "+provaux.get(k).getData());
+									}
+									else {
+										System.out.println("        "+provaux.get(k).getNome()+" | "+provaux.get(k).getData());
+										System.out.println("        "+trabaux.get(k).getNome()+" | "+trabaux.get(k).getPrazo());
+									}
+								}
+								for(;k<trabaux.size();k++) {
+									System.out.println("        "+trabaux.get(k).getNome()+" | "+trabaux.get(k).getPrazo());
+								}
+							}
+							j++;
+							aux=peraux.get(i);
+						}
+						System.out.println();
+					}
 				}
-				else {
-					ArrayList<Periodo> peraux = new ArrayList<>();
-					
-					for(String s : docentes.get(log).dic.keySet()) {
-						peraux.add(docentes.get(log).dic.get(s).getPer());
-					}
-					
-					System.out.println("Estatisticas das Diciplinas do Docente "+docentes.get(log).getLogin()+" - "+docentes.get(log).getNome()+": ");
-					int j=0;
-					Periodo aux = null;
-					for(int i=0;i<peraux.size();i++) {
-						if(!peraux.get(i).equals(aux)) {
-							j=0;
-						}
-						ArrayList<Diciplina> dicaux = new ArrayList<>();
-						for(String s : peraux.get(i).dic.keySet()) {
-							dicaux.add(peraux.get(i).dic.get(s));
-						}
-						Diciplina.sortNome(dicaux);
-						
-						
-						System.out.println(peraux.get(i).getAnoSemestre()+" - "+dicaux.get(j).getCodigo()+" "+dicaux.get(j).getNome()+" | Nm de Atividades: "+
-								dicaux.get(j).atv.size()+" | Percentual de Ativiaddes Sincronas: "+dicaux.get(j).percentualAtividadeSincrona()+"% | Carga Horaria: "+dicaux.get(j).calculaCargaHoraria());
-						System.out.println("	Atividades Avaliativas da Disciplina:");
-						for(Integer k : dicaux.get(j).atv.keySet()) {
-							if (dicaux.get(j).atv.get(k).getClass() == Trabalho.class || dicaux.get(j).atv.get(k).getClass() == Prova.class)
-								System.out.println("		"+dicaux.get(j).atv.get(k).getNome());
-						}
-						j++;
-						aux=peraux.get(i);
-					}
-					System.out.println();
+				catch (IllegalArgumentException e) {
+					System.out.println("Erro: Docente inexistente");
 				}
 			}
 		});
