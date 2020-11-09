@@ -7,7 +7,7 @@ import java.util.Map;
 
 import classesDasEntidades.atividades.Atividade;
 
-public class Docente implements Serializable{
+public class Docente implements Serializable, Comparable<Docente>{
     private String login;
 	private String nome;
     private String pagweb;
@@ -53,7 +53,6 @@ public class Docente implements Serializable{
     		}
     		aux = dic.get(s).getPer();
     	}
-    	
     	if(dic.size() == 0)
     		contp--;
     	
@@ -61,67 +60,65 @@ public class Docente implements Serializable{
     }
     
     public double mediaAtividadesPorDiciplina() {
-    	double media=0;
-    	
-    	for(String s : dic.keySet()) {
-    		media+=dic.get(s).atv.size();
-    	}
-    	
-    	if(media == 0)
+    	if(dic.size() == 0)
     		return 0;
-    	else
-    		return media/dic.size();
+    	else {
+    		return (double)atv.size()/(double)dic.size();
+    	}
     }
     
     public double percentualAtividadesSincronas() {
-    	double cont=0, cont2=0;
-    	
-    	for (String s : dic.keySet()) {
-    		for(Integer i : dic.get(s).atv.keySet()) {
-    			if(dic.get(s).atv.get(i).isSinc())
-    				cont++;
-    		}
-    	}
-    	
-    	cont2+=atv.size();
-    	
-    	if(cont2 == 0)
+    	int cont=0;
+    	if(atv.size() == 0)
     		return 0;
-    	else 
-    		return (cont/cont2)*100;
+    	else {
+	    	for(Integer i : atv.keySet()) {
+	    		if(atv.get(i).isSinc()) {
+	    			cont++;
+	    		}
+	    	}
+    	}
+    	return ((double)cont/(double)atv.size())*100;
     }
     
-    
+    public double percentualAtividadesAssincronas() {
+    	int cont=0;
+    	if(atv.size() == 0)
+    		return 0;
+    	else {
+	    	for(Integer i : atv.keySet()) {
+	    		if(!atv.get(i).isSinc()) {
+	    			cont++;
+	    		}
+	    	}
+    	}
+    	return ((double)cont/(double)atv.size())*100;
+    }
 
     public double mediaNotasRecebidas() {
-    	int media=0, cont=0;
+    	double media=0, cont=0;
     	
-    	for(String s : dic.keySet()) {
-    		for(Integer i : dic.get(s).atv.keySet()) {
-    			for(Long j : dic.get(s).atv.get(i).avaliacao.keySet()) {
-    				cont++;
-    				media+= dic.get(s).atv.get(i).avaliacao.get(j);
-    			}
+    	for(Integer i : atv.keySet()) {
+    		for(Long j : atv.get(i).avaliacao.keySet()) {
+    			cont++;
+    			double aux=0;
+    			if(atv.get(i).avaliacao.get(j)>10)
+    				aux=atv.get(i).avaliacao.get(j)/10;
+    			else
+    				aux=atv.get(i).avaliacao.get(j);
+    			media+=aux;
     		}
     	}
-    	
-    	if(media == 0)
+    	if(cont == 0)
     		return 0;
-    	else
+    	else {
     		return (media/cont);
+    	}
     	
     }
-    
-    public static void sortNome(ArrayList<Docente> d) {
-		Docente aux;
-		for(int i=0;i<d.size();i++) {
-			for(int j=i;j<d.size();j++) {
-				if(d.get(i).nome.compareTo(d.get(j).nome) < 0) {
-					aux = d.get(i);
-					d.set(i, d.get(j));
-					d.set(j, aux);
-				}
-			}
-		}
+
+	@Override
+	public int compareTo(Docente o) {
+		return -(nome.compareTo(o.nome));
 	}
 }

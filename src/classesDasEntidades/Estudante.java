@@ -3,7 +3,7 @@ package classesDasEntidades;
 import java.io.Serializable;
 import java.util.*;
 
-public class Estudante implements Serializable{
+public class Estudante implements Serializable, Comparable<Estudante>{
     private long matricula;
 	private String nome;
 	public Map<String, Diciplina> dic = new HashMap<>();
@@ -13,7 +13,7 @@ public class Estudante implements Serializable{
     	nome = n;
     }
     
-    public double getMatricula() {
+    public long getMatricula() {
 		return matricula;
 	}
 	public String getNome() {
@@ -63,24 +63,31 @@ public class Estudante implements Serializable{
     }
     
     public double mediaNotas() {
-    	int media=0, cont=0;
+    	double media=0, cont=0;
     	
     	for(String s : dic.keySet()) {
     		for(Integer i : dic.get(s).atv.keySet()) {
     			if(dic.get(s).atv.get(i).avaliacao.get(this.matricula)!=null) {
     				cont++;
+    				double aux=0;
+    				if(dic.get(s).atv.get(i).avaliacao.get(this.matricula)>10)
+    					aux=dic.get(s).atv.get(i).avaliacao.get(this.matricula)/10;
+    				else
+    					aux=dic.get(s).atv.get(i).avaliacao.get(this.matricula);
+    				media+=aux;
     			}
     		}
     	}
     	
     	if(cont == 0)
     		return 0;
-    	else
+    	else {
     		return (media/cont);
+    	}
     }
     
-    public int contaAvaliacoes() {
-    	int cont=0;
+    public Integer contaAvaliacoes() {
+    	Integer cont=0;
     	for(String s : dic.keySet()) {
     		for(Integer i : dic.get(s).atv.keySet()) {
     			if(dic.get(s).atv.get(i).avaliacao.get(this.matricula)!=null) {
@@ -90,31 +97,14 @@ public class Estudante implements Serializable{
     	}
     	return cont;
     }
-    
-    public static void sortNome(ArrayList<Estudante> d) {
-		Estudante aux;
-		for(int i=0;i<d.size();i++) {
-			for(int j=i;j<d.size();j++) {
-				if(d.get(i).nome.compareTo(d.get(j).nome) > 0) {
-					aux = d.get(i);
-					d.set(i, d.get(j));
-					d.set(j, aux);
-				}
-			}
-		}
-	}
-    
-    public static void sortNmAvaliacoes(ArrayList<Estudante> d) {
-		Estudante aux;
-		for(int i=0;i<d.size();i++) {
-			for(int j=i;j<d.size();j++) {
-				if(d.get(i).contaAvaliacoes() < d.get(j).contaAvaliacoes()) {
-					aux = d.get(i);
-					d.set(i, d.get(j));
-					d.set(j, aux);
-				}
-			}
-		}
+
+	@Override
+	public int compareTo(Estudante o) {
+		int cmp = this.contaAvaliacoes().compareTo(o.contaAvaliacoes());
+		cmp = -(cmp);
+	    if (cmp != 0)
+		  return cmp;
+		return nome.compareTo(o.nome);
 	}
 }
 

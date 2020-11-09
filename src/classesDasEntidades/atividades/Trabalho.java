@@ -4,7 +4,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Trabalho extends Atividade{
+public class Trabalho extends Atividade implements Comparable<Trabalho>{
 	private Date prazo;
 	private int nmPessoas;
 	private double cHoraria;
@@ -29,17 +29,9 @@ public class Trabalho extends Atividade{
 	public Date getPrazo() {
 		return prazo;
 	}
-	
-	public static void sortPrazo(ArrayList<Trabalho> d) {
-		Trabalho aux;
-		for(int i=0;i<d.size();i++) {
-			for(int j=i;j<d.size();j++) {
-				if(d.get(i).prazo.compareTo(d.get(j).prazo) < 0) {
-					aux = d.get(i);
-					d.set(i, d.get(j));
-					d.set(j, aux);
-				}
-			}
-		}
+
+	@Override
+	public int compareTo(Trabalho o) {
+		return prazo.compareTo(o.prazo);
 	}
 }

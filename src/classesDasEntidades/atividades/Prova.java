@@ -4,7 +4,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Prova extends Atividade{
+public class Prova extends Atividade implements Comparable<Prova>{
 	private Date data;
 	private String conteudo;
 	
@@ -27,17 +27,9 @@ public class Prova extends Atividade{
 	public Date getData() {
 		return data;
 	}
-	
-	public static void sortData(ArrayList<Prova> d) {
-		Prova aux;
-		for(int i=0;i<d.size();i++) {
-			for(int j=i;j<d.size();j++) {
-				if(d.get(i).data.compareTo(d.get(j).data) < 0) {
-					aux = d.get(i);
-					d.set(i, d.get(j));
-					d.set(j, aux);
-				}
-			}
-		}
+
+	@Override
+	public int compareTo(Prova o) {
+		return data.compareTo(o.data);
 	}
 }

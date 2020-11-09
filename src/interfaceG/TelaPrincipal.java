@@ -2,6 +2,7 @@ package interfaceG;
 
 import classesDasEntidades.*;
 import classesDasEntidades.atividades.*;
+import leituraEscritaArquivo.*;
 
 import java.awt.EventQueue;
 
@@ -18,6 +19,7 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -36,11 +38,11 @@ import javax.swing.JList;
 import javax.swing.JFormattedTextField;
 
 public class TelaPrincipal extends JFrame {
-	Map<String, Periodo> periodos;
-	Map<Long, Estudante> estudantes;
-	Map<String, Docente> docentes;
-	Map<String, Diciplina> diciplinas;
-	Map<Integer, Atividade> atividades;
+	static Map<String, Periodo> periodos;
+	static Map<Long, Estudante> estudantes;
+	static Map<String, Docente> docentes;
+	static Map<String, Diciplina> diciplinas;
+	static Map<Integer, Atividade> atividades;
 	
 	private JPanel contentPane;
 	private JTextField txt_estudante_nome;
@@ -70,6 +72,102 @@ public class TelaPrincipal extends JFrame {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+		Locale.setDefault(new Locale("pt", "BR"));
+		for(int j=0;j<args.length;j++) {
+			if(args[j].equals("--read-only")) {
+				for(int i=0;i<args.length;i++) {
+					if(args[i].equals("-p")) {
+						try {
+							periodos = Arquivo.readPeriodo(args[i+1]);
+						} catch (FileNotFoundException e) {
+							System.out.println("Arquivo de periodos nao encontrado!");
+						}
+					}
+					else if(args[i].equals("-d")) {
+						try {
+							docentes = Arquivo.readDocente(args[i+1]);
+						} catch (FileNotFoundException e) {
+							System.out.println("Arquivo de docentes nao encontrado!");
+						}
+					}
+					else if(args[i].equals("-o")) {
+						try {
+							diciplinas = Arquivo.readDiciplina(args[i+1], periodos, docentes);
+						} catch (FileNotFoundException e) {
+							System.out.println("Arquivo de disciplinas nao encontrado!");
+						}
+					}
+					else if(args[i].equals("-e")) {
+						try {
+							estudantes = Arquivo.readEstudante(args[i+1]);
+						} catch (FileNotFoundException e) {
+							System.out.println("Arquivo de estudantes nao encontrado!");
+						}
+					}
+					else if(args[i].equals("-m")) {
+						try {
+							Arquivo.readMatriculas(args[i+1], diciplinas, estudantes);
+						} catch (FileNotFoundException e) {
+							System.out.println("Arquivo de matriculas nao encontrado!");
+						}
+					}
+					else if(args[i].equals("-a")) {
+						try {
+							atividades = Arquivo.readAtividade(args[i+1], periodos, diciplinas);
+						} catch (FileNotFoundException e) {
+							System.out.println("Arquivo de atividades nao encontrado!");
+						} catch (ParseException e) {
+							System.out.println("Erro de parse!");
+						}
+					}
+					else if(args[i].equals("-n")) {
+						try {
+							Arquivo.readAvaliacao(args[i+1], diciplinas);
+						} catch (FileNotFoundException e) {
+							System.out.println("Arquivo de avaliacoes nao encontrado!");
+						} catch (ParseException e) {
+							System.out.println("Erro de parse!");
+						}
+					}
+				}
+				try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("dados.dat"));) {
+					out.writeObject(periodos);
+					out.writeObject(estudantes);
+					out.writeObject(diciplinas);
+					out.writeObject(docentes);
+					out.writeObject(atividades);
+				} catch (IOException e) {
+					System.out.println("Erro ao serializar o arquivo!");
+				}
+				System.out.println("Arquivo serializado");
+				System.exit(0);
+			}
+			else if(args[j].equals("--write-only")) {
+				try(ObjectInputStream in = new ObjectInputStream(new FileInputStream("dados.dat"))) {
+					periodos = (Map<String, Periodo>)in.readObject();
+					estudantes = (Map<Long, Estudante>)in.readObject();
+					diciplinas = (Map<String, Diciplina>)in.readObject();
+					docentes = (Map<String, Docente>)in.readObject();
+					atividades = (Map<Integer, Atividade>)in.readObject();
+				} catch (IOException e) {
+					System.out.println("Erro na leitura do arquivo!");
+				} catch (ClassNotFoundException e) {
+					System.out.println("Erro na leitura das entidades!");
+				}
+				System.out.println("Arquivo carregado!");
+				
+				try {
+					Arquivo.writeGeral(periodos);
+					Arquivo.writeEstEstudantes(estudantes);
+					Arquivo.writeEstDocentes(docentes);
+					Arquivo.writeEstDisciplinasDocente(docentes);
+				}
+				catch(IOException e) {
+					System.out.println("Erro na gravação dos arquivos!");
+				}
+				System.exit(0);
+			}
+		}
 		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -465,6 +563,9 @@ public class TelaPrincipal extends JFrame {
 						System.out.println();
 					}
 				}
+				catch(IllegalArgumentException e) {
+					System.out.print("Erro: disciplina informada inexistente!");
+				}
 				finally {
 					txt_diciplinas_exibir.setText("");
 				}
@@ -802,7 +903,7 @@ public class TelaPrincipal extends JFrame {
 						throw new IllegalArgumentException("Disciplina nao contem atividade com sequencial digitado!");
 					}
 					else {
-						diciplinas.get(cod).atv.get(seq).avaliacao.put(mat, Integer.parseInt(txt_avaliacao_nota.getText()));
+						diciplinas.get(cod).atv.get(seq).avaliacao.put(mat, Double.parseDouble(txt_avaliacao_nota.getText()));
 						JOptionPane.showMessageDialog(rootPane, "Avaliacao submetida");
 					}
 				}
@@ -889,7 +990,7 @@ public class TelaPrincipal extends JFrame {
 					docaux.add(docentes.get(s));
 				}
 				
-				Docente.sortNome(docaux);
+				Collections.sort(docaux);
 				
 				System.out.println("Estatisticas dos Docentes: ");
 				for(int i=0;i<docaux.size();i++) {
@@ -918,17 +1019,9 @@ public class TelaPrincipal extends JFrame {
 					estaux.add(estudantes.get(i));
 				}
 				
-				Estudante.sortNome(estaux);
+				Collections.sort(estaux);
 				
-				System.out.println("Estatisticas dos Estudantes (por ordem alfabetica) : ");
-				for(int i=0;i<estaux.size();i++) {
-					System.out.println(estaux.get(i).getMatricula()+" "+estaux.get(i).getNome()+" | Media de Diciplinas/Periodo Matriculadas: "+estaux.get(i).mediaDiciplinasPorPeriodo()+" | Media de Avaliacoes/Diciplina: "+
-							estaux.get(i).mediaAvaliacoes()+" | Media de Notas: "+estaux.get(i).mediaNotas());
-				}
-				
-				Estudante.sortNmAvaliacoes(estaux);
-				
-				System.out.println("\nEstatisticas dos Estudantes (por ordem do numero de avaliacoes feitas) : ");
+				System.out.println("Estatisticas dos Estudantes: ");
 				for(int i=0;i<estaux.size();i++) {
 					System.out.println(estaux.get(i).getMatricula()+" "+estaux.get(i).getNome()+" | Media de Diciplinas/Periodo Matriculadas: "+estaux.get(i).mediaDiciplinasPorPeriodo()+" | Media de Avaliacoes/Diciplina: "+
 							estaux.get(i).mediaAvaliacoes()+" | Media de Notas: "+estaux.get(i).mediaNotas());
@@ -994,8 +1087,8 @@ public class TelaPrincipal extends JFrame {
 									provaux.add((Prova) dicaux.get(j).atv.get(k));
 								}
 							}
-							Trabalho.sortPrazo(trabaux);
-							Prova.sortData(provaux);
+							Collections.sort(trabaux);
+							Collections.sort(provaux);
 							int l;
 							if(trabaux.size()<provaux.size()) {
 								l = trabaux.size();

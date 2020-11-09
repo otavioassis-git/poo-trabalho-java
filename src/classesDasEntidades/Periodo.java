@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.*;
 
 
-public class Periodo implements Serializable{
+public class Periodo implements Serializable, Comparable<Periodo>{
     private String anoSemestre;
     public Map<String, Diciplina> dic = new HashMap<>();
     
@@ -15,16 +15,8 @@ public class Periodo implements Serializable{
 		return anoSemestre;
 	}
 	
-	public static void sortAnoSemestre(ArrayList<Periodo> d) {
-		Periodo aux;
-		for(int i=0;i<d.size();i++) {
-			for(int j=i;j<d.size();j++) {
-				if(d.get(i).anoSemestre.compareTo(d.get(j).anoSemestre) < 0) {
-					aux = d.get(i);
-					d.set(i, d.get(j));
-					d.set(j, aux);
-				}
-			}
-		}
+	@Override
+	public int compareTo(Periodo o) {
+		return anoSemestre.compareTo(o.anoSemestre);
 	}
 }

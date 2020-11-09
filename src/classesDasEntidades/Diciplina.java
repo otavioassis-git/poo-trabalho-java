@@ -1,11 +1,12 @@
 package classesDasEntidades;
 
 import java.io.Serializable;
+import java.text.Collator;
 import java.util.*;
 
 import classesDasEntidades.atividades.Atividade;
 
-public class Diciplina implements Serializable{
+public class Diciplina implements Serializable, Comparable<Diciplina> {
     private String nome;
     private String codigo;
     private Docente doc;
@@ -49,6 +50,23 @@ public class Diciplina implements Serializable{
     	else 
     		return (cont/cont2)*100;
     }
+	
+	public double percentualAtividadeAssincrona() {
+    	double cont=0, cont2=0;
+    	
+    	for(Integer i : atv.keySet()) {
+    		if(!atv.get(i).isSinc()) {
+    			cont++;
+    		}
+    	}
+    	
+    	cont2+=atv.size();
+    	
+    	if(cont2 == 0)
+    		return 0;
+    	else 
+    		return (cont/cont2)*100;
+    }
 
 	public double calculaCargaHoraria() {
 		double cont=0;
@@ -71,5 +89,13 @@ public class Diciplina implements Serializable{
 				}
 			}
 		}
+	}
+
+	@Override
+	public int compareTo(Diciplina o) {
+		int cmp = per.getAnoSemestre().compareTo(o.per.getAnoSemestre());
+	    if (cmp != 0)
+		  return cmp;
+		return codigo.compareTo(o.codigo);
 	}
 }
