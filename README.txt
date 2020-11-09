@@ -1,5 +1,5 @@
 Para compilar, basta abrir a pasta src em seu terminal e compliar todos os arquivos da pasta interfaceG e classesDasInterfaces, usando o comando:
-javac interfaceG/*.java classesDasInterfaces/*.java
+javac interfaceG/*.java classesDasInterfaces/*.java leituraEscritaArquivo/*.java
 
 Para rodar o programa, após compilar, basta, com a pasta src aberta no terminal, usar o comando:
 java interfaceG.TelaPrincipal
