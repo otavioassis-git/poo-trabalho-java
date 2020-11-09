@@ -154,7 +154,7 @@ public class TelaPrincipal extends JFrame {
 				} catch (ClassNotFoundException e) {
 					System.out.println("Erro na leitura das entidades!");
 				}
-				System.out.println("Arquivo carregado!");
+				System.out.println("Arquivo dados.dat carregado!");
 				
 				try {
 					Arquivo.writeGeral(periodos);
@@ -165,6 +165,7 @@ public class TelaPrincipal extends JFrame {
 				catch(IOException e) {
 					System.out.println("Erro na gravacao dos arquivos!");
 				}
+				System.out.println("Arquivos gravados!");
 				System.exit(0);
 			}
 		}
