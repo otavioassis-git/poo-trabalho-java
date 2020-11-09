@@ -257,45 +257,36 @@ public class Arquivo {
 		escrevearq.close();
 	}
 	
-	public static void writeEstDisciplinasDocente(Map<String, Docente> docentes) throws IOException {
+	public static void writeEstDisciplinasDocente(Map<String, Diciplina> diciplinas) throws IOException {
 		FileWriter arq = new FileWriter("4-disciplinas.csv");
 		PrintWriter escrevearq = new PrintWriter(arq);
-		ArrayList<Docente> docaux = new ArrayList<>();
-		for(String s : docentes.keySet()) {
-			docaux.add(docentes.get(s));
+		ArrayList<Diciplina> dicaux = new ArrayList<>();
+		for(String s : diciplinas.keySet()) {
+			dicaux.add(diciplinas.get(s));
 		}
 		escrevearq.println("Docente;Período;Código;Nome;Qtd. Atividades;% Síncronas;% Assíncronas;CH;Datas Avaliações");	
 		
-		Collections.sort(docaux);
-		for(int i=0;i<docaux.size();i++) {
-			List<Diciplina> dicaux = new ArrayList<>();
-			for(String s : docaux.get(i).dic.keySet()) {
-				dicaux.add(docaux.get(i).dic.get(s));
-			}
-			
-			Collections.sort(dicaux);
-			
-			for(int j=0;j<dicaux.size();j++) {
-				String datasf = new String();
-				double choraria = 0;
-				for(Integer s : dicaux.get(j).atv.keySet()) {
-					ArrayList<Date> datas = new ArrayList<>();
-					if(dicaux.get(j).atv.get(s).getClass() == Trabalho.class) {
-						datas.add(((Trabalho) dicaux.get(j).atv.get(s)).getPrazo());
-					}
-					else if(dicaux.get(j).atv.get(s).getClass() == Prova.class) {
-						datas.add(((Prova) dicaux.get(j).atv.get(s)).getData());
-					}
-					Arquivo.sortDatas(datas);
-					for(int k=0;k<datas.size();k++) {
-						
-						datasf+=df.format(datas.get(k))+" ";
-					}
-					choraria+=dicaux.get(j).atv.get(s).getcHoraria();
+		Collections.sort(dicaux);	
+		for(int j=0;j<dicaux.size();j++) {
+			String datasf = new String();
+			double choraria = 0;
+			for(Integer s : dicaux.get(j).atv.keySet()) {
+				ArrayList<Date> datas = new ArrayList<>();
+				if(dicaux.get(j).atv.get(s).getClass() == Trabalho.class) {
+					datas.add(((Trabalho) dicaux.get(j).atv.get(s)).getPrazo());
 				}
-				escrevearq.printf("%s;%s;%s;%s;%d;%.0f%%;%.0f%%;%.0f;%s\n", docaux.get(i).getLogin(), dicaux.get(j).getPer().getAnoSemestre(), dicaux.get(j).getCodigo(), dicaux.get(j).getNome(), dicaux.get(j).atv.size(),
-						dicaux.get(j).percentualAtividadeSincrona(), dicaux.get(j).percentualAtividadeAssincrona(), choraria, datasf);
+				else if(dicaux.get(j).atv.get(s).getClass() == Prova.class) {
+					datas.add(((Prova) dicaux.get(j).atv.get(s)).getData());
+				}
+				Arquivo.sortDatas(datas);
+				for(int k=0;k<datas.size();k++) {
+						
+					datasf+=df.format(datas.get(k))+" ";
+				}
+				choraria+=dicaux.get(j).atv.get(s).getcHoraria();
 			}
+			escrevearq.printf("%s;%s;%s;%s;%d;%.0f%%;%.0f%%;%.0f;%s\n", dicaux.get(j).getDoc().getLogin(), dicaux.get(j).getPer().getAnoSemestre(), dicaux.get(j).getCodigo(), dicaux.get(j).getNome(), dicaux.get(j).atv.size(),
+					dicaux.get(j).percentualAtividadeSincrona(), dicaux.get(j).percentualAtividadeAssincrona(), choraria, datasf);
 		}
 		
 		escrevearq.close();
