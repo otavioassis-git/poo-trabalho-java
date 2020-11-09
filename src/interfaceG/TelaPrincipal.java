@@ -73,8 +73,36 @@ public class TelaPrincipal extends JFrame {
 	 */
 	public static void main(String[] args) {
 		Locale.setDefault(new Locale("pt", "BR"));
-		for(int j=0;j<args.length;j++) {
-			if(args[j].equals("--read-only")) {
+		boolean[] teste = new boolean[7];
+		int iteste=0;
+		for(int i=0;i<teste.length;i++) {
+			teste[i]=false;
+		}
+		for(int i=0;i<args.length;i++) {
+			if(args[i].equals("--read-only")){
+				iteste=1;
+			}
+			if(args[i].equals("--write-only")){
+				iteste=2;
+			}
+			if(args[i].equals("-p"))
+				teste[0] = true;
+			if(args[i].equals("-d"))
+				teste[1] = true;
+			if(args[i].equals("-o"))
+				teste[2] = true;
+			if(args[i].equals("-e"))
+				teste[3] = true;
+			if(args[i].equals("-m"))
+				teste[4] = true;
+			if(args[i].equals("-a"))
+				teste[5] = true;
+			if(args[i].equals("-n"))
+				teste[6] = true;
+		}
+		
+		if(iteste == 1) {
+			if(teste[0]) {
 				for(int i=0;i<args.length;i++) {
 					if(args[i].equals("-p")) {
 						try {
@@ -83,35 +111,55 @@ public class TelaPrincipal extends JFrame {
 							System.out.println("Arquivo de periodos nao encontrado!");
 						}
 					}
-					else if(args[i].equals("-d")) {
+				}
+			}
+			if(teste[1]) {
+				for(int i=0;i<args.length;i++) {
+					if(args[i].equals("-d")) {
 						try {
 							docentes = Arquivo.readDocente(args[i+1]);
 						} catch (FileNotFoundException e) {
 							System.out.println("Arquivo de docentes nao encontrado!");
 						}
 					}
-					else if(args[i].equals("-o")) {
+				}
+			}
+			if(teste[2]) {
+				for(int i=0;i<args.length;i++) {
+					if(args[i].equals("-o")) {
 						try {
 							diciplinas = Arquivo.readDiciplina(args[i+1], periodos, docentes);
 						} catch (FileNotFoundException e) {
 							System.out.println("Arquivo de disciplinas nao encontrado!");
 						}
 					}
-					else if(args[i].equals("-e")) {
+				}
+			}
+			if(teste[3]) {
+				for(int i=0;i<args.length;i++) {
+					if(args[i].equals("-e")) {
 						try {
 							estudantes = Arquivo.readEstudante(args[i+1]);
 						} catch (FileNotFoundException e) {
 							System.out.println("Arquivo de estudantes nao encontrado!");
 						}
 					}
-					else if(args[i].equals("-m")) {
+				}
+			}
+			if(teste[4]) {
+				for(int i=0;i<args.length;i++) {
+					if(args[i].equals("-m")) {
 						try {
 							Arquivo.readMatriculas(args[i+1], diciplinas, estudantes);
 						} catch (FileNotFoundException e) {
 							System.out.println("Arquivo de matriculas nao encontrado!");
 						}
 					}
-					else if(args[i].equals("-a")) {
+				}
+			}
+			if(teste[5]) {
+				for(int i=0;i<args.length;i++) {
+					if(args[i].equals("-a")) {
 						try {
 							atividades = Arquivo.readAtividade(args[i+1], periodos, diciplinas);
 						} catch (FileNotFoundException e) {
@@ -120,7 +168,11 @@ public class TelaPrincipal extends JFrame {
 							System.out.println("Erro de parse!");
 						}
 					}
-					else if(args[i].equals("-n")) {
+				}
+			}
+			if(teste[6]) {
+				for(int i=0;i<args.length;i++) {
+					if(args[i].equals("-n")) {
 						try {
 							Arquivo.readAvaliacao(args[i+1], diciplinas);
 						} catch (FileNotFoundException e) {
@@ -130,44 +182,44 @@ public class TelaPrincipal extends JFrame {
 						}
 					}
 				}
-				try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("dados.dat"));) {
-					out.writeObject(periodos);
-					out.writeObject(estudantes);
-					out.writeObject(diciplinas);
-					out.writeObject(docentes);
-					out.writeObject(atividades);
-				} catch (IOException e) {
-					System.out.println("Erro ao serializar o arquivo!");
-				}
-				System.out.println("Arquivo serializado");
-				System.exit(0);
 			}
-			else if(args[j].equals("--write-only")) {
-				try(ObjectInputStream in = new ObjectInputStream(new FileInputStream("dados.dat"))) {
-					periodos = (Map<String, Periodo>)in.readObject();
-					estudantes = (Map<Long, Estudante>)in.readObject();
-					diciplinas = (Map<String, Diciplina>)in.readObject();
-					docentes = (Map<String, Docente>)in.readObject();
-					atividades = (Map<Integer, Atividade>)in.readObject();
-				} catch (IOException e) {
-					System.out.println("Erro na leitura do arquivo!");
-				} catch (ClassNotFoundException e) {
-					System.out.println("Erro na leitura das entidades!");
-				}
-				System.out.println("Arquivo dados.dat carregado!");
-				
-				try {
-					Arquivo.writeGeral(periodos);
-					Arquivo.writeEstEstudantes(estudantes);
-					Arquivo.writeEstDocentes(docentes);
-					Arquivo.writeEstDisciplinasDocente(diciplinas);
-				}
-				catch(IOException e) {
-					System.out.println("Erro na gravacao dos arquivos!");
-				}
-				System.out.println("Arquivos gravados!");
-				System.exit(0);
+			try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("dados.dat"));) {
+				out.writeObject(periodos);
+				out.writeObject(estudantes);
+				out.writeObject(diciplinas);
+				out.writeObject(docentes);
+				out.writeObject(atividades);
+			} catch (IOException e) {
+				System.out.println("Erro ao serializar o arquivo!");
 			}
+			System.out.println("Arquivo serializado!");
+			System.exit(0);
+		}
+		else if(iteste == 2){
+			try(ObjectInputStream in = new ObjectInputStream(new FileInputStream("dados.dat"))) {
+				periodos = (Map<String, Periodo>)in.readObject();
+				estudantes = (Map<Long, Estudante>)in.readObject();
+				diciplinas = (Map<String, Diciplina>)in.readObject();
+				docentes = (Map<String, Docente>)in.readObject();
+				atividades = (Map<Integer, Atividade>)in.readObject();
+			} catch (IOException e) {
+				System.out.println("Erro na leitura do arquivo!");
+			} catch (ClassNotFoundException e) {
+				System.out.println("Erro na leitura das entidades!");
+			}
+			System.out.println("Arquivo dados.dat carregado!");
+			
+			try {
+				Arquivo.writeGeral(periodos);
+				Arquivo.writeEstEstudantes(estudantes);
+				Arquivo.writeEstDocentes(docentes);
+				Arquivo.writeEstDisciplinasDocente(diciplinas);
+			}
+			catch(IOException e) {
+				System.out.println("Erro na gravacao dos arquivos!");
+			}
+			System.out.println("Arquivos gravados!");
+			System.exit(0);
 		}
 		
 		EventQueue.invokeLater(new Runnable() {
