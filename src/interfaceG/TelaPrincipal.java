@@ -163,7 +163,7 @@ public class TelaPrincipal extends JFrame {
 					Arquivo.writeEstDisciplinasDocente(docentes);
 				}
 				catch(IOException e) {
-					System.out.println("Erro na gravação dos arquivos!");
+					System.out.println("Erro na gravacao dos arquivos!");
 				}
 				System.exit(0);
 			}
