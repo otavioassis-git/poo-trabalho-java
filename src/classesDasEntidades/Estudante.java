@@ -83,12 +83,7 @@ public class Estudante implements Serializable, Comparable<Estudante>{
     	for(String s : dic.keySet()) {
     		for(Integer i : dic.get(s).getAtividades().keySet()) {
     			if(dic.get(s).getAtividades().get(i).getAvaliacao().get(this.matricula)!=null) {
-    				double aux=0;
-    				if(dic.get(s).getAtividades().get(i).getAvaliacao().get(this.matricula)>10)
-    					aux=dic.get(s).getAtividades().get(i).getAvaliacao().get(this.matricula)/10;
-    				else
-    					aux=dic.get(s).getAtividades().get(i).getAvaliacao().get(this.matricula);
-    				media+=aux;
+    				media+=dic.get(s).getAtividades().get(i).getAvaliacao().get(this.matricula);
     			}
     		}
     	}

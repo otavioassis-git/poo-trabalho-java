@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public abstract class Atividade implements Serializable{
-	protected DateFormat df = new SimpleDateFormat ("dd/MM/yyyy HH:mm");
+	protected DateFormat df = new SimpleDateFormat ("dd/MM/yyyy-HH:mm");
 	protected String nome;
     protected boolean sinc;
     private Map<Long, Double> avaliacao = new HashMap<>(); //<matricula do estudante, avaliacao dele>

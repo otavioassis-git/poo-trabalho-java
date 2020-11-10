@@ -78,7 +78,6 @@ public class TelaPrincipal extends JFrame {
 		for(int i=0;i<teste.length;i++) {
 			teste[i]=false;
 		}
-		
 		for(int i=0;i<args.length;i++) {
 			if(args[i].equals("--read-only")){
 				iteste=1;
@@ -103,97 +102,72 @@ public class TelaPrincipal extends JFrame {
 		}
 		
 		if(iteste == 1) {
-			if(teste[0]) {
-				for(int i=0;i<args.length;i++) {
-					if(args[i].equals("-p")) {
-						try {
+			try {
+				if(teste[0]) {
+					for(int i=0;i<args.length;i++) {
+						if(args[i].equals("-p")) {
 							periodos = Arquivo.readPeriodo(args[i+1]);
-						} catch (FileNotFoundException e) {
-							System.out.println("Arquivo de periodos nao encontrado!");
 						}
 					}
 				}
-			}
-			if(teste[1]) {
-				for(int i=0;i<args.length;i++) {
-					if(args[i].equals("-d")) {
-						try {
+				if(teste[1]) {
+					for(int i=0;i<args.length;i++) {
+						if(args[i].equals("-d")) {
 							docentes = Arquivo.readDocente(args[i+1]);
-						} catch (FileNotFoundException e) {
-							System.out.println("Arquivo de docentes nao encontrado!");
 						}
 					}
 				}
-			}
-			if(teste[2]) {
-				for(int i=0;i<args.length;i++) {
-					if(args[i].equals("-o")) {
-						try {
+				if(teste[2]) {
+					for(int i=0;i<args.length;i++) {
+						if(args[i].equals("-o")) {
 							diciplinas = Arquivo.readDiciplina(args[i+1], periodos, docentes);
-						} catch (FileNotFoundException e) {
-							System.out.println("Arquivo de disciplinas nao encontrado!");
 						}
 					}
 				}
-			}
-			if(teste[3]) {
-				for(int i=0;i<args.length;i++) {
-					if(args[i].equals("-e")) {
-						try {
+				if(teste[3]) {
+					for(int i=0;i<args.length;i++) {
+						if(args[i].equals("-e")) {
 							estudantes = Arquivo.readEstudante(args[i+1]);
-						} catch (FileNotFoundException e) {
-							System.out.println("Arquivo de estudantes nao encontrado!");
 						}
 					}
 				}
-			}
-			if(teste[4]) {
-				for(int i=0;i<args.length;i++) {
-					if(args[i].equals("-m")) {
-						try {
+				if(teste[4]) {
+					for(int i=0;i<args.length;i++) {
+						if(args[i].equals("-m")) {
 							Arquivo.readMatriculas(args[i+1], diciplinas, estudantes);
-						} catch (FileNotFoundException e) {
-							System.out.println("Arquivo de matriculas nao encontrado!");
 						}
 					}
 				}
-			}
-			if(teste[5]) {
-				for(int i=0;i<args.length;i++) {
-					if(args[i].equals("-a")) {
-						try {
+				if(teste[5]) {
+					for(int i=0;i<args.length;i++) {
+						if(args[i].equals("-a")) {
 							atividades = Arquivo.readAtividade(args[i+1], periodos, diciplinas);
-						} catch (FileNotFoundException e) {
-							System.out.println("Arquivo de atividades nao encontrado!");
-						} catch (ParseException e) {
-							System.out.println("Erro de parse!");
 						}
 					}
 				}
-			}
-			if(teste[6]) {
-				for(int i=0;i<args.length;i++) {
-					if(args[i].equals("-n")) {
-						try {
+				if(teste[6]) {
+					for(int i=0;i<args.length;i++) {
+						if(args[i].equals("-n")) {
 							Arquivo.readAvaliacao(args[i+1], diciplinas);
-						} catch (FileNotFoundException e) {
-							System.out.println("Arquivo de avaliacoes nao encontrado!");
-						} catch (ParseException e) {
-							System.out.println("Erro de parse!");
 						}
 					}
 				}
-			}
-			try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("dados.dat"));) {
+				ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("dados.dat"));
 				out.writeObject(periodos);
 				out.writeObject(estudantes);
 				out.writeObject(diciplinas);
 				out.writeObject(docentes);
 				out.writeObject(atividades);
-			} catch (IOException e) {
+				out.close();
+			}
+			catch(IllegalArgumentException e) {
+				//e.printStackTrace();
+				System.out.print(e.getMessage());
+			}
+			catch(IOException e) {
+				e.printStackTrace();
 				System.out.println("Erro de I/O");
 			}
-			System.out.println("Arquivo dados.dat serializado!");
 			System.exit(0);
 		}
 		else if(iteste == 2){
@@ -203,23 +177,15 @@ public class TelaPrincipal extends JFrame {
 				diciplinas = (Map<String, Diciplina>)in.readObject();
 				docentes = (Map<String, Docente>)in.readObject();
 				atividades = (Map<Integer, Atividade>)in.readObject();
-			} catch (IOException e) {
-				System.out.println("Erro de I/O");
-			} catch (ClassNotFoundException e) {
-				System.out.println("Erro na leitura das entidades!");
-			}
-			System.out.println("Arquivo dados.dat carregado!");
 			
-			try {
 				Arquivo.writeGeral(periodos);
 				Arquivo.writeEstEstudantes(estudantes);
 				Arquivo.writeEstDocentes(docentes);
 				Arquivo.writeEstDisciplinasDocente(diciplinas);
 			}
-			catch(IOException e) {
+			catch(IOException | ClassNotFoundException e) {
 				System.out.println("Erro de I/O");
 			}
-			System.out.println("Arquivos gravados!");
 			System.exit(0);
 		}
 		
@@ -860,9 +826,7 @@ public class TelaPrincipal extends JFrame {
 						diciplinas.get(cod).getDoc().getAtividades().put(seq, atividades.get(seq));
 						JOptionPane.showMessageDialog(rootPane, "Atividade Cadastrada");
 					}
-				} catch (ParseException e) { //nunca acontecera devido a formatacao do campo de digitacao, coloquei so pra conseguir compilar sem erro!!!
-					e.printStackTrace(); 
-				}
+				} 
 				finally {
 					txt_atividades_nome.setText("");
 					txt_atividades_aula_data.setText("");

@@ -8,10 +8,15 @@ public class Trabalho extends Atividade implements Comparable<Trabalho>{
 	private int nmPessoas;
 	private double cHoraria;
 	
-	public Trabalho(String n, boolean b, String p, int nm, double ch) throws ParseException {
+	public Trabalho(String n, boolean b, String p, int nm, double ch) throws IllegalArgumentException {
 		super(n, b);
-		p = p+" 23:59";
-		prazo = df.parse(p);
+		p = p+"-23:59";
+		try {
+			prazo = df.parse(p);
+		} catch (ParseException e) {
+			String aux[] = p.split("-");
+			throw new IllegalArgumentException("Dado inválido: "+aux[0]+".");
+		}
 		nmPessoas = nm;
 		cHoraria = ch;
 	}
