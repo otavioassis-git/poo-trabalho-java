@@ -12,7 +12,7 @@ public class Aula extends Atividade {
 		try {
 			data = df.parse(d);
 		} catch (ParseException e) {
-			throw new IllegalArgumentException("Dado inv·lido: "+d+".");
+			throw new IllegalArgumentException("Dado inv√°lido: "+d+".");
 		}
 	}
 

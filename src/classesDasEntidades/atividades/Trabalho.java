@@ -15,7 +15,7 @@ public class Trabalho extends Atividade implements Comparable<Trabalho>{
 			prazo = df.parse(p);
 		} catch (ParseException e) {
 			String aux[] = p.split("-");
-			throw new IllegalArgumentException("Dado inv·lido: "+aux[0]+".");
+			throw new IllegalArgumentException("Dado inv√°lido: "+aux[0]+".");
 		}
 		nmPessoas = nm;
 		cHoraria = ch;

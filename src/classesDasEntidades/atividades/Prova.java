@@ -13,7 +13,7 @@ public class Prova extends Atividade implements Comparable<Prova>{
 		try {
 			data = df.parse(d);
 		} catch (ParseException e) {
-			throw new IllegalArgumentException("Dado inv·lido: "+d+".");
+			throw new IllegalArgumentException("Dado inv√°lido: "+d+".");
 		}
 		conteudo = c;
 	}
