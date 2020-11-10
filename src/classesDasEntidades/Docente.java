@@ -11,8 +11,8 @@ public class Docente implements Serializable, Comparable<Docente>{
     private String login;
 	private String nome;
     private String pagweb;
-    public Map<String, Diciplina> dic = new HashMap<>();
-    public Map<Integer, Atividade> atv = new HashMap<>();
+    private Map<String, Diciplina> dic = new HashMap<>();
+    private Map<Integer, Atividade> atv = new HashMap<>();
 
     public Docente(String l, String n, String p){
     	login = l;
@@ -28,6 +28,12 @@ public class Docente implements Serializable, Comparable<Docente>{
 	}
 	public String getPagweb() {
 		return pagweb;
+	}
+	public Map<String, Diciplina> getDiciplinas(){
+		return dic;
+	}
+	public Map<Integer, Atividade> getAtividades() {
+		return atv;
 	}
 	
 	public int contaDiciplinas() {
@@ -99,13 +105,13 @@ public class Docente implements Serializable, Comparable<Docente>{
     	double media=0, cont=0;
     	
     	for(Integer i : atv.keySet()) {
-    		for(Long j : atv.get(i).avaliacao.keySet()) {
+    		for(Long j : atv.get(i).getAvaliacao().keySet()) {
     			cont++;
     			double aux=0;
-    			if(atv.get(i).avaliacao.get(j)>10)
-    				aux=atv.get(i).avaliacao.get(j)/10;
+    			if(atv.get(i).getAvaliacao().get(j)>10)
+    				aux=atv.get(i).getAvaliacao().get(j)/10;
     			else
-    				aux=atv.get(i).avaliacao.get(j);
+    				aux=atv.get(i).getAvaliacao().get(j);
     			media+=aux;
     		}
     	}

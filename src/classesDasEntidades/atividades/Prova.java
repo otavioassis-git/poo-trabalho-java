@@ -1,7 +1,6 @@
 package classesDasEntidades.atividades;
 
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Date;
 
 public class Prova extends Atividade implements Comparable<Prova>{
@@ -15,10 +14,6 @@ public class Prova extends Atividade implements Comparable<Prova>{
 		conteudo = c;
 	}
 	
-	public String getConteudo() {
-		return conteudo;
-	}
-
 	@Override
 	public double getcHoraria() {
 		return 2;

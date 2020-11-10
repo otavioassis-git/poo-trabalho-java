@@ -12,12 +12,12 @@ public class Aula extends Atividade {
 		data = df.parse(d);
 	}
 
+	public Date getData() {
+		return data;
+	}
+	
 	@Override
 	public double getcHoraria() {
 		return 2;
-	}
-
-	public Date getData() {
-		return data;
 	}
 }

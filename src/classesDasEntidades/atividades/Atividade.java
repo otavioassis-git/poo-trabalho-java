@@ -9,13 +9,16 @@ public abstract class Atividade implements Serializable{
 	protected DateFormat df = new SimpleDateFormat ("dd/MM/yyyy HH:mm");
 	protected String nome;
     protected boolean sinc;
-    public Map<Long, Double> avaliacao = new HashMap<>(); //<matricula do estudante, avaliacao dele>
+    private Map<Long, Double> avaliacao = new HashMap<>(); //<matricula do estudante, avaliacao dele>
  
     public String getNome() {
 		return nome;
 	}
 	public boolean isSinc() {
 		return sinc;
+	}
+	public Map<Long, Double> getAvaliacao(){
+		return avaliacao;
 	}
 	
 	Atividade(){}

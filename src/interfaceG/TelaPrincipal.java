@@ -78,6 +78,7 @@ public class TelaPrincipal extends JFrame {
 		for(int i=0;i<teste.length;i++) {
 			teste[i]=false;
 		}
+		
 		for(int i=0;i<args.length;i++) {
 			if(args[i].equals("--read-only")){
 				iteste=1;
@@ -190,9 +191,9 @@ public class TelaPrincipal extends JFrame {
 				out.writeObject(docentes);
 				out.writeObject(atividades);
 			} catch (IOException e) {
-				System.out.println("Erro ao serializar o arquivo!");
+				System.out.println("Erro de I/O");
 			}
-			System.out.println("Arquivo serializado!");
+			System.out.println("Arquivo dados.dat serializado!");
 			System.exit(0);
 		}
 		else if(iteste == 2){
@@ -203,7 +204,7 @@ public class TelaPrincipal extends JFrame {
 				docentes = (Map<String, Docente>)in.readObject();
 				atividades = (Map<Integer, Atividade>)in.readObject();
 			} catch (IOException e) {
-				System.out.println("Erro na leitura do arquivo!");
+				System.out.println("Erro de I/O");
 			} catch (ClassNotFoundException e) {
 				System.out.println("Erro na leitura das entidades!");
 			}
@@ -216,7 +217,7 @@ public class TelaPrincipal extends JFrame {
 				Arquivo.writeEstDisciplinasDocente(diciplinas);
 			}
 			catch(IOException e) {
-				System.out.println("Erro na gravacao dos arquivos!");
+				System.out.println("Erro de I/O");
 			}
 			System.out.println("Arquivos gravados!");
 			System.exit(0);
@@ -484,8 +485,8 @@ public class TelaPrincipal extends JFrame {
 					}
 					else {
 						diciplinas.put(codigo, new Diciplina(txt_diciplina_nome_cad.getText(), codigo, docentes.get(login), periodos.get(periodo)));
-						docentes.get(login).dic.put(codigo, diciplinas.get(codigo));
-						periodos.get(periodo).dic.put(codigo, diciplinas.get(codigo));
+						docentes.get(login).getDiciplinas().put(codigo, diciplinas.get(codigo));
+						periodos.get(periodo).getDiciplinas().put(codigo, diciplinas.get(codigo));
 						
 						JOptionPane.showMessageDialog(rootPane, "Diciplina cadastrada");
 					}
@@ -546,13 +547,13 @@ public class TelaPrincipal extends JFrame {
 						JOptionPane.showMessageDialog(rootPane, "Disciplina inexistente!\nLeia o terminal para mais info", "Erro", JOptionPane.ERROR_MESSAGE);
 						throw new IllegalArgumentException("Disciplina inexistente!");
 					}
-					else if(diciplinas.get(codigo).est.containsKey(matricula) || estudantes.get(matricula).dic.containsKey(codigo)) {
+					else if(diciplinas.get(codigo).getEstudantes().containsKey(matricula) || estudantes.get(matricula).getDiciplinas().containsKey(codigo)) {
 						JOptionPane.showMessageDialog(rootPane, "Estudante ja matriculado na disciplina!\nLeia o terminal para mais info", "Erro", JOptionPane.ERROR_MESSAGE);
 						throw new IllegalArgumentException("Estudante ja matriculado!");
 					}
 					else {
-						diciplinas.get(codigo).est.put(matricula, estudantes.get(matricula));
-						estudantes.get(matricula).dic.put(codigo, diciplinas.get(codigo));
+						diciplinas.get(codigo).getEstudantes().put(matricula, estudantes.get(matricula));
+						estudantes.get(matricula).getDiciplinas().put(codigo, diciplinas.get(codigo));
 						JOptionPane.showMessageDialog(rootPane, "Estudante Matriculado");
 					}
 				}
@@ -610,8 +611,8 @@ public class TelaPrincipal extends JFrame {
 					}
 					else {
 						System.out.println("Estudantes matriculados em "+codigo+" "+diciplinas.get(codigo).getNome());
-						for (Long i : diciplinas.get(codigo).est.keySet()) {
-							System.out.println(i+" "+diciplinas.get(codigo).est.get(i).getNome());
+						for (Long i : diciplinas.get(codigo).getEstudantes().keySet()) {
+							System.out.println(i+" "+diciplinas.get(codigo).getEstudantes().get(i).getNome());
 						}
 						System.out.println();
 					}
@@ -839,24 +840,24 @@ public class TelaPrincipal extends JFrame {
 					}
 					else if(rb_aula.isSelected()) {
 						atividades.put(seq, new Aula(txt_atividades_nome.getText(), true, txt_atividades_aula_data.getText(), txt_atividades_aula_hora.getText()));
-						diciplinas.get(cod).atv.put(seq, atividades.get(seq));
-						diciplinas.get(cod).getDoc().atv.put(seq, atividades.get(seq));
+						diciplinas.get(cod).getAtividades().put(seq, atividades.get(seq));
+						diciplinas.get(cod).getDoc().getAtividades().put(seq, atividades.get(seq));
 						JOptionPane.showMessageDialog(rootPane, "Atividade Cadastrada");
 					}else if(rb_estudo.isSelected()) {
 						atividades.put(seq, new Estudo(txt_atividades_nome.getText(), false, txt_atividades_estudo_url.getText()));
-						diciplinas.get(cod).atv.put(seq, atividades.get(seq));
-						diciplinas.get(cod).getDoc().atv.put(seq, atividades.get(seq));
+						diciplinas.get(cod).getAtividades().put(seq, atividades.get(seq));
+						diciplinas.get(cod).getDoc().getAtividades().put(seq, atividades.get(seq));
 						JOptionPane.showMessageDialog(rootPane, "Atividade Cadastrada");
 					}else if(rb_trabalho.isSelected()) {
 						atividades.put(seq, new Trabalho(txt_atividades_nome.getText(), false, txt_atividades_trabalho_prazo.getText(), Integer.parseInt(txt_atividades_trabalho_numero.getText()), 
 								Double.parseDouble(txt_atividades_trabalho_ch.getText())));
-						diciplinas.get(cod).atv.put(seq, atividades.get(seq));
-						diciplinas.get(cod).getDoc().atv.put(seq, atividades.get(seq));
+						diciplinas.get(cod).getAtividades().put(seq, atividades.get(seq));
+						diciplinas.get(cod).getDoc().getAtividades().put(seq, atividades.get(seq));
 						JOptionPane.showMessageDialog(rootPane, "Atividade Cadastrada");
 					}else if(rb_prova.isSelected()) {
 						atividades.put(seq, new Prova(txt_atividades_nome.getText(), true, txt_atividades_provas_data.getText(), txt_atividades_provas_hora.getText(), txt_atividades_prova_conteudo.getText()));
-						diciplinas.get(cod).atv.put(seq, atividades.get(seq));
-						diciplinas.get(cod).getDoc().atv.put(seq, atividades.get(seq));
+						diciplinas.get(cod).getAtividades().put(seq, atividades.get(seq));
+						diciplinas.get(cod).getDoc().getAtividades().put(seq, atividades.get(seq));
 						JOptionPane.showMessageDialog(rootPane, "Atividade Cadastrada");
 					}
 				} catch (ParseException e) { //nunca acontecera devido a formatacao do campo de digitacao, coloquei so pra conseguir compilar sem erro!!!
@@ -951,12 +952,12 @@ public class TelaPrincipal extends JFrame {
 						JOptionPane.showMessageDialog(rootPane, "Estudante inexistente!", "Erro", JOptionPane.ERROR_MESSAGE);
 						throw new IllegalArgumentException("Estudante inexistente!");
 					}
-					else if(!diciplinas.get(cod).atv.containsKey(seq)) {
+					else if(!diciplinas.get(cod).getAtividades().containsKey(seq)) {
 						JOptionPane.showMessageDialog(rootPane, "Disciplina nao contem atividade com sequencial digitado!", "Erro", JOptionPane.ERROR_MESSAGE);
 						throw new IllegalArgumentException("Disciplina nao contem atividade com sequencial digitado!");
 					}
 					else {
-						diciplinas.get(cod).atv.get(seq).avaliacao.put(mat, Double.parseDouble(txt_avaliacao_nota.getText()));
+						diciplinas.get(cod).getAtividades().get(seq).getAvaliacao().put(mat, Double.parseDouble(txt_avaliacao_nota.getText()));
 						JOptionPane.showMessageDialog(rootPane, "Avaliacao submetida");
 					}
 				}
@@ -1001,16 +1002,16 @@ public class TelaPrincipal extends JFrame {
 					else {
 						int numAtv=0, i=0;
 						ArrayList <Diciplina> dicaux = new ArrayList<>();
-						for(String s : periodos.get(as).dic.keySet()) {
-							dicaux.add(periodos.get(as).dic.get(s));
+						for(String s : periodos.get(as).getDiciplinas().keySet()) {
+							dicaux.add(periodos.get(as).getDiciplinas().get(s));
 						}
 						Diciplina.sortNome(dicaux);
 						System.out.println("Relatorio Periodo Academico "+as);
-						for(String s : periodos.get(as).dic.keySet()) {
-							numAtv+=periodos.get(as).dic.get(s).atv.size();
+						for(String s : periodos.get(as).getDiciplinas().keySet()) {
+							numAtv+=periodos.get(as).getDiciplinas().get(s).getAtividades().size();
 							
 							System.out.println(dicaux.get(i).getCodigo()+" "+dicaux.get(i).getNome()+" | Docente responsavel: "+dicaux.get(i).getDoc().getNome()+" - "+dicaux.get(i).getDoc().getLogin()+
-									" | Nm de Estudantes Matriculados: "+dicaux.get(i).est.size()+" | Nm de Atividades: "+numAtv);
+									" | Nm de Estudantes Matriculados: "+dicaux.get(i).getEstudantes().size()+" | Nm de Atividades: "+numAtv);
 							numAtv=0;
 							i++;
 						}
@@ -1109,8 +1110,8 @@ public class TelaPrincipal extends JFrame {
 					else {
 						ArrayList<Periodo> peraux = new ArrayList<>();
 						
-						for(String s : docentes.get(log).dic.keySet()) {
-							peraux.add(docentes.get(log).dic.get(s).getPer());
+						for(String s : docentes.get(log).getDiciplinas().keySet()) {
+							peraux.add(docentes.get(log).getDiciplinas().get(s).getPer());
 						}
 						
 						System.out.println("Estatisticas das Diciplinas do Docente "+docentes.get(log).getLogin()+" - "+docentes.get(log).getNome()+": ");
@@ -1121,23 +1122,23 @@ public class TelaPrincipal extends JFrame {
 								j=0;
 							}
 							ArrayList<Diciplina> dicaux = new ArrayList<>();
-							for(String s : peraux.get(i).dic.keySet()) {
-								dicaux.add(peraux.get(i).dic.get(s));
+							for(String s : peraux.get(i).getDiciplinas().keySet()) {
+								dicaux.add(peraux.get(i).getDiciplinas().get(s));
 							}
 							Diciplina.sortNome(dicaux);
 							
 							
 							System.out.println(peraux.get(i).getAnoSemestre()+" - "+dicaux.get(j).getCodigo()+" "+dicaux.get(j).getNome()+" | Nm de Atividades: "+
-									dicaux.get(j).atv.size()+" | Percentual de Ativiaddes Sincronas: "+dicaux.get(j).percentualAtividadeSincrona()+"% | Carga Horaria: "+dicaux.get(j).calculaCargaHoraria());
+									dicaux.get(j).getAtividades().size()+" | Percentual de Ativiaddes Sincronas: "+dicaux.get(j).percentualAtividadeSincrona()+"% | Carga Horaria: "+dicaux.get(j).calculaCargaHoraria());
 							System.out.println("	Atividades Avaliativas da Disciplina:");
 							ArrayList<Trabalho> trabaux = new ArrayList<>();
 							ArrayList<Prova> provaux = new ArrayList<>();
-							for(Integer k : dicaux.get(j).atv.keySet()) {
-								if (dicaux.get(j).atv.get(k).getClass() == Trabalho.class) {
-									trabaux.add((Trabalho) dicaux.get(j).atv.get(k));
+							for(Integer k : dicaux.get(j).getAtividades().keySet()) {
+								if (dicaux.get(j).getAtividades().get(k).getClass() == Trabalho.class) {
+									trabaux.add((Trabalho) dicaux.get(j).getAtividades().get(k));
 								}
-								else if(dicaux.get(j).atv.get(k).getClass() == Prova.class) {
-									provaux.add((Prova) dicaux.get(j).atv.get(k));
+								else if(dicaux.get(j).getAtividades().get(k).getClass() == Prova.class) {
+									provaux.add((Prova) dicaux.get(j).getAtividades().get(k));
 								}
 							}
 							Collections.sort(trabaux);

@@ -6,7 +6,7 @@ import java.util.*;
 public class Estudante implements Serializable, Comparable<Estudante>{
     private long matricula;
 	private String nome;
-	public Map<String, Diciplina> dic = new HashMap<>();
+	private Map<String, Diciplina> dic = new HashMap<>();
     
     public Estudante(long m, String n){
     	matricula = m;
@@ -19,7 +19,10 @@ public class Estudante implements Serializable, Comparable<Estudante>{
 	public String getNome() {
 		return nome;
 	}
-	
+	public Map<String, Diciplina> getDiciplinas() {
+		return dic;
+	}
+
 	public int contaDiciplina() {
     	int cont=0;
     	for(String s : dic.keySet()) {
@@ -49,8 +52,8 @@ public class Estudante implements Serializable, Comparable<Estudante>{
     	double cont=0;
     	
     	for(String s : dic.keySet()) {
-    		for(Integer i : dic.get(s).atv.keySet()) {
-    			if(dic.get(s).atv.get(i).avaliacao.get(this.matricula)!=null) {
+    		for(Integer i : dic.get(s).getAtividades().keySet()) {
+    			if(dic.get(s).getAtividades().get(i).getAvaliacao().get(this.matricula)!=null) {
     				cont++;
     			}
     		}
@@ -62,40 +65,38 @@ public class Estudante implements Serializable, Comparable<Estudante>{
     		return (cont/dic.size());
     }
     
-    public double mediaNotas() {
-    	double media=0, cont=0;
-    	
-    	for(String s : dic.keySet()) {
-    		for(Integer i : dic.get(s).atv.keySet()) {
-    			if(dic.get(s).atv.get(i).avaliacao.get(this.matricula)!=null) {
-    				cont++;
-    				double aux=0;
-    				if(dic.get(s).atv.get(i).avaliacao.get(this.matricula)>10)
-    					aux=dic.get(s).atv.get(i).avaliacao.get(this.matricula)/10;
-    				else
-    					aux=dic.get(s).atv.get(i).avaliacao.get(this.matricula);
-    				media+=aux;
-    			}
-    		}
-    	}
-    	
-    	if(cont == 0)
-    		return 0;
-    	else {
-    		return (media/cont);
-    	}
-    }
-    
     public Integer contaAvaliacoes() {
     	Integer cont=0;
     	for(String s : dic.keySet()) {
-    		for(Integer i : dic.get(s).atv.keySet()) {
-    			if(dic.get(s).atv.get(i).avaliacao.get(this.matricula)!=null) {
+    		for(Integer i : dic.get(s).getAtividades().keySet()) {
+    			if(dic.get(s).getAtividades().get(i).getAvaliacao().get(this.matricula)!=null) {
     				cont++;
     			}
     		}
     	}
     	return cont;
+    }
+    
+    public double mediaNotas() {
+    	double media=0;
+    	
+    	for(String s : dic.keySet()) {
+    		for(Integer i : dic.get(s).getAtividades().keySet()) {
+    			if(dic.get(s).getAtividades().get(i).getAvaliacao().get(this.matricula)!=null) {
+    				double aux=0;
+    				if(dic.get(s).getAtividades().get(i).getAvaliacao().get(this.matricula)>10)
+    					aux=dic.get(s).getAtividades().get(i).getAvaliacao().get(this.matricula)/10;
+    				else
+    					aux=dic.get(s).getAtividades().get(i).getAvaliacao().get(this.matricula);
+    				media+=aux;
+    			}
+    		}
+    	}
+    	
+    	if(this.contaAvaliacoes() == 0)
+    		return 0;
+    	else 
+    		return (media/this.contaAvaliacoes());
     }
 
 	@Override

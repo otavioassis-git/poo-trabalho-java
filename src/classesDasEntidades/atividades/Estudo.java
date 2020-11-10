@@ -1,7 +1,5 @@
 package classesDasEntidades.atividades;
 
-import java.util.Date;
-
 public class Estudo extends Atividade{
 	private String url;
 	

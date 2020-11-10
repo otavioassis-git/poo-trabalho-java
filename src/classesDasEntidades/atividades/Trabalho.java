@@ -1,7 +1,6 @@
 package classesDasEntidades.atividades;
 
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Date;
 
 public class Trabalho extends Atividade implements Comparable<Trabalho>{
@@ -16,18 +15,14 @@ public class Trabalho extends Atividade implements Comparable<Trabalho>{
 		nmPessoas = nm;
 		cHoraria = ch;
 	}
-
-	public int getNmPessoas() {
-		return nmPessoas;
+	
+	public Date getPrazo() {
+		return prazo;
 	}
 
 	@Override
 	public double getcHoraria() {
 		return cHoraria;
-	}
-
-	public Date getPrazo() {
-		return prazo;
 	}
 
 	@Override

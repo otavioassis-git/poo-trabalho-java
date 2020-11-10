@@ -30,6 +30,7 @@ import classesDasEntidades.atividades.*;
 public class Arquivo {
 	static NumberFormat nf = NumberFormat.getInstance(Locale.US);
 	static SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+	
 	public static Map<String, Periodo> readPeriodo(String path) throws FileNotFoundException {
 		FileReader arq = new FileReader(path);
 		Map<String, Periodo> periodos = new HashMap<>();
@@ -39,22 +40,19 @@ public class Arquivo {
 			while(linha!=null) {
 				String dados[] = linha.split(";");
 				String dadosf = dados[0]+"/"+dados[1];
-				Periodo aux = new Periodo(dadosf);
-				periodos.put(dadosf, aux);
+				periodos.put(dadosf, new Periodo(dadosf));
 				linha = lerarq.readLine();
 			}
 		} catch (IOException e) {
 			System.out.println("Erro na leitura do arquivo!");
 		}
-		
 		return periodos;
 	}
 	
 	public static Map<String, Docente> readDocente(String path) throws FileNotFoundException{
 		FileReader arq = new FileReader(path);
-		BufferedReader lerarq = new BufferedReader(arq);
 		Map<String, Docente> docentes = new HashMap<>();
-		try {
+		try (BufferedReader lerarq = new BufferedReader(arq)) {
 			lerarq.readLine();
 			String linha = lerarq.readLine();
 			while(linha!=null) {
@@ -69,7 +67,6 @@ public class Arquivo {
 				docentes.put(dados[0], aux);
 				linha = lerarq.readLine();
 			}
-			lerarq.close();
 		} catch (IOException e) {
 			System.out.println("Erro na leitura do arquivo!");
 		}
@@ -78,20 +75,18 @@ public class Arquivo {
 	
 	public static Map<String, Diciplina> readDiciplina(String path, Map<String, Periodo> periodos, Map<String, Docente> docentes) throws FileNotFoundException{
 		FileReader arq = new FileReader(path);
-		BufferedReader lerarq = new BufferedReader(arq);
 		Map<String, Diciplina> diciplinas = new HashMap<>();
-		try {
+		try (BufferedReader lerarq = new BufferedReader(arq);){
 			lerarq.readLine();
 			String linha = lerarq.readLine();
 			while(linha!=null) {
 				String dados[] = linha.split(";");
 				Diciplina aux = new Diciplina(dados[2], dados[1], docentes.get(dados[3]), periodos.get(dados[0]));
 				diciplinas.put(dados[1]+"-"+dados[0], aux);
-				periodos.get(dados[0]).dic.put(dados[1]+"-"+dados[0], diciplinas.get(dados[1]+"-"+dados[0]));
-				docentes.get(dados[3]).dic.put(dados[1]+"-"+dados[0], diciplinas.get(dados[1]+"-"+dados[0]));
+				periodos.get(dados[0]).getDiciplinas().put(dados[1]+"-"+dados[0], diciplinas.get(dados[1]+"-"+dados[0]));
+				docentes.get(dados[3]).getDiciplinas().put(dados[1]+"-"+dados[0], diciplinas.get(dados[1]+"-"+dados[0]));
 				linha = lerarq.readLine();
 			}
-			lerarq.close();
 		} catch (IOException e) {
 			System.out.println("Erro na leitura do arquivo!");
 		}
@@ -100,9 +95,8 @@ public class Arquivo {
 	
 	public static Map<Long, Estudante> readEstudante(String path) throws FileNotFoundException{
 		FileReader arq = new FileReader(path);
-		BufferedReader lerarq = new BufferedReader(arq);
 		Map<Long, Estudante> estudantes = new HashMap<>();
-		try {
+		try (BufferedReader lerarq = new BufferedReader(arq)) {
 			lerarq.readLine();
 			String linha = lerarq.readLine();
 			while(linha!=null) {
@@ -111,28 +105,24 @@ public class Arquivo {
 				estudantes.put(Long.parseLong(dados[0]), aux);
 				linha = lerarq.readLine();
 			}
-			lerarq.close();
 		} catch (IOException e) {
 			System.out.println("Erro na leitura do arquivo!");
 		}
-		
 		return estudantes;
 	}
 	
 	public static void readMatriculas(String path, Map<String, Diciplina> diciplinas, Map<Long, Estudante> estudantes) throws FileNotFoundException {
 		FileReader arq = new FileReader(path);
-		BufferedReader lerarq = new BufferedReader(arq);
-		try {
+		try (BufferedReader lerarq = new BufferedReader(arq)) {
 			lerarq.readLine();
 			String linha = lerarq.readLine();
 			while(linha!=null) {
 				String dados[] = linha.split(";");
 				Long mat = Long.parseLong(dados[1]);
-				diciplinas.get(dados[0]).est.put(mat, estudantes.get(mat));
-				estudantes.get(mat).dic.put(dados[0], diciplinas.get(dados[0]));
+				diciplinas.get(dados[0]).getEstudantes().put(mat, estudantes.get(mat));
+				estudantes.get(mat).getDiciplinas().put(dados[0], diciplinas.get(dados[0]));
 				linha = lerarq.readLine();
 			}
-			lerarq.close();
 		} catch (IOException e) {
 			System.out.println("Erro na leitura do arquivo!");
 		}
@@ -140,9 +130,8 @@ public class Arquivo {
 	
 	public static Map<Integer, Atividade> readAtividade(String path, Map<String, Periodo> periodos, Map<String, Diciplina> diciplinas) throws FileNotFoundException, ParseException{
 		FileReader arq = new FileReader(path);
-		BufferedReader lerarq = new BufferedReader(arq);
 		Map<Integer, Atividade> atividades = new HashMap<>();
-		try {
+		try (BufferedReader lerarq = new BufferedReader(arq)) {
 			lerarq.readLine();
 			String linha = lerarq.readLine();
 			while(linha!=null) {
@@ -151,30 +140,29 @@ public class Arquivo {
 				if(dados[2].equals("A")) {
 					seq+=atividades.size();
 					atividades.put(seq, new Aula(dados[1], true, dados[3], dados[4]));
-					diciplinas.get(dados[0]).atv.put(seq, atividades.get(seq));
-					diciplinas.get(dados[0]).getDoc().atv.put(seq, atividades.get(seq));
+					diciplinas.get(dados[0]).getAtividades().put(seq, atividades.get(seq));
+					diciplinas.get(dados[0]).getDoc().getAtividades().put(seq, atividades.get(seq));
 				}
 				else if(dados[2].equals("E")) {
 					seq+=atividades.size();
 					atividades.put(seq, new Estudo(dados[1], false, dados[5]));
-					diciplinas.get(dados[0]).atv.put(seq, atividades.get(seq));
-					diciplinas.get(dados[0]).getDoc().atv.put(seq, atividades.get(seq));
+					diciplinas.get(dados[0]).getAtividades().put(seq, atividades.get(seq));
+					diciplinas.get(dados[0]).getDoc().getAtividades().put(seq, atividades.get(seq));
 				}
 				else if(dados[2].equals("T")) {
 					seq+=atividades.size();
 					atividades.put(seq, new Trabalho(dados[1], false, dados[3], Integer.parseInt(dados[6]), Double.parseDouble(dados[7])));
-					diciplinas.get(dados[0]).atv.put(seq, atividades.get(seq));
-					diciplinas.get(dados[0]).getDoc().atv.put(seq, atividades.get(seq));
+					diciplinas.get(dados[0]).getAtividades().put(seq, atividades.get(seq));
+					diciplinas.get(dados[0]).getDoc().getAtividades().put(seq, atividades.get(seq));
 				}
 				else if(dados[2].equals("P")) {
 					seq+=atividades.size();
 					atividades.put(seq, new Prova(dados[0], true, dados[3], dados[4], dados[5]));
-					diciplinas.get(dados[0]).atv.put(seq, atividades.get(seq));
-					diciplinas.get(dados[0]).getDoc().atv.put(seq, atividades.get(seq));
+					diciplinas.get(dados[0]).getAtividades().put(seq, atividades.get(seq));
+					diciplinas.get(dados[0]).getDoc().getAtividades().put(seq, atividades.get(seq));
 				}
 				linha = lerarq.readLine();
 			}
-			lerarq.close();
 		} catch (IOException e) {
 			System.out.println("Erro na leitura do arquivo!");
 		}
@@ -183,17 +171,15 @@ public class Arquivo {
 	
 	public static void readAvaliacao(String path, Map<String, Diciplina> diciplinas) throws FileNotFoundException, ParseException{
 		FileReader arq = new FileReader(path);
-		BufferedReader lerarq = new BufferedReader(arq);
-		try {
+		try (BufferedReader lerarq = new BufferedReader(arq)) {
 			lerarq.readLine();
 			String linha = lerarq.readLine();
 			while(linha!=null) {
 				String dados[] = linha.split(";");
 				Number number = nf.parse(dados[3]);
-				diciplinas.get(dados[0]).atv.get(Integer.parseInt(dados[2])).avaliacao.put(Long.parseLong(dados[1]), number.doubleValue());
+				diciplinas.get(dados[0]).getAtividades().get(Integer.parseInt(dados[2])).getAvaliacao().put(Long.parseLong(dados[1]), number.doubleValue());
 				linha = lerarq.readLine();
 			}
-			lerarq.close();
 		} catch (IOException e) {
 			System.out.println("Erro na leitura do arquivo!");
 		}
@@ -210,13 +196,13 @@ public class Arquivo {
 		Collections.sort(peraux);
 		for(int i=0;i<peraux.size();i++) {
 			ArrayList<Diciplina> dicaux = new ArrayList<>();
-			for(String s : peraux.get(i).dic.keySet()) {
-				dicaux.add(peraux.get(i).dic.get(s));
+			for(String s : peraux.get(i).getDiciplinas().keySet()) {
+				dicaux.add(peraux.get(i).getDiciplinas().get(s));
 			}
 			Diciplina.sortNome(dicaux);
 			for(int j=0;j<dicaux.size();j++) {
 				escrevearq.println(peraux.get(i).getAnoSemestre()+";"+dicaux.get(j).getCodigo()+";"+dicaux.get(j).getNome()+";"+dicaux.get(j).getDoc().getNome()+";"+
-						dicaux.get(j).getDoc().getLogin()+";"+dicaux.get(j).est.size()+";"+dicaux.get(j).atv.size());
+						dicaux.get(j).getDoc().getLogin()+";"+dicaux.get(j).getEstudantes().size()+";"+dicaux.get(j).getAtividades().size());
 			}
 		}
 		escrevearq.close();
@@ -232,10 +218,9 @@ public class Arquivo {
 		escrevearq.println("Docente;Qtd. Disciplinas;Qtd. Períodos;Média Atividades/Disciplina;% Síncronas;% Assíncronas;Média de Notas");
 		Collections.sort(docaux);
 		for(int i=0;i<docaux.size();i++) {
-			escrevearq.printf("%s;%d;%d;%.1f;%.0f%%;", docaux.get(i).getNome(), docaux.get(i).dic.size(), docaux.get(i).contaPeriodos(), docaux.get(i).mediaAtividadesPorDiciplina(), docaux.get(i).percentualAtividadesSincronas());
+			escrevearq.printf("%s;%d;%d;%.1f;%.0f%%;", docaux.get(i).getNome(), docaux.get(i).getDiciplinas().size(), docaux.get(i).contaPeriodos(), docaux.get(i).mediaAtividadesPorDiciplina(), docaux.get(i).percentualAtividadesSincronas());
 			escrevearq.printf("%.0f%%;%.1f\n",docaux.get(i).percentualAtividadesAssincronas(), docaux.get(i).mediaNotasRecebidas());
 		}
-		
 		escrevearq.close();
 	}
 	
@@ -247,13 +232,10 @@ public class Arquivo {
 			estaux.add(estudantes.get(i));
 		}
 		escrevearq.println("Matrícula;Nome;Média Disciplinas/Período;Média Avaliações/Disciplina;Média Notas Avaliações");	
-		
 		Collections.sort(estaux);
-		
 		for(int i=0;i<estaux.size();i++) {
 			escrevearq.printf("%d;%s;%.1f;%.1f;%.1f\n", estaux.get(i).getMatricula(), estaux.get(i).getNome(), estaux.get(i).mediaDiciplinasPorPeriodo(), estaux.get(i).mediaAvaliacoes(), estaux.get(i).mediaNotas());
 		}
-		
 		escrevearq.close();
 	}
 	
@@ -264,48 +246,29 @@ public class Arquivo {
 		for(String s : diciplinas.keySet()) {
 			dicaux.add(diciplinas.get(s));
 		}
-		escrevearq.println("Docente;Período;Código;Nome;Qtd. Atividades;% Síncronas;% Assíncronas;CH;Datas Avaliações");	
-		
+		escrevearq.println("Docente;Período;Código;Nome;Qtd. Atividades;% Síncronas;% Assíncronas;CH;Datas Avaliações");
 		Collections.sort(dicaux);	
 		for(int j=0;j<dicaux.size();j++) {
 			String datasf = new String();
 			double choraria = 0;
-			for(Integer s : dicaux.get(j).atv.keySet()) {
+			for(Integer s : dicaux.get(j).getAtividades().keySet()) {
 				ArrayList<Date> datas = new ArrayList<>();
-				if(dicaux.get(j).atv.get(s).getClass() == Trabalho.class) {
-					datas.add(((Trabalho) dicaux.get(j).atv.get(s)).getPrazo());
+				if(dicaux.get(j).getAtividades().get(s).getClass() == Trabalho.class) {
+					datas.add(((Trabalho) dicaux.get(j).getAtividades().get(s)).getPrazo());
 				}
-				else if(dicaux.get(j).atv.get(s).getClass() == Prova.class) {
-					datas.add(((Prova) dicaux.get(j).atv.get(s)).getData());
+				else if(dicaux.get(j).getAtividades().get(s).getClass() == Prova.class) {
+					datas.add(((Prova) dicaux.get(j).getAtividades().get(s)).getData());
 				}
-				Arquivo.sortDatas(datas);
-				for(int k=0;k<datas.size();k++) {
-						
+				Collections.sort(datas);
+				for(int k=0;k<datas.size();k++) {	
 					datasf+=df.format(datas.get(k))+" ";
 				}
-				choraria+=dicaux.get(j).atv.get(s).getcHoraria();
+				choraria+=dicaux.get(j).getAtividades().get(s).getcHoraria();
 			}
-			escrevearq.printf("%s;%s;%s;%s;%d;%.0f%%;%.0f%%;%.0f;%s\n", dicaux.get(j).getDoc().getLogin(), dicaux.get(j).getPer().getAnoSemestre(), dicaux.get(j).getCodigo(), dicaux.get(j).getNome(), dicaux.get(j).atv.size(),
-					dicaux.get(j).percentualAtividadeSincrona(), dicaux.get(j).percentualAtividadeAssincrona(), choraria, datasf);
+			escrevearq.printf("%s;%s;%s;%s;%d;%.0f%%;%.0f%%;%.0f;%s\n", dicaux.get(j).getDoc().getLogin(), dicaux.get(j).getPer().getAnoSemestre(), dicaux.get(j).getCodigo(), dicaux.get(j).getNome(), 
+					dicaux.get(j).getAtividades().size(), dicaux.get(j).percentualAtividadeSincrona(), dicaux.get(j).percentualAtividadeAssincrona(), choraria, datasf);
 		}
 		
 		escrevearq.close();
-	}
-	
-	public static void sortDatas(ArrayList<Date> d) {
-		Date aux;
-		for(int i=0;i<d.size();i++) {
-			for(int j=i;j<d.size();j++) {
-				if(d.get(i).compareTo(d.get(j)) > 0) {
-					aux = d.get(i);
-					d.set(i, d.get(j));
-					d.set(j, aux);
-				}
-			}
-		}
-	}
-	
-	public static void leituraArgumentos(String[] args, Map<String, Periodo> periodos, Map<Long, Estudante> estudantes, Map<String, Docente> docentes, Map<String, Diciplina> diciplinas, Map<Integer, Atividade> atividades) {
-		
 	}
 }

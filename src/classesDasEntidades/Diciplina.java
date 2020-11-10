@@ -1,7 +1,6 @@
 package classesDasEntidades;
 
 import java.io.Serializable;
-import java.text.Collator;
 import java.util.*;
 
 import classesDasEntidades.atividades.Atividade;
@@ -11,8 +10,8 @@ public class Diciplina implements Serializable, Comparable<Diciplina> {
     private String codigo;
     private Docente doc;
     private Periodo per;
-    public Map<Long, Estudante> est = new HashMap<>();
-    public Map<Integer, Atividade> atv = new HashMap<>();
+    private Map<Long, Estudante> est = new HashMap<>();
+    private Map<Integer, Atividade> atv = new HashMap<>();
     
     public Diciplina(String n, String c, Docente d, Periodo p){
     	nome = n;
@@ -33,9 +32,15 @@ public class Diciplina implements Serializable, Comparable<Diciplina> {
 	public String getCodigo() {
 		return codigo;
 	}
+	public Map<Long, Estudante> getEstudantes(){
+		return est;
+	}
+	public Map<Integer, Atividade> getAtividades(){
+		return atv;
+	}
 	
 	public double percentualAtividadeSincrona() {
-    	double cont=0, cont2=0;
+    	double cont=0;
     	
     	for(Integer i : atv.keySet()) {
     		if(atv.get(i).isSinc()) {
@@ -43,29 +48,25 @@ public class Diciplina implements Serializable, Comparable<Diciplina> {
     		}
     	}
     	
-    	cont2+=atv.size();
-    	
-    	if(cont2 == 0)
+    	if(atv.size() == 0)
     		return 0;
     	else 
-    		return (cont/cont2)*100;
+    		return (cont/(double)atv.size())*100;
     }
 	
 	public double percentualAtividadeAssincrona() {
-    	double cont=0, cont2=0;
+		double cont=0;
     	
     	for(Integer i : atv.keySet()) {
-    		if(!atv.get(i).isSinc()) {
+    		if(atv.get(i).isSinc()) {
     			cont++;
     		}
     	}
     	
-    	cont2+=atv.size();
-    	
-    	if(cont2 == 0)
+    	if(atv.size() == 0)
     		return 0;
     	else 
-    		return (cont/cont2)*100;
+    		return (cont/(double)atv.size())*100;
     }
 
 	public double calculaCargaHoraria() {
