@@ -58,7 +58,7 @@ public class Diciplina implements Serializable, Comparable<Diciplina> {
 		double cont=0;
     	
     	for(Integer i : atv.keySet()) {
-    		if(atv.get(i).isSinc()) {
+    		if(!atv.get(i).isSinc()) {
     			cont++;
     		}
     	}

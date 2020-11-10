@@ -150,7 +150,7 @@ public class Arquivo {
 				throw new IllegalArgumentException("Referência inválida: "+mat+".");
 			}
 			if(diciplinas.get(dados[0]).getEstudantes().containsKey(mat)) {
-				throw new IllegalArgumentException("Matr�cula repetida: "+mat+" em "+dados[0]+".");
+				throw new IllegalArgumentException("Matrícula repetida: "+mat+" em "+dados[0]+".");
 			}
 			diciplinas.get(dados[0]).getEstudantes().put(mat, estudantes.get(mat));
 			estudantes.get(mat).getDiciplinas().put(dados[0], diciplinas.get(dados[0]));
@@ -267,7 +267,7 @@ public class Arquivo {
 			Diciplina.sortNome(dicaux);
 			for(int j=0;j<dicaux.size();j++) {
 				escrevearq.println(peraux.get(i).getAnoSemestre()+";"+dicaux.get(j).getCodigo()+";"+dicaux.get(j).getNome()+";"+dicaux.get(j).getDoc().getNome()+";"+
-						dicaux.get(j).getDoc().getLogin()+";"+dicaux.get(j).getEstudantes().size()+";"+dicaux.get(j).getAtividades().size());
+						dicaux.get(j).getDoc().getLogin()+"@ufes.br;"+dicaux.get(j).getEstudantes().size()+";"+dicaux.get(j).getAtividades().size());
 			}
 		}
 		escrevearq.close();
