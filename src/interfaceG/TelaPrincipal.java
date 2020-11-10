@@ -75,6 +75,7 @@ public class TelaPrincipal extends JFrame {
 		Locale.setDefault(new Locale("pt", "BR"));
 		boolean[] teste = new boolean[7];
 		int iteste=0;
+		int iteste2=0;
 		for(int i=0;i<teste.length;i++) {
 			teste[i]=false;
 		}
@@ -85,20 +86,34 @@ public class TelaPrincipal extends JFrame {
 			if(args[i].equals("--write-only")){
 				iteste=2;
 			}
-			if(args[i].equals("-p"))
+			if(args[i].equals("-p")) {
 				teste[0] = true;
-			if(args[i].equals("-d"))
+				iteste2=1;
+			}
+			if(args[i].equals("-d")) {
 				teste[1] = true;
-			if(args[i].equals("-o"))
+				iteste2=1;
+			}
+			if(args[i].equals("-o")) {
 				teste[2] = true;
-			if(args[i].equals("-e"))
+				iteste2=1;
+			}
+			if(args[i].equals("-e")) {
 				teste[3] = true;
-			if(args[i].equals("-m"))
+				iteste2=1;
+			}
+			if(args[i].equals("-m")) {
 				teste[4] = true;
-			if(args[i].equals("-a"))
+				iteste2=1;
+			}
+			if(args[i].equals("-a")) {
 				teste[5] = true;
-			if(args[i].equals("-n"))
+				iteste2=1;
+			}
+			if(args[i].equals("-n")) {
 				teste[6] = true;
+				iteste2=1;
+			}
 		}
 		
 		if(iteste == 1) {
@@ -165,7 +180,7 @@ public class TelaPrincipal extends JFrame {
 				System.out.print(e.getMessage());
 			}
 			catch(IOException e) {
-				e.printStackTrace();
+				//e.printStackTrace();
 				System.out.println("Erro de I/O");
 			}
 			System.exit(0);
@@ -187,6 +202,73 @@ public class TelaPrincipal extends JFrame {
 				System.out.println("Erro de I/O");
 			}
 			System.exit(0);
+		}
+		else if(iteste == 0 && iteste2 == 1) {
+			try {
+				if(teste[0]) {
+					for(int i=0;i<args.length;i++) {
+						if(args[i].equals("-p")) {
+							periodos = Arquivo.readPeriodo(args[i+1]);
+						}
+					}
+				}
+				if(teste[1]) {
+					for(int i=0;i<args.length;i++) {
+						if(args[i].equals("-d")) {
+							docentes = Arquivo.readDocente(args[i+1]);
+						}
+					}
+				}
+				if(teste[2]) {
+					for(int i=0;i<args.length;i++) {
+						if(args[i].equals("-o")) {
+							diciplinas = Arquivo.readDiciplina(args[i+1], periodos, docentes);
+						}
+					}
+				}
+				if(teste[3]) {
+					for(int i=0;i<args.length;i++) {
+						if(args[i].equals("-e")) {
+							estudantes = Arquivo.readEstudante(args[i+1]);
+						}
+					}
+				}
+				if(teste[4]) {
+					for(int i=0;i<args.length;i++) {
+						if(args[i].equals("-m")) {
+							Arquivo.readMatriculas(args[i+1], diciplinas, estudantes);
+						}
+					}
+				}
+				if(teste[5]) {
+					for(int i=0;i<args.length;i++) {
+						if(args[i].equals("-a")) {
+							atividades = Arquivo.readAtividade(args[i+1], periodos, diciplinas);
+						}
+					}
+				}
+				if(teste[6]) {
+					for(int i=0;i<args.length;i++) {
+						if(args[i].equals("-n")) {
+							Arquivo.readAvaliacao(args[i+1], diciplinas);
+						}
+					}
+				}
+				
+				Arquivo.writeGeral(periodos);
+				Arquivo.writeEstEstudantes(estudantes);
+				Arquivo.writeEstDocentes(docentes);
+				Arquivo.writeEstDisciplinasDocente(diciplinas);
+				System.exit(0);
+			}
+			catch(IllegalArgumentException e) {
+				//e.printStackTrace();
+				System.out.print(e.getMessage());
+			}
+			catch(IOException e) {
+				//e.printStackTrace();
+				System.out.println("Erro de I/O");
+			}
 		}
 		
 		EventQueue.invokeLater(new Runnable() {

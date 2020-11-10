@@ -40,13 +40,13 @@ public class Arquivo {
 		while(linha!=null) {
 			String dados[] = linha.split(";");
 			if(dados[1].toCharArray().length > 1) {
-				throw new IllegalArgumentException("Dado inválido: "+dados[1]+".");
+				throw new IllegalArgumentException("Dado invÃ¡lido: "+dados[1]+".");
 			}
 			try {
 				Integer.parseInt(dados[0]);
 			}
 			catch (IllegalArgumentException e) {
-				throw new IllegalArgumentException("Dado inválido: "+dados[0]+".");
+				throw new IllegalArgumentException("Dado invÃ¡lido: "+dados[0]+".");
 			}
 			String dadosf = dados[0]+"/"+dados[1];
 			if(periodos.containsKey(dadosf)) {
@@ -93,10 +93,10 @@ public class Arquivo {
 		while(linha!=null) {
 			String dados[] = linha.split(";");
 			if(!docentes.containsKey(dados[3])) {
-				throw new IllegalArgumentException("Referência inválida: "+dados[3]+".");
+				throw new IllegalArgumentException("ReferÃªncia invÃ¡lida: "+dados[3]+".");
 			}
 			if(!periodos.containsKey(dados[0])) {
-				throw new IllegalArgumentException("Referência inválida: "+dados[0]+".");
+				throw new IllegalArgumentException("ReferÃªncia invÃ¡lida: "+dados[0]+".");
 			}
 			if(diciplinas.containsKey(dados[1]+"-"+dados[0])) {
 				throw new IllegalArgumentException("Cadastro repetido: "+dados[1]+"-"+dados[0]+".");
@@ -122,7 +122,7 @@ public class Arquivo {
 			try {
 				Long.parseLong(dados[0]);
 			}catch (IllegalArgumentException e) {
-				throw new IllegalArgumentException("Dado inválido: "+dados[0]+".");
+				throw new IllegalArgumentException("Dado invÃ¡lido: "+dados[0]+".");
 			}
 			if(estudantes.containsKey(Long.parseLong(dados[0]))) {
 				throw new IllegalArgumentException("Cadastro repetido: "+dados[0]+".");
@@ -144,13 +144,13 @@ public class Arquivo {
 			String dados[] = linha.split(";");
 			Long mat = Long.parseLong(dados[1]);
 			if(!diciplinas.containsKey(dados[0])) {
-				throw new IllegalArgumentException("Referência inválida: "+dados[0]+".");
+				throw new IllegalArgumentException("ReferÃªncia invÃ¡lida: "+dados[0]+".");
 			}
 			if(!estudantes.containsKey(mat)) {
-				throw new IllegalArgumentException("Referência inválida: "+mat+".");
+				throw new IllegalArgumentException("ReferÃªncia invÃ¡lida: "+mat+".");
 			}
 			if(diciplinas.get(dados[0]).getEstudantes().containsKey(mat)) {
-				throw new IllegalArgumentException("Matrícula repetida: "+mat+" em "+dados[0]+".");
+				throw new IllegalArgumentException("Matrï¿½cula repetida: "+mat+" em "+dados[0]+".");
 			}
 			diciplinas.get(dados[0]).getEstudantes().put(mat, estudantes.get(mat));
 			estudantes.get(mat).getDiciplinas().put(dados[0], diciplinas.get(dados[0]));
@@ -169,7 +169,7 @@ public class Arquivo {
 			int seq=1;
 			String dados[] = linha.split(";");
 			if(!diciplinas.containsKey(dados[0])) {
-				throw new IllegalArgumentException("Referência inválida: "+dados[0]+".");
+				throw new IllegalArgumentException("ReferÃªncia invÃ¡lida: "+dados[0]+".");
 			}
 			if(dados[2].equals("A")) {
 				seq+=atividades.size();
@@ -209,27 +209,27 @@ public class Arquivo {
 		while(linha!=null) {
 			String dados[] = linha.split(";");
 			if(!diciplinas.containsKey(dados[0])) {
-				throw new IllegalArgumentException("Referência inválida: "+dados[0]+".");
+				throw new IllegalArgumentException("ReferÃªncia invÃ¡lida: "+dados[0]+".");
 			}
 			try {
 				Integer.parseInt(dados[2]);
 			} catch (IllegalArgumentException e) {
-				throw new IllegalArgumentException("Dado inválido: "+dados[2]+".");
+				throw new IllegalArgumentException("Dado invÃ¡lido: "+dados[2]+".");
 			}
 			if(!diciplinas.get(dados[0]).getAtividades().containsKey(Integer.parseInt(dados[2])))
-				throw new IllegalArgumentException("Referência inválida: "+dados[2]+".");
+				throw new IllegalArgumentException("ReferÃªncia invÃ¡lida: "+dados[2]+".");
 			try {
 				Integer.parseInt(dados[2]);
 			} catch (IllegalArgumentException e) {
-				throw new IllegalArgumentException("Dado inválido: "+dados[2]+".");
+				throw new IllegalArgumentException("Dado invÃ¡lido: "+dados[2]+".");
 			}
 			try {
 				Long.parseLong(dados[1]);
 			} catch (IllegalArgumentException e) {
-				throw new IllegalArgumentException("Dado inválido: "+dados[1]+".");
+				throw new IllegalArgumentException("Dado invÃ¡lido: "+dados[1]+".");
 			}
 			if(diciplinas.get(dados[0]).getAtividades().get(Integer.parseInt(dados[2])).getAvaliacao().containsKey(Long.parseLong(dados[1]))) {
-				throw new IllegalArgumentException("Avaliação repetida: estudante "+dados[1]+" para atividade "+dados[2]+" de "+dados[0]+".");
+				throw new IllegalArgumentException("AvaliaÃ§Ã£o repetida: estudante "+dados[1]+" para atividade "+dados[2]+" de "+dados[0]+".");
 			}
 			
 			char[] aux = dados[3].toCharArray();
@@ -241,7 +241,7 @@ public class Arquivo {
 			try {
 				Double.parseDouble(dados[3]);
 			} catch (IllegalArgumentException e) {
-				throw new IllegalArgumentException("Dado inválido: "+dados[3]+".");
+				throw new IllegalArgumentException("Dado invÃ¡lido: "+dados[3]+".");
 			}
 			
 			diciplinas.get(dados[0]).getAtividades().get(Integer.parseInt(dados[2])).getAvaliacao().put(Long.parseLong(dados[1]), Double.parseDouble(dados[3]));
