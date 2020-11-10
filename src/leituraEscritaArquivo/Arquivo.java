@@ -328,6 +328,7 @@ public class Arquivo {
 				for(int k=0;k<datas.size();k++) {	
 					datasf+=df.format(datas.get(k))+" ";
 				}
+				datasf.trim();
 				choraria+=dicaux.get(j).getAtividades().get(s).getcHoraria();
 			}
 			escrevearq.printf("%s;%s;%s;%s;%d;%.0f%%;%.0f%%;%.0f;%s\n", dicaux.get(j).getDoc().getLogin(), dicaux.get(j).getPer().getAnoSemestre(), dicaux.get(j).getCodigo(), dicaux.get(j).getNome(), 
