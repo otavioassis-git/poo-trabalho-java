@@ -45,7 +45,7 @@ public class Estudante implements Serializable, Comparable<Estudante>{
     		}
     		ant = dic.get(s).getPer();
     	}
-    	return dic.size()/cont;
+    	return (double)dic.size()/cont;
     }
     
     public double mediaAvaliacoes() {
