@@ -159,38 +159,43 @@ public class Arquivo {
 		lerarq.close();
 	}
 	
-	public static Map<Integer, Atividade> readAtividade(String path, Map<String, Periodo> periodos, Map<String, Diciplina> diciplinas) throws IllegalArgumentException, IOException{
+	public static Map<String, Atividade> readAtividade(String path, Map<String, Periodo> periodos, Map<String, Diciplina> diciplinas) throws IllegalArgumentException, IOException{
 		FileReader arq = new FileReader(path);
-		Map<Integer, Atividade> atividades = new HashMap<>();
+		Map<String, Atividade> atividades = new HashMap<>();
 		BufferedReader lerarq = new BufferedReader(arq);
 		lerarq.readLine();
 		String linha = lerarq.readLine();
 		while(linha!=null) {
-			int seq=1;
+			int seqnum=1;
+			String seq = null;
 			String dados[] = linha.split(";");
 			if(!diciplinas.containsKey(dados[0])) {
 				throw new IllegalArgumentException("Referência inválida: "+dados[0]+".");
 			}
 			if(dados[2].equals("A")) {
-				seq+=diciplinas.get(dados[0]).getAtividadesSize();
+				seqnum=1+diciplinas.get(dados[0]).getAtividades().size();
+				seq = seqnum+dados[0];
 				atividades.put(seq, new Aula(dados[1], true, dados[3], dados[4]));
 				diciplinas.get(dados[0]).getAtividades().put(seq, atividades.get(seq));
 				diciplinas.get(dados[0]).getDoc().getAtividades().put(seq, atividades.get(seq));
 			}
 			else if(dados[2].equals("E")) {
-				seq+=diciplinas.get(dados[0]).getAtividadesSize();
+				seqnum=1+diciplinas.get(dados[0]).getAtividades().size();
+				seq = seqnum+dados[0];
 				atividades.put(seq, new Estudo(dados[1], false, dados[5]));
 				diciplinas.get(dados[0]).getAtividades().put(seq, atividades.get(seq));
 				diciplinas.get(dados[0]).getDoc().getAtividades().put(seq, atividades.get(seq));
 			}
 			else if(dados[2].equals("T")) {
-				seq+=diciplinas.get(dados[0]).getAtividadesSize();
+				seqnum=1+diciplinas.get(dados[0]).getAtividades().size();
+				seq = seqnum+dados[0];
 				atividades.put(seq, new Trabalho(dados[1], false, dados[3], Integer.parseInt(dados[6]), Double.parseDouble(dados[7])));
 				diciplinas.get(dados[0]).getAtividades().put(seq, atividades.get(seq));
 				diciplinas.get(dados[0]).getDoc().getAtividades().put(seq, atividades.get(seq));
 			}
 			else if(dados[2].equals("P")) {
-				seq+=diciplinas.get(dados[0]).getAtividadesSize();
+				seqnum=1+diciplinas.get(dados[0]).getAtividades().size();
+				seq = seqnum+dados[0];
 				atividades.put(seq, new Prova(dados[0], true, dados[3], dados[4], dados[5]));
 				diciplinas.get(dados[0]).getAtividades().put(seq, atividades.get(seq));
 				diciplinas.get(dados[0]).getDoc().getAtividades().put(seq, atividades.get(seq));
@@ -216,7 +221,8 @@ public class Arquivo {
 			} catch (IllegalArgumentException e) {
 				throw new IllegalArgumentException("Dado inválido: "+dados[2]+".");
 			}
-			if(!diciplinas.get(dados[0]).getAtividades().containsKey(Integer.parseInt(dados[2])))
+			String seq = dados[2]+dados[0];
+			if(!diciplinas.get(dados[0]).getAtividades().containsKey(seq))
 				throw new IllegalArgumentException("Referência inválida: "+dados[2]+".");
 			try {
 				Integer.parseInt(dados[2]);
@@ -228,7 +234,7 @@ public class Arquivo {
 			} catch (IllegalArgumentException e) {
 				throw new IllegalArgumentException("Dado inválido: "+dados[1]+".");
 			}
-			if(diciplinas.get(dados[0]).getAtividades().get(Integer.parseInt(dados[2])).getAvaliacao().containsKey(Long.parseLong(dados[1]))) {
+			if(diciplinas.get(dados[0]).getAtividades().get(seq).getAvaliacao().containsKey(Long.parseLong(dados[1]))) {
 				throw new IllegalArgumentException("Avaliação repetida: estudante "+dados[1]+" para atividade "+dados[2]+" de "+dados[0]+".");
 			}
 			
@@ -243,8 +249,7 @@ public class Arquivo {
 			} catch (IllegalArgumentException e) {
 				throw new IllegalArgumentException("Dado inválido: "+dados[3]+".");
 			}
-			
-			diciplinas.get(dados[0]).getAtividades().get(Integer.parseInt(dados[2])).getAvaliacao().put(Long.parseLong(dados[1]), Double.parseDouble(dados[3]));
+			diciplinas.get(dados[0]).getAtividades().get(seq).getAvaliacao().put(Long.parseLong(dados[1]), Double.parseDouble(dados[3]));
 			linha = lerarq.readLine();
 		}
 		lerarq.close();
@@ -316,7 +321,7 @@ public class Arquivo {
 		for(int j=0;j<dicaux.size();j++) {
 			String datasf = new String();
 			double choraria = 0;
-			for(Integer s : dicaux.get(j).getAtividades().keySet()) {
+			for(String s : dicaux.get(j).getAtividades().keySet()) {
 				ArrayList<Date> datas = new ArrayList<>();
 				if(dicaux.get(j).getAtividades().get(s).getClass() == Trabalho.class) {
 					datas.add(((Trabalho) dicaux.get(j).getAtividades().get(s)).getPrazo());

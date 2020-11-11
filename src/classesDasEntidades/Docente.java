@@ -12,7 +12,7 @@ public class Docente implements Serializable, Comparable<Docente>{
 	private String nome;
     private String pagweb;
     private Map<String, Diciplina> dic = new HashMap<>();
-    private Map<Integer, Atividade> atv = new HashMap<>();
+    private Map<String, Atividade> atv = new HashMap<>();
 
     public Docente(String l, String n, String p){
     	login = l;
@@ -32,7 +32,7 @@ public class Docente implements Serializable, Comparable<Docente>{
 	public Map<String, Diciplina> getDiciplinas(){
 		return dic;
 	}
-	public Map<Integer, Atividade> getAtividades() {
+	public Map<String, Atividade> getAtividades() {
 		return atv;
 	}
 	
@@ -78,7 +78,7 @@ public class Docente implements Serializable, Comparable<Docente>{
     	if(atv.size() == 0)
     		return 0;
     	else {
-	    	for(Integer i : atv.keySet()) {
+	    	for(String i : atv.keySet()) {
 	    		if(atv.get(i).isSinc()) {
 	    			cont++;
 	    		}
@@ -92,7 +92,7 @@ public class Docente implements Serializable, Comparable<Docente>{
     	if(atv.size() == 0)
     		return 0;
     	else {
-	    	for(Integer i : atv.keySet()) {
+	    	for(String i : atv.keySet()) {
 	    		if(!atv.get(i).isSinc()) {
 	    			cont++;
 	    		}
@@ -104,7 +104,7 @@ public class Docente implements Serializable, Comparable<Docente>{
     public double mediaNotasRecebidas() {
     	double media=0, cont=0;
     	
-    	for(Integer i : atv.keySet()) {
+    	for(String i : atv.keySet()) {
     		for(Long j : atv.get(i).getAvaliacao().keySet()) {
     			cont++;
     			media+=atv.get(i).getAvaliacao().get(j);;

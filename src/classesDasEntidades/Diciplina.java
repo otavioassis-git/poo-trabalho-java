@@ -11,7 +11,7 @@ public class Diciplina implements Serializable, Comparable<Diciplina> {
     private Docente doc;
     private Periodo per;
     private Map<Long, Estudante> est = new HashMap<>();
-    private Map<Integer, Atividade> atv = new HashMap<>();
+    private Map<String, Atividade> atv = new HashMap<>();
     
     public Diciplina(String n, String c, Docente d, Periodo p){
     	nome = n;
@@ -35,17 +35,14 @@ public class Diciplina implements Serializable, Comparable<Diciplina> {
 	public Map<Long, Estudante> getEstudantes(){
 		return est;
 	}
-	public Map<Integer, Atividade> getAtividades(){
+	public Map<String, Atividade> getAtividades(){
 		return atv;
-	}
-	public int getAtividadesSize() {
-		return atv.size();
 	}
 	
 	public double percentualAtividadeSincrona() {
     	double cont=0;
     	
-    	for(Integer i : atv.keySet()) {
+    	for(String i : atv.keySet()) {
     		if(atv.get(i).isSinc()) {
     			cont++;
     		}
@@ -60,7 +57,7 @@ public class Diciplina implements Serializable, Comparable<Diciplina> {
 	public double percentualAtividadeAssincrona() {
 		double cont=0;
     	
-    	for(Integer i : atv.keySet()) {
+    	for(String i : atv.keySet()) {
     		if(!atv.get(i).isSinc()) {
     			cont++;
     		}
@@ -75,7 +72,7 @@ public class Diciplina implements Serializable, Comparable<Diciplina> {
 	public double calculaCargaHoraria() {
 		double cont=0;
 		
-		for(Integer i : atv.keySet()) {
+		for(String i : atv.keySet()) {
 			cont+=atv.get(i).getcHoraria();
 		}
 		

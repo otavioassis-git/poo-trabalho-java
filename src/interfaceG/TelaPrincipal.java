@@ -42,7 +42,7 @@ public class TelaPrincipal extends JFrame {
 	static Map<Long, Estudante> estudantes;
 	static Map<String, Docente> docentes;
 	static Map<String, Diciplina> diciplinas;
-	static Map<Integer, Atividade> atividades;
+	static Map<String, Atividade> atividades;
 	
 	private JPanel contentPane;
 	private JTextField txt_estudante_nome;
@@ -193,7 +193,7 @@ public class TelaPrincipal extends JFrame {
 				estudantes = (Map<Long, Estudante>)in.readObject();
 				diciplinas = (Map<String, Diciplina>)in.readObject();
 				docentes = (Map<String, Docente>)in.readObject();
-				atividades = (Map<Integer, Atividade>)in.readObject();
+				atividades = (Map<String, Atividade>)in.readObject();
 			
 				Arquivo.writeGeral(periodos);
 				Arquivo.writeEstEstudantes(estudantes);
@@ -884,9 +884,10 @@ public class TelaPrincipal extends JFrame {
 		JButton btnNewButton_5 = new JButton("Cadastrar");
 		btnNewButton_5.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) throws IllegalArgumentException {
-				int seq=1;
+				int seqnum=1;
 				String cod = txt_atividades_codigo.getText();
-				seq+=atividades.size();
+				seqnum+=diciplinas.get(cod).getAtividades().size();
+				String seq = seqnum+cod;
 				
 				try {
 					if(!diciplinas.containsKey(cod)) {
@@ -1186,7 +1187,7 @@ public class TelaPrincipal extends JFrame {
 							System.out.println("	Atividades Avaliativas da Disciplina:");
 							ArrayList<Trabalho> trabaux = new ArrayList<>();
 							ArrayList<Prova> provaux = new ArrayList<>();
-							for(Integer k : dicaux.get(j).getAtividades().keySet()) {
+							for(String k : dicaux.get(j).getAtividades().keySet()) {
 								if (dicaux.get(j).getAtividades().get(k).getClass() == Trabalho.class) {
 									trabaux.add((Trabalho) dicaux.get(j).getAtividades().get(k));
 								}
@@ -1294,7 +1295,7 @@ public class TelaPrincipal extends JFrame {
 					estudantes = (Map<Long, Estudante>)in.readObject();
 					diciplinas = (Map<String, Diciplina>)in.readObject();
 					docentes = (Map<String, Docente>)in.readObject();
-					atividades = (Map<Integer, Atividade>)in.readObject();
+					atividades = (Map<String, Atividade>)in.readObject();
 				} catch (IOException e) {
 					JOptionPane.showMessageDialog(rootPane, "Erro na leitura arquivo!", "Erro", JOptionPane.ERROR_MESSAGE);
 				} catch (ClassNotFoundException e) {
