@@ -177,7 +177,7 @@ public class TelaPrincipal extends JFrame {
 			}
 			catch(IllegalArgumentException e) {
 				//e.printStackTrace();
-				System.out.print(e.getMessage());
+				System.out.println(e.getMessage());
 			}
 			catch(IOException e) {
 				//e.printStackTrace();
@@ -267,7 +267,7 @@ public class TelaPrincipal extends JFrame {
 			}
 			catch(IllegalArgumentException e) {
 				//e.printStackTrace();
-				System.out.print(e.getMessage());
+				System.out.println(e.getMessage());
 			}
 			catch(IOException e) {
 				//e.printStackTrace();
