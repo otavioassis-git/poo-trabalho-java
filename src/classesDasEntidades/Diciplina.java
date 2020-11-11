@@ -38,6 +38,9 @@ public class Diciplina implements Serializable, Comparable<Diciplina> {
 	public Map<Integer, Atividade> getAtividades(){
 		return atv;
 	}
+	public int getAtividadesSize() {
+		return atv.size();
+	}
 	
 	public double percentualAtividadeSincrona() {
     	double cont=0;

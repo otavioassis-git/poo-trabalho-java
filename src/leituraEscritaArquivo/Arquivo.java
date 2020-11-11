@@ -172,25 +172,25 @@ public class Arquivo {
 				throw new IllegalArgumentException("Referência inválida: "+dados[0]+".");
 			}
 			if(dados[2].equals("A")) {
-				seq+=atividades.size();
+				seq+=diciplinas.get(dados[0]).getAtividadesSize();
 				atividades.put(seq, new Aula(dados[1], true, dados[3], dados[4]));
 				diciplinas.get(dados[0]).getAtividades().put(seq, atividades.get(seq));
 				diciplinas.get(dados[0]).getDoc().getAtividades().put(seq, atividades.get(seq));
 			}
 			else if(dados[2].equals("E")) {
-				seq+=atividades.size();
+				seq+=diciplinas.get(dados[0]).getAtividadesSize();
 				atividades.put(seq, new Estudo(dados[1], false, dados[5]));
 				diciplinas.get(dados[0]).getAtividades().put(seq, atividades.get(seq));
 				diciplinas.get(dados[0]).getDoc().getAtividades().put(seq, atividades.get(seq));
 			}
 			else if(dados[2].equals("T")) {
-				seq+=atividades.size();
+				seq+=diciplinas.get(dados[0]).getAtividadesSize();
 				atividades.put(seq, new Trabalho(dados[1], false, dados[3], Integer.parseInt(dados[6]), Double.parseDouble(dados[7])));
 				diciplinas.get(dados[0]).getAtividades().put(seq, atividades.get(seq));
 				diciplinas.get(dados[0]).getDoc().getAtividades().put(seq, atividades.get(seq));
 			}
 			else if(dados[2].equals("P")) {
-				seq+=atividades.size();
+				seq+=diciplinas.get(dados[0]).getAtividadesSize();
 				atividades.put(seq, new Prova(dados[0], true, dados[3], dados[4], dados[5]));
 				diciplinas.get(dados[0]).getAtividades().put(seq, atividades.get(seq));
 				diciplinas.get(dados[0]).getDoc().getAtividades().put(seq, atividades.get(seq));
