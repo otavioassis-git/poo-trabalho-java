@@ -1,8 +1,10 @@
 package classesDasEntidades;
 
 import java.io.Serializable;
+import java.text.Collator;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import classesDasEntidades.atividades.Atividade;
@@ -120,6 +122,9 @@ public class Docente implements Serializable, Comparable<Docente>{
 
 	@Override
 	public int compareTo(Docente o) {
-		return -(nome.compareTo(o.nome));
+		Collator collator = Collator.getInstance(Locale.getDefault());
+	    collator.setStrength(Collator.PRIMARY);
+	    return -(collator.compare(nome, o.nome));
+
 	}
 }

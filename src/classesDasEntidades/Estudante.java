@@ -1,6 +1,7 @@
 package classesDasEntidades;
 
 import java.io.Serializable;
+import java.text.Collator;
 import java.util.*;
 
 public class Estudante implements Serializable, Comparable<Estudante>{
@@ -100,7 +101,9 @@ public class Estudante implements Serializable, Comparable<Estudante>{
 		cmp = -(cmp);
 	    if (cmp != 0)
 		  return cmp;
-		return nome.compareTo(o.nome);
+	    Collator collator = Collator.getInstance(Locale.getDefault());
+	    collator.setStrength(Collator.PRIMARY);
+	    return collator.compare(nome, o.nome);
 	}
 }
 

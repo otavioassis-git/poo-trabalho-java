@@ -1,6 +1,7 @@
 package classesDasEntidades;
 
 import java.io.Serializable;
+import java.text.Collator;
 import java.util.*;
 
 import classesDasEntidades.atividades.Atividade;
@@ -81,9 +82,11 @@ public class Diciplina implements Serializable, Comparable<Diciplina> {
 	
 	public static void sortNome(ArrayList<Diciplina> d) {
 		Diciplina aux;
+		Collator collator = Collator.getInstance(Locale.getDefault());
+	    collator.setStrength(Collator.PRIMARY);
 		for(int i=0;i<d.size();i++) {
 			for(int j=i;j<d.size();j++) {
-				if(d.get(i).nome.compareTo(d.get(j).nome) > 0) {
+				if(collator.compare(d.get(i).getNome(), d.get(j).getNome()) > 0) {
 					aux = d.get(i);
 					d.set(i, d.get(j));
 					d.set(j, aux);
