@@ -321,19 +321,19 @@ public class Arquivo {
 		for(int j=0;j<dicaux.size();j++) {
 			String datasf = new String();
 			double choraria = 0;
+			ArrayList<Date> datas = new ArrayList<>();
 			for(String s : dicaux.get(j).getAtividades().keySet()) {
-				ArrayList<Date> datas = new ArrayList<>();
 				if(dicaux.get(j).getAtividades().get(s).getClass() == Trabalho.class) {
 					datas.add(((Trabalho) dicaux.get(j).getAtividades().get(s)).getPrazo());
 				}
 				else if(dicaux.get(j).getAtividades().get(s).getClass() == Prova.class) {
 					datas.add(((Prova) dicaux.get(j).getAtividades().get(s)).getData());
 				}
-				Collections.sort(datas);
-				for(int k=0;k<datas.size();k++) {	
-					datasf+=df.format(datas.get(k))+" ";
-				}
 				choraria+=dicaux.get(j).getAtividades().get(s).getcHoraria();
+			}
+			Collections.sort(datas);
+			for(int k=0;k<datas.size();k++) {	
+				datasf+=df.format(datas.get(k))+" ";
 			}
 			datasf = datasf.trim();
 			escrevearq.printf("%s;%s;%s;%s;%d;%.0f%%;%.0f%%;%.0f;%s\n", dicaux.get(j).getDoc().getLogin(), dicaux.get(j).getPer().getAnoSemestre(), dicaux.get(j).getCodigo(), dicaux.get(j).getNome(), 
