@@ -326,12 +326,7 @@ public class Arquivo {
 				}
 				Collections.sort(datas);
 				for(int k=0;k<datas.size();k++) {	
-					if(k == datas.size()-1) {
-						datasf+=df.format(datas.get(k));
-					}
-					else {
-						datasf+=df.format(datas.get(k))+" ";
-					}
+					datasf+=df.format(datas.get(k))+" ";
 				}
 				choraria+=dicaux.get(j).getAtividades().get(s).getcHoraria();
 			}
