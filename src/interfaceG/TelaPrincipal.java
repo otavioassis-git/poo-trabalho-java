@@ -183,7 +183,9 @@ public class TelaPrincipal extends JFrame {
 				//e.printStackTrace();
 				System.out.println("Erro de I/O.");
 			}
-			System.exit(0);
+			finally {
+				System.exit(0);
+			}
 		}
 		else if(iteste == 2){
 			try(ObjectInputStream in = new ObjectInputStream(new FileInputStream("dados.dat"))) {
@@ -201,7 +203,9 @@ public class TelaPrincipal extends JFrame {
 			catch(IOException | ClassNotFoundException e) {
 				System.out.println("Erro de I/O.");
 			}
-			System.exit(0);
+			finally {
+				System.exit(0);
+			}
 		}
 		else if(iteste == 0 && iteste2 == 1) {
 			try {
@@ -259,7 +263,6 @@ public class TelaPrincipal extends JFrame {
 				Arquivo.writeEstEstudantes(estudantes);
 				Arquivo.writeEstDocentes(docentes);
 				Arquivo.writeEstDisciplinasDocente(diciplinas);
-				System.exit(0);
 			}
 			catch(IllegalArgumentException e) {
 				//e.printStackTrace();
@@ -268,6 +271,9 @@ public class TelaPrincipal extends JFrame {
 			catch(IOException e) {
 				//e.printStackTrace();
 				System.out.println("Erro de I/O.");
+			}
+			finally {
+				System.exit(0);
 			}
 		}
 		

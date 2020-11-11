@@ -335,6 +335,7 @@ public class Arquivo {
 				}
 				choraria+=dicaux.get(j).getAtividades().get(s).getcHoraria();
 			}
+			datasf = datasf.trim();
 			escrevearq.printf("%s;%s;%s;%s;%d;%.0f%%;%.0f%%;%.0f;%s\n", dicaux.get(j).getDoc().getLogin(), dicaux.get(j).getPer().getAnoSemestre(), dicaux.get(j).getCodigo(), dicaux.get(j).getNome(), 
 					dicaux.get(j).getAtividades().size(), dicaux.get(j).percentualAtividadeSincrona(), dicaux.get(j).percentualAtividadeAssincrona(), choraria, datasf);
 		}
