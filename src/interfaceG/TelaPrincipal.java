@@ -121,49 +121,56 @@ public class TelaPrincipal extends JFrame {
 				if(teste[0]) {
 					for(int i=0;i<args.length;i++) {
 						if(args[i].equals("-p")) {
-							periodos = Arquivo.readPeriodo(args[i+1]);
+							Leitor arq = new Leitor(args[i+1]);
+							periodos = arq.readPeriodo();
 						}
 					}
 				}
 				if(teste[1]) {
 					for(int i=0;i<args.length;i++) {
 						if(args[i].equals("-d")) {
-							docentes = Arquivo.readDocente(args[i+1]);
+							Leitor arq = new Leitor(args[i+1]);
+							docentes = arq.readDocente();
 						}
 					}
 				}
 				if(teste[2]) {
 					for(int i=0;i<args.length;i++) {
 						if(args[i].equals("-o")) {
-							diciplinas = Arquivo.readDiciplina(args[i+1], periodos, docentes);
+							Leitor arq = new Leitor(args[i+1]);
+							diciplinas = arq.readDiciplina(periodos, docentes);
 						}
 					}
 				}
 				if(teste[3]) {
 					for(int i=0;i<args.length;i++) {
 						if(args[i].equals("-e")) {
-							estudantes = Arquivo.readEstudante(args[i+1]);
+							Leitor arq = new Leitor(args[i+1]);
+							estudantes = arq.readEstudante();
 						}
 					}
 				}
 				if(teste[4]) {
 					for(int i=0;i<args.length;i++) {
 						if(args[i].equals("-m")) {
-							Arquivo.readMatriculas(args[i+1], diciplinas, estudantes);
+							Leitor arq = new Leitor(args[i+1]);
+							arq.readMatriculas(diciplinas, estudantes);
 						}
 					}
 				}
 				if(teste[5]) {
 					for(int i=0;i<args.length;i++) {
 						if(args[i].equals("-a")) {
-							atividades = Arquivo.readAtividade(args[i+1], periodos, diciplinas);
+							Leitor arq = new Leitor(args[i+1]);
+							atividades = arq.readAtividade(periodos, diciplinas);
 						}
 					}
 				}
 				if(teste[6]) {
 					for(int i=0;i<args.length;i++) {
 						if(args[i].equals("-n")) {
-							Arquivo.readAvaliacao(args[i+1], diciplinas);
+							Leitor arq = new Leitor(args[i+1]);
+							arq.readAvaliacao(diciplinas);
 						}
 					}
 				}
@@ -194,11 +201,12 @@ public class TelaPrincipal extends JFrame {
 				diciplinas = (Map<String, Diciplina>)in.readObject();
 				docentes = (Map<String, Docente>)in.readObject();
 				atividades = (Map<String, Atividade>)in.readObject();
-			
-				Arquivo.writeGeral(periodos);
-				Arquivo.writeEstEstudantes(estudantes);
-				Arquivo.writeEstDocentes(docentes);
-				Arquivo.writeEstDisciplinasDocente(diciplinas);
+				
+				Escritor arq = new Escritor();
+				arq.writeGeral(periodos);
+				arq.writeEstEstudantes(estudantes);
+				arq.writeEstDocentes(docentes);
+				arq.writeEstDisciplinasDocente(diciplinas);
 
 			}
 			catch(IOException | ClassNotFoundException e) {
@@ -213,57 +221,65 @@ public class TelaPrincipal extends JFrame {
 				if(teste[0]) {
 					for(int i=0;i<args.length;i++) {
 						if(args[i].equals("-p")) {
-							periodos = Arquivo.readPeriodo(args[i+1]);
+							Leitor arq = new Leitor(args[i+1]);
+							periodos = arq.readPeriodo();
 						}
 					}
 				}
 				if(teste[1]) {
 					for(int i=0;i<args.length;i++) {
 						if(args[i].equals("-d")) {
-							docentes = Arquivo.readDocente(args[i+1]);
+							Leitor arq = new Leitor(args[i+1]);
+							docentes = arq.readDocente();
 						}
 					}
 				}
 				if(teste[2]) {
 					for(int i=0;i<args.length;i++) {
 						if(args[i].equals("-o")) {
-							diciplinas = Arquivo.readDiciplina(args[i+1], periodos, docentes);
+							Leitor arq = new Leitor(args[i+1]);
+							diciplinas = arq.readDiciplina(periodos, docentes);
 						}
 					}
 				}
 				if(teste[3]) {
 					for(int i=0;i<args.length;i++) {
 						if(args[i].equals("-e")) {
-							estudantes = Arquivo.readEstudante(args[i+1]);
+							Leitor arq = new Leitor(args[i+1]);
+							estudantes = arq.readEstudante();
 						}
 					}
 				}
 				if(teste[4]) {
 					for(int i=0;i<args.length;i++) {
 						if(args[i].equals("-m")) {
-							Arquivo.readMatriculas(args[i+1], diciplinas, estudantes);
+							Leitor arq = new Leitor(args[i+1]);
+							arq.readMatriculas(diciplinas, estudantes);
 						}
 					}
 				}
 				if(teste[5]) {
 					for(int i=0;i<args.length;i++) {
 						if(args[i].equals("-a")) {
-							atividades = Arquivo.readAtividade(args[i+1], periodos, diciplinas);
+							Leitor arq = new Leitor(args[i+1]);
+							atividades = arq.readAtividade(periodos, diciplinas);
 						}
 					}
 				}
 				if(teste[6]) {
 					for(int i=0;i<args.length;i++) {
 						if(args[i].equals("-n")) {
-							Arquivo.readAvaliacao(args[i+1], diciplinas);
+							Leitor arq = new Leitor(args[i+1]);
+							arq.readAvaliacao(diciplinas);
 						}
 					}
 				}
 				
-				Arquivo.writeGeral(periodos);
-				Arquivo.writeEstEstudantes(estudantes);
-				Arquivo.writeEstDocentes(docentes);
-				Arquivo.writeEstDisciplinasDocente(diciplinas);
+				Escritor arq = new Escritor();
+				arq.writeGeral(periodos);
+				arq.writeEstEstudantes(estudantes);
+				arq.writeEstDocentes(docentes);
+				arq.writeEstDisciplinasDocente(diciplinas);
 			}
 			catch(IllegalArgumentException e) {
 				//e.printStackTrace();
