@@ -236,6 +236,7 @@ public class Leitor {
 					aux[i] = '.';
 			}
 			dados[3] = String.copyValueOf(aux);
+			
 			try {
 				Double.parseDouble(dados[3]);
 			} catch (IllegalArgumentException e) {

@@ -109,7 +109,7 @@ public class Docente implements Serializable, Comparable<Docente>{
     	for(String i : atv.keySet()) {
     		for(Long j : atv.get(i).getAvaliacao().keySet()) {
     			cont++;
-    			media+=atv.get(i).getAvaliacao().get(j);;
+    			media+=atv.get(i).getAvaliacao().get(j);
     		}
     	}
     	if(cont == 0)

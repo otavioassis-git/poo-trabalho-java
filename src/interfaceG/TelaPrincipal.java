@@ -1010,8 +1010,8 @@ public class TelaPrincipal extends JFrame {
 		btnNewButton_6.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) throws IllegalArgumentException {
 				long mat = Long.parseLong(txt_avaliacao_matricula.getText());
-				int seq = Integer.parseInt(txt_avaliacao_sequencial.getText());
 				String cod = txt_avaliacao_codigo.getText();
+				String seq = txt_avaliacao_sequencial.getText()+cod;
 				
 				try {
 					if(!diciplinas.containsKey(cod)) {
@@ -1078,11 +1078,8 @@ public class TelaPrincipal extends JFrame {
 						Diciplina.sortNome(dicaux);
 						System.out.println("Relatorio Periodo Academico "+as);
 						for(String s : periodos.get(as).getDiciplinas().keySet()) {
-							numAtv+=periodos.get(as).getDiciplinas().get(s).getAtividades().size();
-							
 							System.out.println(dicaux.get(i).getCodigo()+" "+dicaux.get(i).getNome()+" | Docente responsavel: "+dicaux.get(i).getDoc().getNome()+" - "+dicaux.get(i).getDoc().getLogin()+
-									" | Nm de Estudantes Matriculados: "+dicaux.get(i).getEstudantes().size()+" | Nm de Atividades: "+numAtv);
-							numAtv=0;
+									" | Nm de Estudantes Matriculados: "+dicaux.get(i).getEstudantes().size()+" | Nm de Atividades: "+periodos.get(as).getDiciplinas().get(s).getAtividades().size());
 							i++;
 						}
 						System.out.println();

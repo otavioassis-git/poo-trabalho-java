@@ -49,23 +49,6 @@ public class Estudante implements Serializable, Comparable<Estudante>{
     	return (double)dic.size()/cont;
     }
     
-    public double mediaAvaliacoes() {
-    	double cont=0;
-    	
-    	for(String s : dic.keySet()) {
-    		for(String i : dic.get(s).getAtividades().keySet()) {
-    			if(dic.get(s).getAtividades().get(i).getAvaliacao().get(this.matricula)!=null) {
-    				cont++;
-    			}
-    		}
-    	}
-    	
-    	if(dic.size() == 0)
-    		return 0;
-    	else
-    		return (cont/dic.size());
-    }
-    
     public Integer contaAvaliacoes() {
     	Integer cont=0;
     	for(String s : dic.keySet()) {
@@ -76,6 +59,15 @@ public class Estudante implements Serializable, Comparable<Estudante>{
     		}
     	}
     	return cont;
+    }
+    
+    public double mediaAvaliacoes() {
+    	double cont=this.contaAvaliacoes();
+    	
+    	if(dic.size() == 0)
+    		return 0;
+    	else
+    		return (cont/dic.size());
     }
     
     public double mediaNotas() {
